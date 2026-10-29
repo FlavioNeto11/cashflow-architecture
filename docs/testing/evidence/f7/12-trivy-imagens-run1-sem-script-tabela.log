@@ -1,0 +1,218 @@
+# F7 12 - trivy (container efemero aquasec/trivy:latest, DB baixada em 2026-10-29) sobre tar de cada imagem cashflow/*:dev - 2026-10-29T13:16:59Z
+trivy: Version: 0.76.1
+
+=================== cashflow/gateway:dev
+Report Summary
+┌──────────────────────────────────────────────────────────────────────────────────┬─────────────┬─────────────────┐
+│                                      Target                                      │    Type     │ Vulnerabilities │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ /in/gateway.tar (ubuntu 24.04)                                                   │   ubuntu    │       26        │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ app/CashFlow.Gateway.deps.json                                                   │ dotnet-core │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ usr/share/dotnet/shared/Microsoft.AspNetCore.App/10.0.14/Microsoft.AspNetCore.A- │ dotnet-core │        0        │
+│ pp.deps.json                                                                     │             │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ usr/share/dotnet/shared/Microsoft.NETCore.App/10.0.14/Microsoft.NETCore.App.dep- │ dotnet-core │        0        │
+│ s.json                                                                           │             │                 │
+└──────────────────────────────────────────────────────────────────────────────────┴─────────────┴─────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+/in/gateway.tar (ubuntu 24.04)
+==============================
+Total: 26 (LOW: 5, MEDIUM: 21, HIGH: 0, CRITICAL: 0)
+┌────────────────┬─────────────────┬──────────┬──────────┬─────────────────────────┬───────────────┬──────────────────────────────────────────────────────────────┐
+│    Library     │  Vulnerability  │ Severity │  Status  │    Installed Version    │ Fixed Version │                            Title                             │
+├────────────────┼─────────────────┼──────────┼──────────┼─────────────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ dash           │ CVE-2026-102473 │ MEDIUM   │ affected │ 0.5.12-6ubuntu5         │               │ dash: dash: Super-polynomial backtracking in pmatch when     │
+│                │                 │          │          │                         │               │ libc fnmatch is disabled                                     │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-102473                  │
+│                ├─────────────────┤          │          │                         ├───────────────┼──────────────────────────────────────────────────────────────┤
+│                │ CVE-2026-102474 │          │          │                         │               │ dash: dash: Heap out-of-bounds write in conv_escape via      │
+│                │                 │          │          │                         │               │ undersized Unicode escape reservation...                     │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-102474                  │
+├────────────────┼─────────────────┤          │          ├─────────────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ libc-bin       │ CVE-2026-18374  │          │          │ 2.39-0ubuntu8.9         │               │ glibc: glibc: Heap buffer overflow via attacker-controlled   │
+│                │                 │          │          │                         │               │ fopen mode string                                            │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-18374                   │
+│                ├─────────────────┤          │          │                         ├───────────────┼──────────────────────────────────────────────────────────────┤
+│                │ CVE-2026-89092  │          │          │                         │               │ glibc: nscd stack overflow leads to degraded DNS resolution  │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-89092                   │
+├────────────────┼─────────────────┤          │          │                         ├───────────────┼──────────────────────────────────────────────────────────────┤
+│ libc6          │ CVE-2026-18374  │          │          │                         │               │ glibc: glibc: Heap buffer overflow via attacker-controlled   │
+│                │                 │          │          │                         │               │ fopen mode string                                            │
+exit-trivy(gateway)=0
+
+=================== cashflow/transactions-api:dev
+Report Summary
+┌──────────────────────────────────────────────────────────────────────────────────┬─────────────┬─────────────────┐
+│                                      Target                                      │    Type     │ Vulnerabilities │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ /in/transactions-api.tar (ubuntu 24.04)                                          │   ubuntu    │       26        │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ app/CashFlow.Transactions.Api.deps.json                                          │ dotnet-core │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ usr/share/dotnet/shared/Microsoft.AspNetCore.App/10.0.14/Microsoft.AspNetCore.A- │ dotnet-core │        0        │
+│ pp.deps.json                                                                     │             │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ usr/share/dotnet/shared/Microsoft.NETCore.App/10.0.14/Microsoft.NETCore.App.dep- │ dotnet-core │        0        │
+│ s.json                                                                           │             │                 │
+└──────────────────────────────────────────────────────────────────────────────────┴─────────────┴─────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+/in/transactions-api.tar (ubuntu 24.04)
+=======================================
+Total: 26 (LOW: 5, MEDIUM: 21, HIGH: 0, CRITICAL: 0)
+┌────────────────┬─────────────────┬──────────┬──────────┬─────────────────────────┬───────────────┬──────────────────────────────────────────────────────────────┐
+│    Library     │  Vulnerability  │ Severity │  Status  │    Installed Version    │ Fixed Version │                            Title                             │
+├────────────────┼─────────────────┼──────────┼──────────┼─────────────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ dash           │ CVE-2026-102473 │ MEDIUM   │ affected │ 0.5.12-6ubuntu5         │               │ dash: dash: Super-polynomial backtracking in pmatch when     │
+│                │                 │          │          │                         │               │ libc fnmatch is disabled                                     │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-102473                  │
+│                ├─────────────────┤          │          │                         ├───────────────┼──────────────────────────────────────────────────────────────┤
+│                │ CVE-2026-102474 │          │          │                         │               │ dash: dash: Heap out-of-bounds write in conv_escape via      │
+│                │                 │          │          │                         │               │ undersized Unicode escape reservation...                     │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-102474                  │
+├────────────────┼─────────────────┤          │          ├─────────────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ libc-bin       │ CVE-2026-18374  │          │          │ 2.39-0ubuntu8.9         │               │ glibc: glibc: Heap buffer overflow via attacker-controlled   │
+│                │                 │          │          │                         │               │ fopen mode string                                            │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-18374                   │
+│                ├─────────────────┤          │          │                         ├───────────────┼──────────────────────────────────────────────────────────────┤
+│                │ CVE-2026-89092  │          │          │                         │               │ glibc: nscd stack overflow leads to degraded DNS resolution  │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-89092                   │
+├────────────────┼─────────────────┤          │          │                         ├───────────────┼──────────────────────────────────────────────────────────────┤
+│ libc6          │ CVE-2026-18374  │          │          │                         │               │ glibc: glibc: Heap buffer overflow via attacker-controlled   │
+│                │                 │          │          │                         │               │ fopen mode string                                            │
+exit-trivy(transactions-api)=0
+
+=================== cashflow/consolidation-api:dev
+Report Summary
+┌──────────────────────────────────────────────────────────────────────────────────┬─────────────┬─────────────────┐
+│                                      Target                                      │    Type     │ Vulnerabilities │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ /in/consolidation-api.tar (ubuntu 24.04)                                         │   ubuntu    │       26        │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ app/CashFlow.Consolidation.Api.deps.json                                         │ dotnet-core │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ usr/share/dotnet/shared/Microsoft.AspNetCore.App/10.0.14/Microsoft.AspNetCore.A- │ dotnet-core │        0        │
+│ pp.deps.json                                                                     │             │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ usr/share/dotnet/shared/Microsoft.NETCore.App/10.0.14/Microsoft.NETCore.App.dep- │ dotnet-core │        0        │
+│ s.json                                                                           │             │                 │
+└──────────────────────────────────────────────────────────────────────────────────┴─────────────┴─────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+/in/consolidation-api.tar (ubuntu 24.04)
+========================================
+Total: 26 (LOW: 5, MEDIUM: 21, HIGH: 0, CRITICAL: 0)
+┌────────────────┬─────────────────┬──────────┬──────────┬─────────────────────────┬───────────────┬──────────────────────────────────────────────────────────────┐
+│    Library     │  Vulnerability  │ Severity │  Status  │    Installed Version    │ Fixed Version │                            Title                             │
+├────────────────┼─────────────────┼──────────┼──────────┼─────────────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ dash           │ CVE-2026-102473 │ MEDIUM   │ affected │ 0.5.12-6ubuntu5         │               │ dash: dash: Super-polynomial backtracking in pmatch when     │
+│                │                 │          │          │                         │               │ libc fnmatch is disabled                                     │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-102473                  │
+│                ├─────────────────┤          │          │                         ├───────────────┼──────────────────────────────────────────────────────────────┤
+│                │ CVE-2026-102474 │          │          │                         │               │ dash: dash: Heap out-of-bounds write in conv_escape via      │
+│                │                 │          │          │                         │               │ undersized Unicode escape reservation...                     │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-102474                  │
+├────────────────┼─────────────────┤          │          ├─────────────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ libc-bin       │ CVE-2026-18374  │          │          │ 2.39-0ubuntu8.9         │               │ glibc: glibc: Heap buffer overflow via attacker-controlled   │
+│                │                 │          │          │                         │               │ fopen mode string                                            │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-18374                   │
+│                ├─────────────────┤          │          │                         ├───────────────┼──────────────────────────────────────────────────────────────┤
+│                │ CVE-2026-89092  │          │          │                         │               │ glibc: nscd stack overflow leads to degraded DNS resolution  │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-89092                   │
+├────────────────┼─────────────────┤          │          │                         ├───────────────┼──────────────────────────────────────────────────────────────┤
+│ libc6          │ CVE-2026-18374  │          │          │                         │               │ glibc: glibc: Heap buffer overflow via attacker-controlled   │
+│                │                 │          │          │                         │               │ fopen mode string                                            │
+exit-trivy(consolidation-api)=0
+
+=================== cashflow/consolidation-worker:dev
+Report Summary
+┌──────────────────────────────────────────────────────────────────────────────────┬─────────────┬─────────────────┐
+│                                      Target                                      │    Type     │ Vulnerabilities │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ /in/consolidation-worker.tar (ubuntu 24.04)                                      │   ubuntu    │       26        │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ app/CashFlow.Consolidation.Worker.deps.json                                      │ dotnet-core │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ usr/share/dotnet/shared/Microsoft.AspNetCore.App/10.0.14/Microsoft.AspNetCore.A- │ dotnet-core │        0        │
+│ pp.deps.json                                                                     │             │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ usr/share/dotnet/shared/Microsoft.NETCore.App/10.0.14/Microsoft.NETCore.App.dep- │ dotnet-core │        0        │
+│ s.json                                                                           │             │                 │
+└──────────────────────────────────────────────────────────────────────────────────┴─────────────┴─────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+/in/consolidation-worker.tar (ubuntu 24.04)
+===========================================
+Total: 26 (LOW: 5, MEDIUM: 21, HIGH: 0, CRITICAL: 0)
+┌────────────────┬─────────────────┬──────────┬──────────┬─────────────────────────┬───────────────┬──────────────────────────────────────────────────────────────┐
+│    Library     │  Vulnerability  │ Severity │  Status  │    Installed Version    │ Fixed Version │                            Title                             │
+├────────────────┼─────────────────┼──────────┼──────────┼─────────────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ dash           │ CVE-2026-102473 │ MEDIUM   │ affected │ 0.5.12-6ubuntu5         │               │ dash: dash: Super-polynomial backtracking in pmatch when     │
+│                │                 │          │          │                         │               │ libc fnmatch is disabled                                     │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-102473                  │
+│                ├─────────────────┤          │          │                         ├───────────────┼──────────────────────────────────────────────────────────────┤
+│                │ CVE-2026-102474 │          │          │                         │               │ dash: dash: Heap out-of-bounds write in conv_escape via      │
+│                │                 │          │          │                         │               │ undersized Unicode escape reservation...                     │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-102474                  │
+├────────────────┼─────────────────┤          │          ├─────────────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ libc-bin       │ CVE-2026-18374  │          │          │ 2.39-0ubuntu8.9         │               │ glibc: glibc: Heap buffer overflow via attacker-controlled   │
+│                │                 │          │          │                         │               │ fopen mode string                                            │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-18374                   │
+│                ├─────────────────┤          │          │                         ├───────────────┼──────────────────────────────────────────────────────────────┤
+│                │ CVE-2026-89092  │          │          │                         │               │ glibc: nscd stack overflow leads to degraded DNS resolution  │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-89092                   │
+├────────────────┼─────────────────┤          │          │                         ├───────────────┼──────────────────────────────────────────────────────────────┤
+│ libc6          │ CVE-2026-18374  │          │          │                         │               │ glibc: glibc: Heap buffer overflow via attacker-controlled   │
+│                │                 │          │          │                         │               │ fopen mode string                                            │
+exit-trivy(consolidation-worker)=0
+
+=================== cashflow/recon-tool:dev
+Report Summary
+┌──────────────────────────────────────────────────────────────────────────────────┬─────────────┬─────────────────┐
+│                                      Target                                      │    Type     │ Vulnerabilities │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ /in/recon-tool.tar (ubuntu 24.04)                                                │   ubuntu    │       26        │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ app/CashFlow.ReconTool.deps.json                                                 │ dotnet-core │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ usr/share/dotnet/shared/Microsoft.NETCore.App/10.0.14/Microsoft.NETCore.App.dep- │ dotnet-core │        0        │
+│ s.json                                                                           │             │                 │
+└──────────────────────────────────────────────────────────────────────────────────┴─────────────┴─────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+/in/recon-tool.tar (ubuntu 24.04)
+=================================
+Total: 26 (LOW: 5, MEDIUM: 21, HIGH: 0, CRITICAL: 0)
+┌────────────────┬─────────────────┬──────────┬──────────┬─────────────────────────┬───────────────┬──────────────────────────────────────────────────────────────┐
+│    Library     │  Vulnerability  │ Severity │  Status  │    Installed Version    │ Fixed Version │                            Title                             │
+├────────────────┼─────────────────┼──────────┼──────────┼─────────────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ dash           │ CVE-2026-102473 │ MEDIUM   │ affected │ 0.5.12-6ubuntu5         │               │ dash: dash: Super-polynomial backtracking in pmatch when     │
+│                │                 │          │          │                         │               │ libc fnmatch is disabled                                     │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-102473                  │
+│                ├─────────────────┤          │          │                         ├───────────────┼──────────────────────────────────────────────────────────────┤
+│                │ CVE-2026-102474 │          │          │                         │               │ dash: dash: Heap out-of-bounds write in conv_escape via      │
+│                │                 │          │          │                         │               │ undersized Unicode escape reservation...                     │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-102474                  │
+├────────────────┼─────────────────┤          │          ├─────────────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+│ libc-bin       │ CVE-2026-18374  │          │          │ 2.39-0ubuntu8.9         │               │ glibc: glibc: Heap buffer overflow via attacker-controlled   │
+│                │                 │          │          │                         │               │ fopen mode string                                            │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-18374                   │
+│                ├─────────────────┤          │          │                         ├───────────────┼──────────────────────────────────────────────────────────────┤
+│                │ CVE-2026-89092  │          │          │                         │               │ glibc: nscd stack overflow leads to degraded DNS resolution  │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-89092                   │
+├────────────────┼─────────────────┤          │          │                         ├───────────────┼──────────────────────────────────────────────────────────────┤
+│ libc6          │ CVE-2026-18374  │          │          │                         │               │ glibc: glibc: Heap buffer overflow via attacker-controlled   │
+│                │                 │          │          │                         │               │ fopen mode string                                            │
+│                │                 │          │          │                         │               │ https://avd.aquasec.com/nvd/cve-2026-18374                   │
+│                ├─────────────────┤          │          │                         ├───────────────┼──────────────────────────────────────────────────────────────┤
+│                │ CVE-2026-89092  │          │          │                         │               │ glibc: nscd stack overflow leads to degraded DNS resolution  │
+exit-trivy(recon-tool)=0
+exit=0

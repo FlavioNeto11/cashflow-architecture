@@ -1,0 +1,39 @@
+# PF-03 build/test/format - 2026-10-29T11:16:37-03:00
+$ dotnet build CashFlow.slnx -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  CashFlow.Messaging -> C:\git\cashflow-architecture\src\CashFlow.Messaging\bin\Release\net10.0\CashFlow.Messaging.dll
+  CashFlow.Consolidation.Persistence -> C:\git\cashflow-architecture\src\CashFlow.Consolidation.Persistence\bin\Release\net10.0\CashFlow.Consolidation.Persistence.dll
+  CashFlow.ReconTool -> C:\git\cashflow-architecture\src\CashFlow.ReconTool\bin\Release\net10.0\CashFlow.ReconTool.dll
+  CashFlow.Hosting -> C:\git\cashflow-architecture\src\CashFlow.Hosting\bin\Release\net10.0\CashFlow.Hosting.dll
+  CashFlow.Transactions.Api -> C:\git\cashflow-architecture\src\CashFlow.Transactions.Api\bin\Release\net10.0\CashFlow.Transactions.Api.dll
+  CashFlow.Consolidation.Worker -> C:\git\cashflow-architecture\src\CashFlow.Consolidation.Worker\bin\Release\net10.0\CashFlow.Consolidation.Worker.dll
+  CashFlow.Gateway -> C:\git\cashflow-architecture\src\CashFlow.Gateway\bin\Release\net10.0\CashFlow.Gateway.dll
+  CashFlow.Transactions.Api.Tests -> C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\bin\Release\net10.0\CashFlow.Transactions.Api.Tests.dll
+  CashFlow.Consolidation.Api -> C:\git\cashflow-architecture\src\CashFlow.Consolidation.Api\bin\Release\net10.0\CashFlow.Consolidation.Api.dll
+  CashFlow.Persistence.Tests -> C:\git\cashflow-architecture\tests\CashFlow.Persistence.Tests\bin\Release\net10.0\CashFlow.Persistence.Tests.dll
+  CashFlow.Consolidation.Tests -> C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\bin\Release\net10.0\CashFlow.Consolidation.Tests.dll
+  CashFlow.Security.Tests -> C:\git\cashflow-architecture\tests\CashFlow.Security.Tests\bin\Release\net10.0\CashFlow.Security.Tests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:03.35
+exit=0
+
+$ dotnet test tests/CashFlow.Transactions.Api.Tests -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  CashFlow.Hosting -> C:\git\cashflow-architecture\src\CashFlow.Hosting\bin\Release\net10.0\CashFlow.Hosting.dll
+  CashFlow.Messaging -> C:\git\cashflow-architecture\src\CashFlow.Messaging\bin\Release\net10.0\CashFlow.Messaging.dll
+  CashFlow.Transactions.Api -> C:\git\cashflow-architecture\src\CashFlow.Transactions.Api\bin\Release\net10.0\CashFlow.Transactions.Api.dll
+  CashFlow.Transactions.Api.Tests -> C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\bin\Release\net10.0\CashFlow.Transactions.Api.Tests.dll
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\bin\Release\net10.0\CashFlow.Transactions.Api.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:   169, Skipped:     0, Total:   169, Duration: 16 s - CashFlow.Transactions.Api.Tests.dll (net10.0)
+exit=0
+
+$ dotnet format CashFlow.slnx --verify-no-changes
+exit=0

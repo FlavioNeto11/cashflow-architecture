@@ -1,0 +1,21 @@
+# reinicio do broker SEM apagar volume (import de definicoes sobrescreve usuario existente?) 2026-10-29T08:06:47Z
+ Container cashflow-rabbitmq-1 Recreated 
+ Container cashflow-rabbitmq-1 Starting 
+ Container cashflow-rabbitmq-1 Started 
+health=healthy
+Listing users ...
+user	tags
+cashflow_ops	[administrator]
+dev_rabbit	[]
+Listing permissions for vhost "/" ...
+user	configure	write	read
+cashflow_ops	.*	.*	.*
+dev_rabbit	^$	^cashflow[.](transactions|dlx)$	^consolidation[.](transaction-registered|dlq)$
+2026-10-29 08:06:56.829267+00:00 [info] <0.209.0> Running boot step rabbit_definitions_hashing defined by app rabbit[0m
+2026-10-29 08:06:56.839065+00:00 [info] <0.209.0> Will not seed default virtual host and user: have definitions to load...[0m
+2026-10-29 08:06:56.846731+00:00 [info] <0.209.0> Running boot step rabbit_management_load_definitions defined by app rabbitmq_management[0m
+2026-10-29 08:06:56.937965+00:00 [info] <0.865.0> Applying definitions from directory /etc/rabbitmq/definitions.d[0m
+2026-10-29 08:06:56.940193+00:00 [info] <0.865.0> Applying definitions from file at '/etc/rabbitmq/definitions.d/10-topology.json'[0m
+2026-10-29 08:06:56.940301+00:00 [info] <0.865.0> Asked to import definitions. Acting user: rmq-internal[0m
+2026-10-29 08:06:57.659199+00:00 [info] <0.865.0> Applying definitions from file at '/etc/rabbitmq/definitions.d/90-users.json'[0m
+2026-10-29 08:06:57.659328+00:00 [info] <0.865.0> Asked to import definitions. Acting user: rmq-internal[0m

@@ -1,0 +1,41 @@
+# 2026-10-29T10:42:47Z P1-1: ls -la /certs por servico (montagem de arquivos individuais; MSYS_NO_PATHCONV=1)
+=== transactions-api
+total 12
+drwxr-xr-x 2 root root 4096 Oct 29 10:40 .
+drwxr-xr-x 1 root root 4096 Oct 29 10:40 ..
+-rwxrwxrwx 1 root root   46 Oct 29 10:42 blocked-thumbprints.txt
+-rwxrwxrwx 1 root root  656 Oct 29 08:43 ca.crt
+-rwxrwxrwx 1 root root  726 Oct 29 08:43 transactions-api.crt
+-rwxrwxrwx 1 root root  246 Oct 29 08:43 transactions-api.key
+=== consolidation-api
+total 12
+drwxr-xr-x 2 root root 4096 Oct 29 10:40 .
+drwxr-xr-x 1 root root 4096 Oct 29 10:40 ..
+-rwxrwxrwx 1 root root   46 Oct 29 10:42 blocked-thumbprints.txt
+-rwxrwxrwx 1 root root  656 Oct 29 08:43 ca.crt
+-rwxrwxrwx 1 root root  730 Oct 29 08:43 consolidation-api.crt
+-rwxrwxrwx 1 root root  246 Oct 29 08:43 consolidation-api.key
+=== gateway
+total 16
+drwxr-xr-x 2 root root 4096 Oct 29 10:40 .
+drwxr-xr-x 1 root root 4096 Oct 29 10:40 ..
+-rwxrwxrwx 1 root root  656 Oct 29 08:43 ca.crt
+-rwxrwxrwx 1 root root  704 Oct 29 08:43 gateway-client.crt
+-rwxrwxrwx 1 root root  246 Oct 29 08:43 gateway-client.key
+-rwxrwxrwx 1 root root  704 Oct 29 08:43 gateway-edge.crt
+-rwxrwxrwx 1 root root  246 Oct 29 08:43 gateway-edge.key
+=== chaves de CA / neg dentro dos containers
+60917e6fa092: nenhuma ca.key/foreign/neg-
+216ec71abfaf: nenhuma ca.key/foreign/neg-
+1da479f2bcdd: nenhuma ca.key/foreign/neg-
+=== gateway-client.key em tx/cons?
+60917e6fa092: ausente
+216ec71abfaf: ausente
+SERVICE                STATUS
+consolidation-api      Up 2 minutes (healthy)
+consolidation-worker   Up 2 minutes (healthy)
+gateway                Up 41 seconds (healthy)
+keycloak               Up 2 minutes (healthy)
+postgres               Up 2 minutes (healthy)
+rabbitmq               Up 2 minutes (healthy)
+transactions-api       Up 2 minutes (healthy)

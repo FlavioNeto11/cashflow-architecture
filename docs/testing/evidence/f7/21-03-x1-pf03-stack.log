@@ -1,0 +1,18 @@
+# F7 15 - sondas adicionais - 2026-10-29T14:34:19Z
+
+=================== [14:34:21.651] X1. description com NUL / controle (JSON valido com escape \u0000)
+  description="\u0000" -> HTTP 422 | corpo: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Dados inválidos.","status":422,"errors":{"description":["Não pode conter caracteres de con
+  description="\u0007" -> HTTP 422 | corpo: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Dados inválidos.","status":422,"errors":{"description":["Não pode conter caracteres de con
+  description="\u001f" -> HTTP 422 | corpo: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Dados inválidos.","status":422,"errors":{"description":["Não pode conter caracteres de con
+  description="ok\u0000fim" -> HTTP 422 | corpo: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Dados inválidos.","status":422,"errors":{"description":["Não pode conter caracteres de con
+  (esperado pelo contrato: 422; o item herdado registra 500)
+  linhas criadas por requisicoes com description invalida: 0 | linhas de outbox: 0
+
+=================== [14:34:29.915] X2. 201 fresco x GET
+  POST -> 201
+  campos do 201: ['amount', 'createdAt', 'currency', 'effectiveDate', 'id', 'merchantId', 'occurredAt', 'reversalOf', 'type']
+  GET por id -> HTTP 200
+  campos do GET: ['amount', 'createdAt', 'currency', 'description', 'effectiveDate', 'id', 'merchantId', 'occurredAt', 'reversalOf', 'reversedBy', 'type']
+  diferenca de campos (201 vs GET): so no GET: ['description', 'reversedBy'] | so no 201: []
+FALHAS=0 (sondas descritivas: nao ha criterio de passa/falha automatico; o relatorio interpreta)
+exit=0

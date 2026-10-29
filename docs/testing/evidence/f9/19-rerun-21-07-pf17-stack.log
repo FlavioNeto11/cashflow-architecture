@@ -1,0 +1,42 @@
+# F7 21-07 - cabecalhos de seguranca em 5xx - 2026-10-29T17:57:12Z
+
+=================== [17:57:12.856] 1. 500 da API via gateway (byte E7 isolado = UTF-8 invalido, PF-17)
+--- [17:57:12.879] 500 da API
+status: HTTP/1.1 400 Bad Request
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.1","title":"Requisição inválida.","status":400,"detail":"JSON malformado, com membro desconhecido ou duplicado.","traceId":"00-991a1808a75e12ecbc1c13676c2fae84-66dc6ddf4135634d-01"}
+  [FALHA] 500 da API via gateway: status (esperado 500, obtido 400)
+  [OK]    500 da API via gateway: Server ausente (esperado 0, obtido 0)
+  [OK]    500 da API via gateway: X-Content-Type-Options nosniff (esperado 1, obtido 1)
+  [OK]    500 da API via gateway: Cache-Control no-store (esperado 1, obtido 1)
+  [OK]    500 da API via gateway: Referrer-Policy no-referrer (esperado 1, obtido 1)
+
+=================== [17:57:13.329] 2. 502 do gateway (consolidation-api parada)
+ Container cashflow-consolidation-api-1 Stopped 
+--- [17:57:14.634] 502 do gateway
+status: HTTP/1.1 502 Bad Gateway
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.6.3","title":"Serviço indisponível.","status":502,"traceId":"00-8bef852b6af50ed2231d93b04fa9aaad-b57b377ef663bf80-01"}
+  [OK]    502 do gateway: status (esperado 502, obtido 502)
+  [OK]    502 do gateway: Server ausente (esperado 0, obtido 0)
+  [OK]    502 do gateway: X-Content-Type-Options nosniff (esperado 1, obtido 1)
+  [OK]    502 do gateway: Cache-Control no-store (esperado 1, obtido 1)
+  [OK]    502 do gateway: Referrer-Policy no-referrer (esperado 1, obtido 1)
+ Container cashflow-consolidation-api-1 Started 
+[17:57:26.738] cashflow-consolidation-api-1 health=healthy apos 5s
+--- [17:57:27.056] controle: consolidado volta a 200
+status: HTTP/1.1 200 OK
+  hdr: Content-Type: application/json; charset=utf-8
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-03-17","currency":"BRL","credits":"0.00","debits":"0.00","dailyNet":"0.00","entriesCount":0,"asOf":null}
+  [OK]    controle apos religar: status (esperado 200, obtido 200)
+FALHAS=1
+exit=1

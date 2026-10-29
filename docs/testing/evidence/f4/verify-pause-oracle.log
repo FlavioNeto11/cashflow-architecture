@@ -1,0 +1,59 @@
+# F4 — oráculo da pausa (verificação) — 2026-10-29T07:04:39Z: API de gerenciamento x rabbitmqctl list_consumers
+[antes]
+[07:04:39] api queue: messages=0 unacked=0 consumers=1 | list_consumers: 1
+ALTER DATABASE
+1
+POST k-pause-1: 201
+POST k-pause-2: 201
+[07:04:46] api queue: messages=0 unacked=0 consumers=1 | list_consumers: 0
+[07:04:52] api queue: messages=2 unacked=2 consumers=1 | list_consumers: 0
+[07:04:59] api queue: messages=2 unacked=2 consumers=1 | list_consumers: 0
+[07:05:05] api queue: messages=2 unacked=2 consumers=1 | list_consumers: 0
+--- worker (últimos 40 s)
+  Banco consolidation_db indispon�vel para o worker; consumo pausado at� a sonda passar.
+  Falha de infraestrutura: consumo pausado (basic.cancel); a entrega aberta fica sem ACK.
+[restaurado]
+[07:05:15] api queue: messages=0 unacked=0 consumers=0 | list_consumers: 0
+dailyNet(2026-10-04): {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-04","currency":"BRL","credits":"3.00","debits":"0.00","dailyNet":"3.00","entriesCount":2,"asOf":"2026-10-29T07:04:41.50145Z"}
+
+# fim 2026-10-29T07:05:17Z
+# pós-restauração (verificação tardia) 07:08:06Z
+api: messages=0 unacked=0 consumers=0
+list_consumers: 0
+--- worker desde 07:05:00Z
+   Banco consolidation_db acess�vel novamente.
+# teste de vivacidade após a pausa 07:09:05Z
+POST k-live-1: 201
+[07:09:11] api: messages=0 ready=0 unacked=0 consumers=0 | list_consumers: 0
+[07:09:17] api: messages=1 ready=1 unacked=0 consumers=0 | list_consumers: 0
+[07:09:23] api: messages=1 ready=1 unacked=0 consumers=0 | list_consumers: 0
+daily 2026-10-04: {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-04","currency":"BRL","credits":"3.00","debits":"0.00","dailyNet":"3.00","entriesCount":2,"asOf":"2026-10-29T07:04:41.50145Z"}
+
+--- worker log completo desde 07:04:30 (bruto, 1 linha por evento):
+{"EventId":0,"LogLevel":"Error","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"Banco consolidation_db indispon\u00EDvel para o worker; consumo pausado at\u00E9 a sonda passar.","Exception":"Npgsql.PostgresException (0x80004005): 55000: database \u0022consolidation_db\u0022 is not currently accepting 
+{"EventId":0,"LogLevel":"Warning","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"Falha de infraestrutura: consumo pausado (basic.cancel); a entrega aberta fica sem ACK.","State":{"{OriginalFormat}":"Falha de infraestrutura: consumo pausado (basic.cancel); a entrega aberta fica sem ACK."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"Banco consolidation_db acess\u00EDvel novamente.","State":{"{OriginalFormat}":"Banco consolidation_db acess\u00EDvel novamente."},"Scopes":[]}
+# diagnóstico do broker 07:10:02Z
+--- connections:
+   user ? ['state', 'channels\n']
+   dev_rabbit ? ['running', '1\n']
+   dev_rabbit ? ['running', '2\n']
+--- channels:
+--- list_consumers:
+--- pg conexões cons_worker:
+cons_ro|idle|1
+cons_worker|idle|1
+[07:10:06] fila: messages=1 ready=1 consumers=0
+--- list_channels (padrão) 07:11:54Z
+Listing channels ...
+pid	user	consumer_count	messages_unacknowledged
+<rabbit@5094baeb2d48.1793257202.1013.0>	dev_rabbit	0	0
+<rabbit@5094baeb2d48.1793257202.1030.0>	dev_rabbit	0	0
+<rabbit@5094baeb2d48.1793257202.1082.0>	dev_rabbit	0	0
+--- list_channels consumer_count:
+Listing channels ...
+pid	connection	consumer_count	messages_unacknowledged
+<rabbit@5094baeb2d48.1793257202.1013.0>	<rabbit@5094baeb2d48.1793257202.1004.0>	0	0
+<rabbit@5094baeb2d48.1793257202.1030.0>	<rabbit@5094baeb2d48.1793257202.1021.0>	0	0
+<rabbit@5094baeb2d48.1793257202.1082.0>	<rabbit@5094baeb2d48.1793257202.1021.0>	0	0
+--- métricas do worker (broker/pausa):

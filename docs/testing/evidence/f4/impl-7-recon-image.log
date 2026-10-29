@@ -1,0 +1,68 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.27kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for mcr.microsoft.com/dotnet/runtime:10.0
+#2 DONE 0.1s
+
+#3 [internal] load metadata for mcr.microsoft.com/dotnet/sdk:10.0
+#3 DONE 0.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 233B done
+#4 DONE 0.0s
+
+#5 [build 1/5] FROM mcr.microsoft.com/dotnet/sdk:10.0@sha256:de4fe90a98845d75910b9769662465c84de1a934665c431279d1382b2bddc02b
+#5 resolve mcr.microsoft.com/dotnet/sdk:10.0@sha256:de4fe90a98845d75910b9769662465c84de1a934665c431279d1382b2bddc02b 0.0s done
+#5 DONE 0.1s
+
+#6 [runtime 1/4] FROM mcr.microsoft.com/dotnet/runtime:10.0@sha256:a3f9f81954b9c810af2ed18849716c8dc74a4707bd0907fdbd69be81554c0f30
+#6 resolve mcr.microsoft.com/dotnet/runtime:10.0@sha256:a3f9f81954b9c810af2ed18849716c8dc74a4707bd0907fdbd69be81554c0f30 0.0s done
+#6 DONE 0.1s
+
+#7 [internal] load build context
+#7 transferring context: 213.89kB 0.0s done
+#7 DONE 0.0s
+
+#8 [build 2/5] WORKDIR /src
+#8 CACHED
+
+#9 [build 3/5] COPY global.json Directory.Build.props Directory.Packages.props ./
+#9 DONE 0.1s
+
+#10 [build 4/5] COPY src/ src/
+#10 DONE 0.1s
+
+#11 [build 5/5] RUN dotnet publish "src/CashFlow.ReconTool/CashFlow.ReconTool.csproj" -c Release -o /out /p:UseAppHost=true
+#11 2.093   Determining projects to restore...
+#11 5.804   Restored /src/src/CashFlow.Messaging/CashFlow.Messaging.csproj (in 2.8 sec).
+#11 5.813   Restored /src/src/CashFlow.ReconTool/CashFlow.ReconTool.csproj (in 2.8 sec).
+#11 11.38   CashFlow.Messaging -> /src/src/CashFlow.Messaging/bin/Release/net10.0/CashFlow.Messaging.dll
+#11 12.70   CashFlow.ReconTool -> /src/src/CashFlow.ReconTool/bin/Release/net10.0/CashFlow.ReconTool.dll
+#11 12.75   CashFlow.ReconTool -> /out/
+#11 DONE 12.9s
+
+#12 [runtime 2/4] WORKDIR /app
+#12 CACHED
+
+#13 [runtime 3/4] COPY --from=build /out .
+#13 DONE 0.1s
+
+#14 [runtime 4/4] RUN ln -s "/app/CashFlow.ReconTool" /app/entrypoint
+#14 DONE 0.2s
+
+#15 exporting to image
+#15 exporting layers
+#15 exporting layers 0.3s done
+#15 exporting manifest sha256:71870fc2b7e4e5dc7995556b02ee58701cf1b91ff51246347e1d528a63369b95 0.0s done
+#15 exporting config sha256:186c3e65aa168c18951316b9735b996df9002f4cf8ed29dddfc67d8596d63705 0.0s done
+#15 exporting attestation manifest sha256:bb10a2e337c83bf09f35323603d62345cddcc3046ef0a48cde637c23edf44bd7 0.0s done
+#15 exporting manifest list sha256:4bed572cc9f3338549d46456ef45282eeec32e98cbcd665934e26685ed4b411d
+#15 exporting manifest list sha256:4bed572cc9f3338549d46456ef45282eeec32e98cbcd665934e26685ed4b411d 0.0s done
+#15 naming to docker.io/cashflow/recon-tool:f4-smoke done
+#15 unpacking to docker.io/cashflow/recon-tool:f4-smoke 0.1s done
+#15 DONE 0.5s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/fkjhynfpt1nbd48vt6totm4nr

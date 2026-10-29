@@ -1,0 +1,19 @@
+# F7 Passo B item 4: coletor OTLP so para LER rate_limited_total do gateway (a stack BASE nao exporta metricas: sem
+# OTEL_EXPORTER_OTLP_ENDPOINT nada sai do processo, TelemetryExtensions.cs). Debug exporter imprime os data points no stdout.
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+exporters:
+  debug/metricas:
+    verbosity: detailed
+  debug/resto:
+    verbosity: basic
+service:
+  pipelines:
+    metrics: {receivers: [otlp], exporters: [debug/metricas]}
+    traces:  {receivers: [otlp], exporters: [debug/resto]}
+    logs:    {receivers: [otlp], exporters: [debug/resto]}
+  telemetry:
+    metrics: {level: none}

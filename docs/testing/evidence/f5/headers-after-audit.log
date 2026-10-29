@@ -1,0 +1,101 @@
+[2026-10-29T11:25:24Z] gateway image: 2026-10-29T11:21:24.478191064Z sha256:46
+cashflow-gateway-1 127.0.0.1:8443->8080/tcp Up 2 minutes (healthy)
+cashflow-keycloak-1 127.0.0.1:8080->8080/tcp Up 3 minutes (healthy)
+token A: 933 chars (nao impresso)
+
+--- GET /health/ready pelo gateway (404 do isolamento de listener, gerado antes do roteamento)
+HTTP/1.1 404 Not Found
+Content-Length: 0
+Date: Thu, 29 Oct 2026 11:25:24 GMT
+Cache-Control: no-store
+X-Content-Type-Options: nosniff
+Referrer-Policy: no-referrer
+
+body(400): 
+Server header present: 0
+
+--- GET /api/v1/nao-existe sem token (404 fora das rotas)
+HTTP/1.1 404 Not Found
+Content-Type: application/problem+json
+Date: Thu, 29 Oct 2026 11:25:24 GMT
+Cache-Control: no-store
+Transfer-Encoding: chunked
+X-Content-Type-Options: nosniff
+Referrer-Policy: no-referrer
+
+body(400): {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Not Found","status":404,"traceId":"00-511c5881433fea7105ea6f28c65b7d33-0d90ec351ccb27b4-01"}
+Server header present: 0
+
+--- POST 17 KB sem token (413 antes de autenticar)
+HTTP/1.1 413 Payload Too Large
+Content-Type: application/problem+json
+Date: Thu, 29 Oct 2026 11:25:24 GMT
+Cache-Control: no-store
+Transfer-Encoding: chunked
+X-Content-Type-Options: nosniff
+Referrer-Policy: no-referrer
+
+body(400): {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.14","title":"Corpo da requisição excede o limite.","status":413,"detail":"Limite: 16384 bytes.","traceId":"00-71ad2b9174ca5fa893fa7872e1dcde68-b16cb0f60a5d47de-01"}
+Server header present: 0
+
+--- POST sem token (401)
+HTTP/1.1 401 Unauthorized
+Content-Type: application/problem+json
+Date: Thu, 29 Oct 2026 11:25:24 GMT
+Cache-Control: no-store
+Transfer-Encoding: chunked
+WWW-Authenticate: Bearer realm="cashflow"
+X-Content-Type-Options: nosniff
+Referrer-Policy: no-referrer
+
+body(400): {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.2","title":"Não autenticado.","status":401,"traceId":"00-cba0aa0accaeb575f87849c0fefa9237-da557c529158453b-01"}
+Server header present: 0
+
+--- GET consolidado de B com token A (404 proxied cross-tenant)
+HTTP/1.1 404 Not Found
+Content-Type: application/problem+json
+Date: Thu, 29 Oct 2026 11:25:25 GMT
+Cache-Control: no-store
+Transfer-Encoding: chunked
+X-Content-Type-Options: nosniff
+Referrer-Policy: no-referrer
+
+body(400): {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Recurso não encontrado.","status":404,"traceId":"00-5efbc05b668ba678a5f0810db58cef44-a8e324039143a8c0-01"}
+Server header present: 0
+
+--- GET consolidado de A com token A (200 proxied)
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Date: Thu, 29 Oct 2026 11:25:25 GMT
+Cache-Control: no-store
+Transfer-Encoding: chunked
+X-Content-Type-Options: nosniff
+Referrer-Policy: no-referrer
+
+body(400): {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"64.80","debits":"0.00","dailyNet":"64.80","entriesCount":1,"asOf":"2026-10-29T11:22:34.128788Z"}
+Server header present: 0
+
+--- GET transacao inexistente de A (404 proxied da API)
+HTTP/1.1 404 Not Found
+Content-Type: application/problem+json
+Date: Thu, 29 Oct 2026 11:25:26 GMT
+Cache-Control: no-store
+Transfer-Encoding: chunked
+X-Content-Type-Options: nosniff
+Referrer-Policy: no-referrer
+
+body(400): {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Recurso não encontrado.","status":404,"traceId":"00-15b016acb882495cd33daa390e99573b-c53869a1a1bdcf95-01"}
+Server header present: 0
+
+[2026-10-29T11:25:26Z] fim (stack permanece em BASE)
+exit=0
+
+--- 502 (nao reproduzivel so-leitura: exige thumbprint do gateway na blocklist + docker compose restart gateway). Copiado de compose-gateway-scenarios-after-audit.log, linhas 263-269, mesma imagem do gateway (2026-10-29T11:21:24Z), executado as 11:23:12:
+    --- [11:23:12] pelo gateway apos restart, cliente bloqueado (502, sem vazar o destino)
+    status: HTTP/1.1 502 Bad Gateway
+      hdr: Content-Type: application/problem+json
+      hdr: Cache-Control: no-store
+      hdr: X-Content-Type-Options: nosniff
+      hdr: Referrer-Policy: no-referrer
+      body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.6.3","title":"Serviço indisponível.","status":502,"traceId":"00-8cf851ab0da241c12c477f844762c43d-1a62c22741421422-01"}
+    (o helper req do roteiro imprime so os cabecalhos filtrados: server, x-content-type-options, cache-control, referrer-policy, content-type, www-authenticate, retry-after; nenhuma linha 'Server' apareceu)

@@ -1,0 +1,33 @@
+# 2026-10-29T11:32:28Z verificacao independente apos F5 (pos-auditoria) e F6 (passada 3)
+$ dotnet build CashFlow.slnx -c Release -warnaserror --no-incremental
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+exit=0
+$ dotnet format CashFlow.slnx --verify-no-changes
+C:\git\cashflow-architecture\tests\CashFlow.Persistence.Tests\ConsolidationGrantsTests.cs(107,70): error ENDOFLINE: Fix end of line marker. Replace 2 characters with '\n'. [C:\git\cashflow-architecture\tests\CashFlow.Persistence.Tests\CashFlow.Persistence.Tests.csproj]
+C:\git\cashflow-architecture\tests\CashFlow.Persistence.Tests\ConsolidationGrantsTests.cs(108,51): error ENDOFLINE: Fix end of line marker. Replace 2 characters with '\n'. [C:\git\cashflow-architecture\tests\CashFlow.Persistence.Tests\CashFlow.Persistence.Tests.csproj]
+C:\git\cashflow-architecture\tests\CashFlow.Persistence.Tests\ConsolidationGrantsTests.cs(109,53): error ENDOFLINE: Fix end of line marker. Replace 2 characters with '\n'. [C:\git\cashflow-architecture\tests\CashFlow.Persistence.Tests\CashFlow.Persistence.Tests.csproj]
+C:\git\cashflow-architecture\tests\CashFlow.Persistence.Tests\ConsolidationGrantsTests.cs(110,6): error ENDOFLINE: Fix end of line marker. Replace 2 characters with '\n'. [C:\git\cashflow-architecture\tests\CashFlow.Persistence.Tests\CashFlow.Persistence.Tests.csproj]
+C:\git\cashflow-architecture\tests\CashFlow.Persistence.Tests\ConsolidationGrantsTests.cs(111,2): error ENDOFLINE: Fix end of line marker. Replace 2 characters with '\n'. [C:\git\cashflow-architecture\tests\CashFlow.Persistence.Tests\CashFlow.Persistence.Tests.csproj]
+exit=2
+$ dotnet test CashFlow.slnx -c Release --no-build
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Persistence.Tests\bin\Release\net10.0\CashFlow.Persistence.Tests.dll (.NETCoreApp,Version=v10.0)
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\bin\Release\net10.0\CashFlow.Transactions.Api.Tests.dll (.NETCoreApp,Version=v10.0)
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Security.Tests\bin\Release\net10.0\CashFlow.Security.Tests.dll (.NETCoreApp,Version=v10.0)
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\bin\Release\net10.0\CashFlow.Consolidation.Tests.dll (.NETCoreApp,Version=v10.0)
+Passed!  - Failed:     0, Passed:    49, Skipped:     0, Total:    49, Duration: 17 s - CashFlow.Persistence.Tests.dll (net10.0)
+Passed!  - Failed:     0, Passed:   157, Skipped:     0, Total:   157, Duration: 22 s - CashFlow.Transactions.Api.Tests.dll (net10.0)
+Passed!  - Failed:     0, Passed:    67, Skipped:     0, Total:    67, Duration: 1 m 47 s - CashFlow.Security.Tests.dll (net10.0)
+Passed!  - Failed:     0, Passed:    66, Skipped:     0, Total:    66, Duration: 1 m 31 s - CashFlow.Consolidation.Tests.dll (net10.0)
+exit=0
+$ docker compose config -q (base | +dev | +observability | +dev+observability)
+base exit=0
+dev exit=0
+obs exit=0
+dev+obs exit=0
+# 11:36:15Z correcao da verificacao: so fim de linha (CRLF em linhas acrescentadas por F6); nenhuma mudanca semantica, testes nao reexecutados
+$ dotnet format CashFlow.slnx --include tests/CashFlow.Persistence.Tests/ConsolidationGrantsTests.cs
+exit=0
+$ dotnet format CashFlow.slnx --verify-no-changes (re-verificacao)
+exit=0

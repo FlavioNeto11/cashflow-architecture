@@ -1,0 +1,72 @@
+# F7 19 - make-certs.sh em container Linux - 2026-10-29T14:05:39Z
+imagem: python:3.12-slim-trixie | OpenSSL 3.5.7 9 Jun 2026 (Library: OpenSSL 3.5.7 9 Jun 2026)
+Linux 6.18.33.2-microsoft-standard-WSL2
+ESCOPO: container Linux sobre Docker Desktop/WSL2. NAO e host Linux nativo com bind mount real do projeto.
+preparo: volumes B e D com raiz 777
+
+=== (a) root, PKI_OUT=/pki (esperado: exit=0, chaves de servico = 1654:1654 600; ca/foreign-ca/neg-* = 0:0 600)
+exit=0
+  neg-wrong-eku.crt      subject=CN=gateway.internal X509v3 Subject Alternative 
+  neg-wrong-san.crt      subject=CN=intruso.internal X509v3 Subject Alternative 
+  transactions-api.crt   subject=CN=transactions-api X509v3 Subject Alternative 
+0:0 600 /pki/ca.key
+1654:1654 600 /pki/consolidation-api.key
+0:0 600 /pki/foreign-ca.key
+1654:1654 600 /pki/gateway-client.key
+1654:1654 600 /pki/gateway-edge.key
+0:0 600 /pki/neg-expired.key
+0:0 600 /pki/neg-foreign-ca.key
+0:0 600 /pki/neg-wrong-eku.key
+0:0 600 /pki/neg-wrong-san.key
+1654:1654 600 /pki/transactions-api.key
+0:0 644 /pki/ca.crt
+0:0 644 /pki/blocked-thumbprints.txt
+exit=0 (docker run de a)
+
+=== (b) uid 1000 sem grupo 1654 (esperado: mensagem com sudo, exit=3, chaves 600 dono 1000, nunca 644)
+exit=3
+ERRO: as chaves em /pki ficaram 600 e dono uid 1000; o uid 1654 dos containers NAO as le (servicos nao subiriam).
+      Este usuario nao e root nem pertence ao grupo 1654. Nao foi afrouxado para 644. Rode:
+        sudo chown 1654:1654 "/pki"/*.key && sudo chmod 600 "/pki"/*.key
+      (ou rode este script com sudo, ou como usuario do grupo 1654).
+falha ao ajustar permissoes das chaves (codigo 3)
+1000:1000 600 /pki/ca.key
+1000:1000 600 /pki/consolidation-api.key
+1000:1000 600 /pki/foreign-ca.key
+1000:1000 600 /pki/gateway-client.key
+1000:1000 600 /pki/gateway-edge.key
+1000:1000 600 /pki/neg-expired.key
+1000:1000 600 /pki/neg-foreign-ca.key
+1000:1000 600 /pki/neg-wrong-eku.key
+1000:1000 600 /pki/neg-wrong-san.key
+1000:1000 600 /pki/transactions-api.key
+exit=3 (propagado do script)
+
+=== (c1) apos (a): --user 1654:1654 le chave (so codigo de saida e tamanho)
+cat exit=0 bytes=241
+cat exit=0 bytes=241
+=== (c2) apos (a): --user 1000:1000 tenta ler (esperado: negado, exit != 0)
+cat exit=1  Permission denied
+=== (c3) uid 1000 le cert publico (644): certificados continuam legiveis por todos
+crt cat exit=0
+
+=== (d) uid 1000 com --group-add 1654 (esperado: exit=0, chaves de servico = 1000:1654 640, ca.key = 1000:1000 600; 1654 le, outro uid 1001 nao)
+exit=0
+1000:1654 640 /pki/transactions-api.key
+1000:1000 600 /pki/ca.key
+1654 cat exit=0 bytes=241
+1001 cat exit=1
+
+=== limpeza
+volumes f7-19-pki-a f7-19-pki-b f7-19-pki-d removidos
+volumes f7-19 restantes: 0
+
+=== Windows/Git Bash: PKI_OUT em scratch fora do repo
+exit=0
+gerado em <scratch>:
+arquivos gerados (nomes):
+blocked-thumbprints.txt ca.crt ca.key consolidation-api.crt consolidation-api.key foreign-ca.crt foreign-ca.key gateway-client.crt gateway-client.key gateway-edge.crt gateway-edge.key neg-expired.crt neg-expired.key neg-foreign-ca.crt neg-foreign-ca.key neg-wrong-eku.crt neg-wrong-eku.key neg-wrong-san.crt neg-wrong-san.key transactions-api.crt transactions-api.key 
+arquivos em infra/pki/out (nomes, referencia):
+blocked-thumbprints.txt ca.crt ca.key consolidation-api.crt consolidation-api.key foreign-ca.crt foreign-ca.key gateway-client.crt gateway-client.key gateway-edge.crt gateway-edge.key neg-expired.crt neg-expired.key neg-foreign-ca.crt neg-foreign-ca.key neg-wrong-eku.crt neg-wrong-eku.key neg-wrong-san.crt neg-wrong-san.key transactions-api.crt transactions-api.key 
+MESMO conjunto de nomes que infra/pki/out
+scratch removido

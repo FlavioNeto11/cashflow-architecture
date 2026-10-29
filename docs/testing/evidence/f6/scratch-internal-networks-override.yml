@@ -1,0 +1,13 @@
+services:
+  rabbitmq:
+    ports: !reset []
+    environment:
+      RABBITMQ_OPS_USER: ${RABBITMQ_OPS_USER:?}
+      RABBITMQ_OPS_PASS: ${RABBITMQ_OPS_PASS:?}
+  keycloak:
+    ports: !reset []
+networks:
+  app:
+    internal: true
+  data:
+    internal: true

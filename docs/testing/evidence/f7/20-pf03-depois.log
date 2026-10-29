@@ -1,0 +1,13 @@
+# PF-03 DEPOIS da correcao - 2026-10-29T11:16:19-03:00
+$ dotnet test tests/CashFlow.Transactions.Api.Tests -c Release --filter "FullyQualifiedName~ControlCharacter"
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  CashFlow.Messaging -> C:\git\cashflow-architecture\src\CashFlow.Messaging\bin\Release\net10.0\CashFlow.Messaging.dll
+  CashFlow.Hosting -> C:\git\cashflow-architecture\src\CashFlow.Hosting\bin\Release\net10.0\CashFlow.Hosting.dll
+  CashFlow.Transactions.Api -> C:\git\cashflow-architecture\src\CashFlow.Transactions.Api\bin\Release\net10.0\CashFlow.Transactions.Api.dll
+  CashFlow.Transactions.Api.Tests -> C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\bin\Release\net10.0\CashFlow.Transactions.Api.Tests.dll
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\bin\Release\net10.0\CashFlow.Transactions.Api.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:    12, Skipped:     0, Total:    12, Duration: 7 s - CashFlow.Transactions.Api.Tests.dll (net10.0)
+exit=0

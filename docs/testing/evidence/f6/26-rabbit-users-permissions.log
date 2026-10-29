@@ -1,0 +1,8 @@
+# 2026-10-29T10:44:23Z rabbitmqctl list_users / list_permissions (A1: RABBITMQ_OPS_* repassadas pelo Compose; sem imprimir senhas)
+user	tags
+cashflow_ops	[administrator]
+dev_rabbit	[]
+Virtual host 'C:/Program Files/Git/' does not exist
+user	configure	write	read
+cashflow_ops	.*	.*	.*
+dev_rabbit	^$	^cashflow[.](transactions|dlx)$	^consolidation[.](transaction-registered|dlq)$

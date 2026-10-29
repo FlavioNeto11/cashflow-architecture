@@ -1,0 +1,160 @@
+# F9 23 - reexecucao do roteiro f7/12-trivy-imagens.sh, imagens atuais do Compose BASE - 2026-10-29T18:04:51Z
+imagem do trivy: aquasec/trivy@sha256:790fd66d1697395d8693d1acaa1ea702406a20f109b6fc7bac8db623eca6c06c
+referencias fixadas no Compose (grep):
+  69:    image: postgres:17@sha256:31ba9c94a03ada9988f2bb493a22a75eef3a185884533e5cdbcd498ea835b08f
+  124:    image: quay.io/keycloak/keycloak:26.8.1@sha256:a78d6b79572168cb25886b80a8b5b8d4ed4390743e3eecb810538683e209dd6b
+  96:    image: rabbitmq:4-management@sha256:af6f50d38098d8bd52fef7f3fa85015dd8b2bf6def58e995bf584ae9ba0f6407
+[18:04:51.310] docker save cashflow/gateway:dev  (id=sha256:4cd36dafafe8)
+[18:04:56.541] docker save cashflow/transactions-api:dev  (id=sha256:118696155bd7)
+[18:05:01.514] docker save cashflow/consolidation-api:dev  (id=sha256:dc0f7d5f6da1)
+[18:05:06.817] docker save cashflow/consolidation-worker:dev  (id=sha256:1d9b8f99aec3)
+[18:05:12.336] docker save cashflow/recon-tool:dev  (id=sha256:e0c9299d4e88)
+[18:05:17.205] docker save postgres:17  (id=sha256:31ba9c94a03a)
+[18:05:25.217] docker save rabbitmq:4-management  (id=sha256:af6f50d38098)
+[18:05:31.841] docker save quay.io/keycloak/keycloak:26.8.1  (id=sha256:a78d6b795721)
+[18:05:44.760] trivy em container efemero (baixa a base; varre 8 imagens)
+    varrendo cashflow/gateway:dev
+    varrendo cashflow/transactions-api:dev
+    varrendo cashflow/consolidation-api:dev
+    varrendo cashflow/consolidation-worker:dev
+    varrendo cashflow/recon-tool:dev
+    varrendo postgres:17
+    varrendo rabbitmq:4-management
+    varrendo quay.io/keycloak/keycloak:26.8.1
+[18:11:03.436] resumo
+  RepoDigests de cashflow/gateway:dev: ["cashflow/gateway@sha256:4cd36dafafe88f7a6130aa232a18ba6e40add1568db2b8f3634b43bb8e3e1138"]
+  RepoDigests de cashflow/transactions-api:dev: ["cashflow/transactions-api@sha256:118696155bd7ed5398da5c8857e0d4d67669773b7adfce2be51b0befcba6ba32"]
+  RepoDigests de cashflow/consolidation-api:dev: ["cashflow/consolidation-api@sha256:dc0f7d5f6da15f04779fa4d09d6a17a4ddd421518f7c30f6d635dd0d11e8bf17"]
+  RepoDigests de cashflow/consolidation-worker:dev: ["cashflow/consolidation-worker@sha256:1d9b8f99aec300fdbefaa94e82493e3da847f460f489ff226af3efb856955d70"]
+  RepoDigests de cashflow/recon-tool:dev: ["cashflow/recon-tool@sha256:e0c9299d4e8880b739e21b27fd489e51d22e14e71d377d1a75d4af18baa409f0"]
+  RepoDigests de postgres:17: ["postgres@sha256:31ba9c94a03ada9988f2bb493a22a75eef3a185884533e5cdbcd498ea835b08f"]
+  RepoDigests de rabbitmq:4-management: ["rabbitmq@sha256:af6f50d38098d8bd52fef7f3fa85015dd8b2bf6def58e995bf584ae9ba0f6407"]
+  RepoDigests de quay.io/keycloak/keycloak:26.8.1: ["quay.io/keycloak/keycloak@sha256:a78d6b79572168cb25886b80a8b5b8d4ed4390743e3eecb810538683e209dd6b"]
+trivy Version=0.76.1 | VulnerabilityDB Version=2 UpdatedAt=2026-10-29T13:09:46.269823229Z DownloadedAt=2026-10-29T18:06:05.729713329Z NextUpdate=2026-10-30T13:09:46.269822928Z
+cashflow/gateway:dev: ImageID=sha256:9a090e3cc33dbd3c2fe36ca9c872a57d9e15e0ad425f8eca6942eeb91797f57d SO=ubuntu 24.04 | total=26 {'MEDIUM': 21, 'LOW': 5} | HIGH+CRITICAL=0
+    alvo /in/01.tar (ubuntu 24.04) (ubuntu): 26 {'MEDIUM': 21, 'LOW': 5}
+    alvo app/CashFlow.Gateway.deps.json (dotnet-core): 0 {}
+    alvo usr/share/dotnet/shared/Microsoft.AspNetCore.App/10.0.14/Microsoft.AspNetCore.App.deps.json (dotnet-core): 0 {}
+    alvo usr/share/dotnet/shared/Microsoft.NETCore.App/10.0.14/Microsoft.NETCore.App.deps.json (dotnet-core): 0 {}
+cashflow/transactions-api:dev: ImageID=sha256:67860e4f286956c390efc7a03d7668a38633064e647c6e176bbb209b937f85e9 SO=ubuntu 24.04 | total=26 {'MEDIUM': 21, 'LOW': 5} | HIGH+CRITICAL=0
+    alvo /in/02.tar (ubuntu 24.04) (ubuntu): 26 {'MEDIUM': 21, 'LOW': 5}
+    alvo app/CashFlow.Transactions.Api.deps.json (dotnet-core): 0 {}
+    alvo usr/share/dotnet/shared/Microsoft.AspNetCore.App/10.0.14/Microsoft.AspNetCore.App.deps.json (dotnet-core): 0 {}
+    alvo usr/share/dotnet/shared/Microsoft.NETCore.App/10.0.14/Microsoft.NETCore.App.deps.json (dotnet-core): 0 {}
+cashflow/consolidation-api:dev: ImageID=sha256:7327d0f7355f7925e8c5693aa602175047273973b413e61a4ef8ad668e1fd23b SO=ubuntu 24.04 | total=26 {'MEDIUM': 21, 'LOW': 5} | HIGH+CRITICAL=0
+    alvo /in/03.tar (ubuntu 24.04) (ubuntu): 26 {'MEDIUM': 21, 'LOW': 5}
+    alvo app/CashFlow.Consolidation.Api.deps.json (dotnet-core): 0 {}
+    alvo usr/share/dotnet/shared/Microsoft.AspNetCore.App/10.0.14/Microsoft.AspNetCore.App.deps.json (dotnet-core): 0 {}
+    alvo usr/share/dotnet/shared/Microsoft.NETCore.App/10.0.14/Microsoft.NETCore.App.deps.json (dotnet-core): 0 {}
+cashflow/consolidation-worker:dev: ImageID=sha256:21c8eb975209188c9b1407db471fef1b77de6807262c655214bfea15bc5fb842 SO=ubuntu 24.04 | total=26 {'MEDIUM': 21, 'LOW': 5} | HIGH+CRITICAL=0
+    alvo /in/04.tar (ubuntu 24.04) (ubuntu): 26 {'MEDIUM': 21, 'LOW': 5}
+    alvo app/CashFlow.Consolidation.Worker.deps.json (dotnet-core): 0 {}
+    alvo usr/share/dotnet/shared/Microsoft.AspNetCore.App/10.0.14/Microsoft.AspNetCore.App.deps.json (dotnet-core): 0 {}
+    alvo usr/share/dotnet/shared/Microsoft.NETCore.App/10.0.14/Microsoft.NETCore.App.deps.json (dotnet-core): 0 {}
+cashflow/recon-tool:dev: ImageID=sha256:41cae943de032e11e41c89de96606a93a033187626b987508a80c78732106de1 SO=ubuntu 24.04 | total=26 {'MEDIUM': 21, 'LOW': 5} | HIGH+CRITICAL=0
+    alvo /in/05.tar (ubuntu 24.04) (ubuntu): 26 {'MEDIUM': 21, 'LOW': 5}
+    alvo app/CashFlow.ReconTool.deps.json (dotnet-core): 0 {}
+    alvo usr/share/dotnet/shared/Microsoft.NETCore.App/10.0.14/Microsoft.NETCore.App.deps.json (dotnet-core): 0 {}
+postgres:17: ImageID=sha256:81edcaa5ff2923f7be9c1f43d3e5076f29c6c9c216c86964b5fd038959404429 SO=debian 13.7 | total=374 {'LOW': 141, 'HIGH': 86, 'MEDIUM': 140, 'UNKNOWN': 5, 'CRITICAL': 2} | HIGH+CRITICAL=88
+    alvo /in/06.tar (debian 13.7) (debian): 313 {'LOW': 138, 'HIGH': 61, 'MEDIUM': 109, 'UNKNOWN': 4, 'CRITICAL': 1}
+    alvo usr/local/bin/gosu (gobinary): 61 {'MEDIUM': 31, 'UNKNOWN': 1, 'CRITICAL': 1, 'HIGH': 25, 'LOW': 3}
+    >>> HIGH CVE-2026-76642 bsdutils 1:2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78408 bsdutils 1:2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78409 bsdutils 1:2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78410 bsdutils 1:2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-24882 dirmngr 2.4.7-21+deb13u1+b5 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-24882 gnupg 2.4.7-21+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-24882 gnupg-l10n 2.4.7-21+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-24882 gpg 2.4.7-21+deb13u1+b5 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-24882 gpg-agent 2.4.7-21+deb13u1+b5 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-24882 gpgconf 2.4.7-21+deb13u1+b5 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-24882 gpgsm 2.4.7-21+deb13u1+b5 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-54369 libacl1 2.3.2-2+b1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-76642 libblkid1 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78408 libblkid1 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78409 libblkid1 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78410 libblkid1 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-76642 liblastlog2-2 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78408 liblastlog2-2 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78409 liblastlog2-2 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78410 liblastlog2-2 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-76642 libmount1 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78408 libmount1 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78409 libmount1 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78410 libmount1 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2025-69720 libncursesw6 6.5+20250216-2 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-9538 libperl5.40 5.40.1-6+deb13u1 corrigido-em=None status=fix_deferred
+    >>> HIGH CVE-2026-76642 libsmartcols1 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78408 libsmartcols1 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78409 libsmartcols1 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78410 libsmartcols1 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-16742 libsystemd0 257.13-1~deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2025-69720 libtinfo6 6.5+20250216-2 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-16742 libudev1 257.13-1~deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-76642 libuuid1 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78408 libuuid1 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78409 libuuid1 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78410 libuuid1 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> CRITICAL CVE-2026-6653 libxml2 2.12.7+dfsg+really2.9.14-2.1+deb13u3 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-74860 libxml2 2.12.7+dfsg+really2.9.14-2.1+deb13u3 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-86138 libxml2 2.12.7+dfsg+really2.9.14-2.1+deb13u3 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-86139 libxml2 2.12.7+dfsg+really2.9.14-2.1+deb13u3 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-86140 libxml2 2.12.7+dfsg+really2.9.14-2.1+deb13u3 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-86142 libxml2 2.12.7+dfsg+really2.9.14-2.1+deb13u3 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-86143 libxml2 2.12.7+dfsg+really2.9.14-2.1+deb13u3 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-86144 libxml2 2.12.7+dfsg+really2.9.14-2.1+deb13u3 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-76642 login 1:4.16.0-2+really2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78408 login 1:4.16.0-2+really2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78409 login 1:4.16.0-2+really2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78410 login 1:4.16.0-2+really2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-76642 mount 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78408 mount 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78409 mount 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78410 mount 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2025-69720 ncurses-base 6.5+20250216-2 corrigido-em=None status=affected
+    >>> HIGH CVE-2025-69720 ncurses-bin 6.5+20250216-2 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-9538 perl 5.40.1-6+deb13u1 corrigido-em=None status=fix_deferred
+    >>> HIGH CVE-2026-9538 perl-base 5.40.1-6+deb13u1 corrigido-em=None status=fix_deferred
+    >>> HIGH CVE-2026-9538 perl-modules-5.40 5.40.1-6+deb13u1 corrigido-em=None status=fix_deferred
+    >>> HIGH CVE-2026-76642 util-linux 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78408 util-linux 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78409 util-linux 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-78410 util-linux 2.41.5-0+deb13u1 corrigido-em=None status=affected
+    >>> CRITICAL CVE-2025-68121 stdlib v1.24.6 corrigido-em=1.24.13, 1.25.7, 1.26.0-rc.3 status=fixed
+    >>> HIGH CVE-2025-61726 stdlib v1.24.6 corrigido-em=1.24.12, 1.25.6 status=fixed
+    >>> HIGH CVE-2025-61729 stdlib v1.24.6 corrigido-em=1.24.11, 1.25.5 status=fixed
+    >>> HIGH CVE-2026-111943 stdlib v1.24.6 corrigido-em=1.26.10, 1.27.3 status=fixed
+    >>> HIGH CVE-2026-25679 stdlib v1.24.6 corrigido-em=1.25.8, 1.26.1 status=fixed
+    >>> HIGH CVE-2026-27145 stdlib v1.24.6 corrigido-em=1.25.11, 1.26.4 status=fixed
+    >>> HIGH CVE-2026-32280 stdlib v1.24.6 corrigido-em=1.25.9, 1.26.2 status=fixed
+    >>> HIGH CVE-2026-32281 stdlib v1.24.6 corrigido-em=1.25.9, 1.26.2 status=fixed
+    >>> HIGH CVE-2026-32283 stdlib v1.24.6 corrigido-em=1.25.9, 1.26.2 status=fixed
+    >>> HIGH CVE-2026-33811 stdlib v1.24.6 corrigido-em=1.25.10, 1.26.3 status=fixed
+    >>> HIGH CVE-2026-33814 stdlib v1.24.6 corrigido-em=1.25.10, 1.26.3 status=fixed
+    >>> HIGH CVE-2026-33818 stdlib v1.24.6 corrigido-em=1.25.13, 1.26.6, 1.27.0-rc.3 status=fixed
+    >>> HIGH CVE-2026-39820 stdlib v1.24.6 corrigido-em=1.25.10, 1.26.3 status=fixed
+    >>> HIGH CVE-2026-39821 stdlib v1.24.6 corrigido-em=1.25.13, 1.26.6, 1.27.0-rc.3 status=fixed
+    >>> HIGH CVE-2026-39822 stdlib v1.24.6 corrigido-em=1.25.12, 1.26.5, 1.27.0-rc.2 status=fixed
+    >>> HIGH CVE-2026-39836 stdlib v1.24.6 corrigido-em=1.25.10, 1.26.3 status=fixed
+    >>> HIGH CVE-2026-42499 stdlib v1.24.6 corrigido-em=1.25.10, 1.26.3 status=fixed
+    >>> HIGH CVE-2026-42504 stdlib v1.24.6 corrigido-em=1.25.11, 1.26.4 status=fixed
+    >>> HIGH CVE-2026-56853 stdlib v1.24.6 corrigido-em=1.25.13, 1.26.6, 1.27.0-rc.3 status=fixed
+    >>> HIGH CVE-2026-56858 stdlib v1.24.6 corrigido-em=1.25.13, 1.26.6, 1.27.0-rc.3 status=fixed
+    >>> HIGH CVE-2026-56859 stdlib v1.24.6 corrigido-em=1.25.13, 1.26.6, 1.27.0-rc.3 status=fixed
+    >>> HIGH CVE-2026-56860 stdlib v1.24.6 corrigido-em=1.25.13, 1.26.6, 1.27.0-rc.3 status=fixed
+    >>> HIGH CVE-2026-56862 stdlib v1.24.6 corrigido-em=1.25.13, 1.26.6, 1.27.0-rc.3 status=fixed
+    >>> HIGH CVE-2026-78667 stdlib v1.24.6 corrigido-em=1.26.9, 1.27.2 status=fixed
+    >>> HIGH CVE-2026-78669 stdlib v1.24.6 corrigido-em=1.26.9, 1.27.2 status=fixed
+    >>> HIGH CVE-2026-97031 stdlib v1.24.6 corrigido-em=1.26.9, 1.27.2 status=fixed
+rabbitmq:4-management: ImageID=sha256:efeabeb9685e0e6024cddc980902c03bb7ed840a5ccdd435631369a472be142b SO=ubuntu 26.04 | total=42 {'MEDIUM': 38, 'LOW': 4} | HIGH+CRITICAL=0
+    alvo /in/07.tar (ubuntu 26.04) (ubuntu): 42 {'MEDIUM': 38, 'LOW': 4}
+    alvo usr/bin/pebble (gobinary): 0 {}
+quay.io/keycloak/keycloak:26.8.1: ImageID=sha256:b55801be6ce15109868bd056dc18d62d47106bfaad7ffbd1a5d804192ec98257 SO=redhat 9.8 | total=94 {'MEDIUM': 56, 'LOW': 35, 'HIGH': 3} | HIGH+CRITICAL=3
+    alvo /in/08.tar (redhat 9.8) (redhat): 92 {'MEDIUM': 55, 'LOW': 35, 'HIGH': 2}
+    alvo Java (jar): 2 {'HIGH': 1, 'MEDIUM': 1}
+    >>> HIGH CVE-2026-91403 java-21-openjdk-headless 1:21.0.12.1.1-1.2.el9 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-91415 java-21-openjdk-headless 1:21.0.12.1.1-1.2.el9 corrigido-em=None status=affected
+    >>> HIGH CVE-2026-102554 com.google.guava:guava 33.6.0-jre corrigido-em=33.7.2 status=fixed
+TOTAL HIGH+CRITICAL em todas as imagens: 91
+resumo gravado em 12-trivy-imagens-resumo.json (copiado para f9/23-trivy-imagens-resumo.json; o arquivo de F7 foi mantido)
+exit=0

@@ -1,0 +1,16 @@
+# F7 04 - massa do oraculo T-08 em 2026-02-10 - 2026-10-29T12:04:39Z
+--- merchant A
+  CREDIT 100.00 (chave f7-seed-a1) -> 201
+  CREDIT 35.20 (chave f7-seed-a2) -> 201
+  CREDIT 10.00 (chave f7-seed-a3) -> 201
+  DEBIT 20.00 (chave f7-seed-a4) -> 201
+  DEBIT 5.00 (chave f7-seed-a5) -> 201
+--- merchant B
+  CREDIT 50.00 (chave f7-seed-b1) -> 201
+  DEBIT 12.34 (chave f7-seed-b2) -> 201
+[12:04:41.326] converge(2026-02-10): fonte='145.20 25.00 5' consolidado='145.20 25.00 5' apos 1s -> IGUAL
+[12:04:41.899] converge(2026-02-10): fonte='50.00 12.34 2' consolidado='50.00 12.34 2' apos 1s -> IGUAL
+fonte A: 145.20 25.00 5 | consolidado A: {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-02-10","currency":"BRL","credits":"145.20","debits":"25.00","dailyNet":"120.20","entriesCount":5,"asOf":"2026-10-29T12:04:40.466844Z"}
+fonte B: 50.00 12.34 2 | consolidado B: {"merchantId":"44444444-4444-4444-8444-444444444444","date":"2026-02-10","currency":"BRL","credits":"50.00","debits":"12.34","dailyNet":"37.66","entriesCount":2,"asOf":"2026-10-29T12:04:40.689324Z"}
+closingBalance A: {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-02-10","currency":"BRL","credits":"145.20","debits":"25.00","dailyNet":"120.20","entriesCount":5,"asOf":"2026-10-29T12:04:40.466844Z","closingBalance":"494.60","openingBalanceAssumption":"ZERO_AT_FIRST_DATE"}
+exit=0

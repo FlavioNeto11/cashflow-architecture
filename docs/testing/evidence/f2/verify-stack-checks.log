@@ -1,0 +1,46 @@
+== 2026-10-29T03:09:15Z curls (codigo HTTP)
+http://127.0.0.1:18081/health/live 200
+http://127.0.0.1:18081/health/ready 200
+http://127.0.0.1:18081/api/v1 404
+http://127.0.0.1:18080/health/live 404
+http://127.0.0.1:18080/health/ready 404
+http://127.0.0.1:18080/api/v1 200
+http://127.0.0.1:18083/health/live 200
+http://127.0.0.1:18083/health/ready 200
+http://127.0.0.1:18083/api/v1 404
+http://127.0.0.1:18082/health/live 404
+http://127.0.0.1:18082/health/ready 404
+http://127.0.0.1:18082/api/v1 200
+http://127.0.0.1:18084/health/live 200
+http://127.0.0.1:18084/health/ready 200
+http://127.0.0.1:18084/api/v1 404
+== Host forjado na porta de saude (espera 404)
+404
+== body /health/ready tx
+Healthy
+== uid nos containers
+transactions-api: uid=1654(app) gid=1654(app) groups=1654(app)
+consolidation-api: uid=1654(app) gid=1654(app) groups=1654(app)
+consolidation-worker: uid=1654(app) gid=1654(app) groups=1654(app)
+== psql: papeis, limites e timeouts
+cons_ro|25|statement_timeout=2s idle_in_transaction_session_timeout=30s
+cons_worker|8|statement_timeout=10s lock_timeout=5s idle_in_transaction_session_timeout=30s
+migrator|2|-
+recon_ro|3|statement_timeout=60s idle_in_transaction_session_timeout=30s
+recon_writer|3|statement_timeout=60s lock_timeout=2s idle_in_transaction_session_timeout=30s
+tx_app|40|-
+== psql: bases, owner, connlimit, acl
+consolidation_db|migrator|40|{=T/migrator,migrator=CTc/migrator,cons_ro=c/migrator,cons_worker=c/migrator,recon_writer=c/migrator}
+transactions_db|migrator|-1|{=T/migrator,migrator=CTc/migrator,tx_app=c/migrator,recon_ro=c/migrator}
+== psql: tabelas e historico de migracao
+-- transactions_db
+__EFMigrationsHistory
+20261029024855_Initial|10.0.14
+-- consolidation_db
+__EFMigrationsHistory
+20261029024849_Initial|10.0.14
+== recon-tool exit codes
+recon-tool reconcile -> exit 2
+recon-tool rebuild -> exit 2
+recon-tool dlq redrive -> exit 2
+recon-tool foo -> exit 64

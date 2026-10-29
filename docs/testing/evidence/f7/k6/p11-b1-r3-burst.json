@@ -1,0 +1,48 @@
+{
+  "label": "p11-b1-r3-burst",
+  "mode": "burst",
+  "params": {
+    "GW": "https://gateway:8080",
+    "DATE": "2026-02-10",
+    "MERCHANT": "A",
+    "RATE": 200,
+    "DURATION_S": 60,
+    "BURST_N": 90,
+    "BURSTS": 3,
+    "FIRST_BURST_S": 25,
+    "GAP_S": 10
+  },
+  "total": 270,
+  "s2xx": 195,
+  "s401": 0,
+  "s429": 75,
+  "s5xx": 0,
+  "timeout_or_conn_error": 0,
+  "other": 0,
+  "latency_ms": {
+    "avg": 31.18476047037035,
+    "med": 28.968488999999998,
+    "p90": 52.039808499999985,
+    "p95": 73.58012019999998,
+    "p99": 94.81674851,
+    "max": 104.084053
+  },
+  "dropped_iterations": 0,
+  "burst_send_spread_ms": {
+    "burst0": {
+      "min": -1,
+      "max": 4,
+      "spread": 5
+    },
+    "burst1": {
+      "min": 0,
+      "max": 39,
+      "spread": 39
+    },
+    "burst2": {
+      "min": -3,
+      "max": 0,
+      "spread": 3
+    }
+  }
+}

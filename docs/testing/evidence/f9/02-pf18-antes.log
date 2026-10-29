@@ -1,0 +1,154 @@
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Security.Tests\bin\Release\net10.0\CashFlow.Security.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.14)
+[xUnit.net 00:00:00.66]   Discovering: CashFlow.Security.Tests
+[xUnit.net 00:00:00.70]   Discovered:  CashFlow.Security.Tests
+[xUnit.net 00:00:00.73]   Starting:    CashFlow.Security.Tests
+[testcontainers.org 00:00:00.76] Connected to Docker:
+  Host: npipe://./pipe/docker_engine
+  Server Version: 29.7.2
+  Kernel Version: 6.18.33.2-microsoft-standard-WSL2
+  API Version: 1.55
+  Operating System: Docker Desktop
+  Total Memory: 7.76 GB
+  Labels: 
+    com.docker.desktop.address=npipe://\\.\pipe\docker_cli
+[testcontainers.org 00:00:01.03] Docker container e9e153275e16 created
+[testcontainers.org 00:00:01.08] Start Docker container e9e153275e16
+[testcontainers.org 00:00:01.35] Wait for Docker container e9e153275e16 to complete readiness checks
+[testcontainers.org 00:00:02.40] Docker container e9e153275e16 ready
+[testcontainers.org 00:00:02.59] Docker container 9e4fbfb457f5 created
+[testcontainers.org 00:00:02.63] Docker container 57bf8d5e7bc1 created
+[testcontainers.org 00:00:02.71] Add file to tar archive: Source file: "C:\git\cashflow-architecture\infra\postgres\init\01-roles.sql", Target file: "/docker-entrypoint-initdb.d/01-roles.sql", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.71] Add file to tar archive: Content length: 13464 byte(s), Target file: "/opt/keycloak/data/import/realm-export.json", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.71] Add file to tar archive: Source file: "C:\git\cashflow-architecture\infra\postgres\init\02-databases.sql", Target file: "/docker-entrypoint-initdb.d/02-databases.sql", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.71] Add file to tar archive: Source file: "C:\git\cashflow-architecture\infra\postgres\init\03-role-timeouts.sql", Target file: "/docker-entrypoint-initdb.d/03-role-timeouts.sql", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.72] Copy tar archive to container: Content length: 3905 byte(s), Docker container: 57bf8d5e7bc1
+[testcontainers.org 00:00:02.72] Copy tar archive to container: Content length: 13464 byte(s), Docker container: 9e4fbfb457f5
+[testcontainers.org 00:00:02.75] Start Docker container 9e4fbfb457f5
+[testcontainers.org 00:00:02.75] Start Docker container 57bf8d5e7bc1
+[testcontainers.org 00:00:03.13] Wait for Docker container 57bf8d5e7bc1 to complete readiness checks
+[testcontainers.org 00:00:03.15] Execute "pg_isready -h 127.0.0.1 -U postgres" at Docker container 57bf8d5e7bc1
+[testcontainers.org 00:00:03.25] Wait for Docker container 9e4fbfb457f5 to complete readiness checks
+[testcontainers.org 00:00:04.36] Execute "pg_isready -h 127.0.0.1 -U postgres" at Docker container 57bf8d5e7bc1
+[testcontainers.org 00:00:05.50] Execute "pg_isready -h 127.0.0.1 -U postgres" at Docker container 57bf8d5e7bc1
+[testcontainers.org 00:00:05.59] Docker container 57bf8d5e7bc1 ready
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de TransactionsDbContext aplicadas.","State":{"Context":"TransactionsDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+[testcontainers.org 00:00:54.47] Docker container 9e4fbfb457f5 ready
+{"EventId":0,"LogLevel":"Warning","Category":"CashFlow.Hosting.Security","Message":"Authentication:JwtBearer:AllowHttpMetadata=true: documento OIDC/JWKS obtido por HTTP sem TLS (127.0.0.1). Aceit\u00E1vel s\u00F3 com o IdP local do Compose; em qualquer outro ambiente isto \u00E9 um GAP de seguran\u00E7a.","State":{"Key":"Authentication:JwtBearer:AllowHttpMetadata","Host":"127.0.0.1","{OriginalFormat}":"{Key}=true: documento OIDC/JWKS obtido por HTTP sem TLS ({Host}). Aceit\u00E1vel s\u00F3 com o IdP local do Compose; em qualquer outro ambiente isto \u00E9 um GAP de seguran\u00E7a."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.Tls","Message":"Listener de neg\u00F3cio com TLS: certificado de servidor CN=localhost (expira 2026-11-28 17:31:32Z); certificado de cliente obrigat\u00F3rio, nomes aceitos: gateway.internal.","State":{"Subject":"CN=localhost","NotAfter":"11/28/2026 17:31:32","Mode":"obrigat\u00F3rio, nomes aceitos: gateway.internal","{OriginalFormat}":"Listener de neg\u00F3cio com TLS: certificado de servidor {Subject} (expira {NotAfter:u}); certificado de cliente {Mode}."},"Scopes":[]}
+{"EventId":14,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Now listening on: http://127.0.0.1:59135","State":{"address":"http://127.0.0.1:59135","{OriginalFormat}":"Now listening on: {address}"},"Scopes":[]}
+{"EventId":14,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Now listening on: https://127.0.0.1:59134","State":{"address":"https://127.0.0.1:59134","{OriginalFormat}":"Now listening on: {address}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Production","State":{"EnvName":"Production","{OriginalFormat}":"Hosting environment: {EnvName}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: C:\\git\\cashflow-architecture\\src\\CashFlow.Transactions.Api","State":{"ContentRoot":"C:\\git\\cashflow-architecture\\src\\CashFlow.Transactions.Api","{OriginalFormat}":"Content root path: {ContentRoot}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Warning","Category":"CashFlow.Hosting.Security","Message":"Authentication:JwtBearer:AllowHttpMetadata=true: documento OIDC/JWKS obtido por HTTP sem TLS (127.0.0.1). Aceit\u00E1vel s\u00F3 com o IdP local do Compose; em qualquer outro ambiente isto \u00E9 um GAP de seguran\u00E7a.","State":{"Key":"Authentication:JwtBearer:AllowHttpMetadata","Host":"127.0.0.1","{OriginalFormat}":"{Key}=true: documento OIDC/JWKS obtido por HTTP sem TLS ({Host}). Aceit\u00E1vel s\u00F3 com o IdP local do Compose; em qualquer outro ambiente isto \u00E9 um GAP de seguran\u00E7a."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.Tls","Message":"Listener de neg\u00F3cio com TLS: certificado de servidor CN=localhost (expira 2026-11-28 17:31:32Z); certificado de cliente obrigat\u00F3rio, nomes aceitos: gateway.internal.","State":{"Subject":"CN=localhost","NotAfter":"11/28/2026 17:31:32","Mode":"obrigat\u00F3rio, nomes aceitos: gateway.internal","{OriginalFormat}":"Listener de neg\u00F3cio com TLS: certificado de servidor {Subject} (expira {NotAfter:u}); certificado de cliente {Mode}."},"Scopes":[]}
+{"EventId":14,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Now listening on: http://127.0.0.1:59154","State":{"address":"http://127.0.0.1:59154","{OriginalFormat}":"Now listening on: {address}"},"Scopes":[]}
+{"EventId":14,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Now listening on: https://127.0.0.1:59153","State":{"address":"https://127.0.0.1:59153","{OriginalFormat}":"Now listening on: {address}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Production","State":{"EnvName":"Production","{OriginalFormat}":"Hosting environment: {EnvName}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: C:\\git\\cashflow-architecture\\src\\CashFlow.Consolidation.Api","State":{"ContentRoot":"C:\\git\\cashflow-architecture\\src\\CashFlow.Consolidation.Api","{OriginalFormat}":"Content root path: {ContentRoot}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Warning","Category":"CashFlow.Hosting.Tls","Message":"Listener de neg\u00F3cio (59155) sem TLS no ambiente Production: Hosting:Tls:ServerCertificate n\u00E3o configurado. Aceit\u00E1vel s\u00F3 em teste/desenvolvimento (GAP declarado).","State":{"Port":59155,"Environment":"Production","{OriginalFormat}":"Listener de neg\u00F3cio ({Port}) sem TLS no ambiente {Environment}: Hosting:Tls:ServerCertificate n\u00E3o configurado. Aceit\u00E1vel s\u00F3 em teste/desenvolvimento (GAP declarado)."}}
+{"EventId":0,"LogLevel":"Warning","Category":"CashFlow.Hosting.Security","Message":"Authentication:JwtBearer:AllowHttpMetadata=true: documento OIDC/JWKS obtido por HTTP sem TLS (127.0.0.1). Aceit\u00E1vel s\u00F3 com o IdP local do Compose; em qualquer outro ambiente isto \u00E9 um GAP de seguran\u00E7a.","State":{"Key":"Authentication:JwtBearer:AllowHttpMetadata","Host":"127.0.0.1","{OriginalFormat}":"{Key}=true: documento OIDC/JWKS obtido por HTTP sem TLS ({Host}). Aceit\u00E1vel s\u00F3 com o IdP local do Compose; em qualquer outro ambiente isto \u00E9 um GAP de seguran\u00E7a."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Gateway.UpstreamHttpClientFactory","Message":"mTLS para as APIs: certificado de cliente CN=gateway.internal (expira 2026-11-28 17:31:32Z); servidores validados contra CA local.","State":{"Subject":"CN=gateway.internal","NotAfter":"11/28/2026 17:31:32","{OriginalFormat}":"mTLS para as APIs: certificado de cliente {Subject} (expira {NotAfter:u}); servidores validados contra CA local."},"Scopes":[]}
+{"EventId":14,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Now listening on: http://127.0.0.1:59156","State":{"address":"http://127.0.0.1:59156","{OriginalFormat}":"Now listening on: {address}"},"Scopes":[]}
+{"EventId":14,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Now listening on: http://127.0.0.1:59155","State":{"address":"http://127.0.0.1:59155","{OriginalFormat}":"Now listening on: {address}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Production","State":{"EnvName":"Production","{OriginalFormat}":"Hosting environment: {EnvName}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: C:\\git\\cashflow-architecture\\src\\CashFlow.Gateway","State":{"ContentRoot":"C:\\git\\cashflow-architecture\\src\\CashFlow.Gateway","{OriginalFormat}":"Content root path: {ContentRoot}"},"Scopes":[]}
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: https://127.0.0.1:59179
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\git\cashflow-architecture\tests\CashFlow.Security.Tests\bin\Release\net10.0
+{"EventId":0,"LogLevel":"Warning","Category":"CashFlow.Hosting.Tls","Message":"Listener de neg\u00F3cio (59180) sem TLS no ambiente Production: Hosting:Tls:ServerCertificate n\u00E3o configurado. Aceit\u00E1vel s\u00F3 em teste/desenvolvimento (GAP declarado).","State":{"Port":59180,"Environment":"Production","{OriginalFormat}":"Listener de neg\u00F3cio ({Port}) sem TLS no ambiente {Environment}: Hosting:Tls:ServerCertificate n\u00E3o configurado. Aceit\u00E1vel s\u00F3 em teste/desenvolvimento (GAP declarado)."}}
+{"EventId":0,"LogLevel":"Warning","Category":"CashFlow.Hosting.Security","Message":"Authentication:JwtBearer:AllowHttpMetadata=true: documento OIDC/JWKS obtido por HTTP sem TLS (127.0.0.1). Aceit\u00E1vel s\u00F3 com o IdP local do Compose; em qualquer outro ambiente isto \u00E9 um GAP de seguran\u00E7a.","State":{"Key":"Authentication:JwtBearer:AllowHttpMetadata","Host":"127.0.0.1","{OriginalFormat}":"{Key}=true: documento OIDC/JWKS obtido por HTTP sem TLS ({Host}). Aceit\u00E1vel s\u00F3 com o IdP local do Compose; em qualquer outro ambiente isto \u00E9 um GAP de seguran\u00E7a."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Gateway.UpstreamHttpClientFactory","Message":"mTLS para as APIs: certificado de cliente CN=gateway.internal (expira 2026-11-28 17:31:32Z); servidores validados contra CA local.","State":{"Subject":"CN=gateway.internal","NotAfter":"11/28/2026 17:31:32","{OriginalFormat}":"mTLS para as APIs: certificado de cliente {Subject} (expira {NotAfter:u}); servidores validados contra CA local."},"Scopes":[]}
+{"EventId":14,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Now listening on: http://127.0.0.1:59181","State":{"address":"http://127.0.0.1:59181","{OriginalFormat}":"Now listening on: {address}"},"Scopes":[]}
+{"EventId":14,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Now listening on: http://127.0.0.1:59180","State":{"address":"http://127.0.0.1:59180","{OriginalFormat}":"Now listening on: {address}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Production","State":{"EnvName":"Production","{OriginalFormat}":"Hosting environment: {EnvName}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: C:\\git\\cashflow-architecture\\src\\CashFlow.Gateway","State":{"ContentRoot":"C:\\git\\cashflow-architecture\\src\\CashFlow.Gateway","{OriginalFormat}":"Content root path: {ContentRoot}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."},"Scopes":[]}
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+[xUnit.net 00:00:58.99]     CashFlow.Security.Tests.MerchantBurstGlobalLimiterTests.BurstOfOneMerchant_AbovePerMerchantLimit_DoesNotThrottleAnotherMerchant [FAIL]
+[xUnit.net 00:00:58.99]       Assert.All() Failure: 3 out of 3 items in the collection did not pass.
+[xUnit.net 00:00:58.99]       [0]: Item:  429
+[xUnit.net 00:00:58.99]            Error: Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:58.99]                   Expected: 200
+[xUnit.net 00:00:58.99]                   Actual:   429
+[xUnit.net 00:00:58.99]       [1]: Item:  429
+[xUnit.net 00:00:58.99]            Error: Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:58.99]                   Expected: 200
+[xUnit.net 00:00:58.99]                   Actual:   429
+[xUnit.net 00:00:58.99]       [2]: Item:  429
+[xUnit.net 00:00:58.99]            Error: Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:58.99]                   Expected: 200
+[xUnit.net 00:00:58.99]                   Actual:   429
+[xUnit.net 00:00:58.99]       Stack Trace:
+[xUnit.net 00:00:58.99]         C:\git\cashflow-architecture\tests\CashFlow.Security.Tests\MerchantBurstGlobalLimiterTests.cs(65,0): at CashFlow.Security.Tests.MerchantBurstGlobalLimiterTests.BurstOfOneMerchant_AbovePerMerchantLimit_DoesNotThrottleAnotherMerchant()
+[xUnit.net 00:00:58.99]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:58.99]       Output:
+[xUnit.net 00:00:58.99]         rajada de A (30 em paralelo): 3x200, 27x429
+[xUnit.net 00:00:58.99]         merchant B logo depois (3): 429,429,429
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: https://127.0.0.1:59214
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\git\cashflow-architecture\tests\CashFlow.Security.Tests\bin\Release\net10.0
+{"EventId":0,"LogLevel":"Warning","Category":"CashFlow.Hosting.Tls","Message":"Listener de neg\u00F3cio (59215) sem TLS no ambiente Production: Hosting:Tls:ServerCertificate n\u00E3o configurado. Aceit\u00E1vel s\u00F3 em teste/desenvolvimento (GAP declarado).","State":{"Port":59215,"Environment":"Production","{OriginalFormat}":"Listener de neg\u00F3cio ({Port}) sem TLS no ambiente {Environment}: Hosting:Tls:ServerCertificate n\u00E3o configurado. Aceit\u00E1vel s\u00F3 em teste/desenvolvimento (GAP declarado)."}}
+{"EventId":0,"LogLevel":"Warning","Category":"CashFlow.Hosting.Security","Message":"Authentication:JwtBearer:AllowHttpMetadata=true: documento OIDC/JWKS obtido por HTTP sem TLS (127.0.0.1). Aceit\u00E1vel s\u00F3 com o IdP local do Compose; em qualquer outro ambiente isto \u00E9 um GAP de seguran\u00E7a.","State":{"Key":"Authentication:JwtBearer:AllowHttpMetadata","Host":"127.0.0.1","{OriginalFormat}":"{Key}=true: documento OIDC/JWKS obtido por HTTP sem TLS ({Host}). Aceit\u00E1vel s\u00F3 com o IdP local do Compose; em qualquer outro ambiente isto \u00E9 um GAP de seguran\u00E7a."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Gateway.UpstreamHttpClientFactory","Message":"mTLS para as APIs: certificado de cliente CN=gateway.internal (expira 2026-11-28 17:31:32Z); servidores validados contra CA local.","State":{"Subject":"CN=gateway.internal","NotAfter":"11/28/2026 17:31:32","{OriginalFormat}":"mTLS para as APIs: certificado de cliente {Subject} (expira {NotAfter:u}); servidores validados contra CA local."},"Scopes":[]}
+{"EventId":14,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Now listening on: http://127.0.0.1:59216","State":{"address":"http://127.0.0.1:59216","{OriginalFormat}":"Now listening on: {address}"},"Scopes":[]}
+{"EventId":14,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Now listening on: http://127.0.0.1:59215","State":{"address":"http://127.0.0.1:59215","{OriginalFormat}":"Now listening on: {address}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Production","State":{"EnvName":"Production","{OriginalFormat}":"Hosting environment: {EnvName}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: C:\\git\\cashflow-architecture\\src\\CashFlow.Gateway","State":{"ContentRoot":"C:\\git\\cashflow-architecture\\src\\CashFlow.Gateway","{OriginalFormat}":"Content root path: {ContentRoot}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."},"Scopes":[]}
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."},"Scopes":[]}
+[testcontainers.org 00:00:57.95] Delete Docker container 9e4fbfb457f5
+[testcontainers.org 00:00:58.58] Delete Docker container 57bf8d5e7bc1
+  Failed CashFlow.Security.Tests.MerchantBurstGlobalLimiterTests.BurstOfOneMerchant_AbovePerMerchantLimit_DoesNotThrottleAnotherMerchant [283 ms]
+  Error Message:
+   Assert.All() Failure: 3 out of 3 items in the collection did not pass.
+[0]: Item:  429
+     Error: Assert.Equal() Failure: Values differ
+            Expected: 200
+            Actual:   429
+[1]: Item:  429
+     Error: Assert.Equal() Failure: Values differ
+            Expected: 200
+            Actual:   429
+[2]: Item:  429
+     Error: Assert.Equal() Failure: Values differ
+            Expected: 200
+            Actual:   429
+  Stack Trace:
+     at CashFlow.Security.Tests.MerchantBurstGlobalLimiterTests.BurstOfOneMerchant_AbovePerMerchantLimit_DoesNotThrottleAnotherMerchant() in C:\git\cashflow-architecture\tests\CashFlow.Security.Tests\MerchantBurstGlobalLimiterTests.cs:line 65
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ rajada de A (30 em paralelo): 3x200, 27x429
+ merchant B logo depois (3): 429,429,429
+
+
+  Passed CashFlow.Security.Tests.GlobalLimiterAnonymousTests.AnonymousFlood_OnConsolidationRoute_DoesNotExhaustGlobalLimiterForAuthenticatedMerchant [89 ms]
+[xUnit.net 00:01:00.31]   Finished:    CashFlow.Security.Tests
+
+Test Run Failed.
+Total tests: 2
+     Passed: 1
+     Failed: 1
+ Total time: 1,0161 Minutes

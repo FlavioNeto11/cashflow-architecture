@@ -1,0 +1,59 @@
+$ dotnet test CashFlow.slnx -c Release --no-build
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Persistence.Tests\bin\Release\net10.0\CashFlow.Persistence.Tests.dll (.NETCoreApp,Version=v10.0)
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\bin\Release\net10.0\CashFlow.Consolidation.Tests.dll (.NETCoreApp,Version=v10.0)
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Security.Tests\bin\Release\net10.0\CashFlow.Security.Tests.dll (.NETCoreApp,Version=v10.0)
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\bin\Release\net10.0\CashFlow.Transactions.Api.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:    48, Skipped:     0, Total:    48, Duration: 16 s - CashFlow.Persistence.Tests.dll (net10.0)
+
+Passed!  - Failed:     0, Passed:   157, Skipped:     0, Total:   157, Duration: 19 s - CashFlow.Transactions.Api.Tests.dll (net10.0)
+[xUnit.net 00:00:23.94]     CashFlow.Consolidation.Tests.Messaging.TopologyTests.PassiveDeclare_OfMissingExchange_ClosesTheChannelWith404 [FAIL]
+  Failed CashFlow.Consolidation.Tests.Messaging.TopologyTests.PassiveDeclare_OfMissingExchange_ClosesTheChannelWith404 [24 ms]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 404
+Actual:   403
+  Stack Trace:
+     at CashFlow.Consolidation.Tests.Messaging.TopologyTests.PassiveDeclare_OfMissingExchange_ClosesTheChannelWith404() in C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Messaging\TopologyTests.cs:line 47
+   at CashFlow.Consolidation.Tests.Messaging.TopologyTests.PassiveDeclare_OfMissingExchange_ClosesTheChannelWith404() in C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Messaging\TopologyTests.cs:line 49
+   at CashFlow.Consolidation.Tests.Messaging.TopologyTests.PassiveDeclare_OfMissingExchange_ClosesTheChannelWith404() in C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Messaging\TopologyTests.cs:line 49
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:39.06]     CashFlow.Consolidation.Tests.Messaging.OutboxPublisherTests.T15_Unroutable_IsNeverDropped_AttemptsGrow_ThenPublishedWhenBindingReturns [FAIL]
+[xUnit.net 00:00:39.60]     CashFlow.Consolidation.Tests.Recon.ReconToolTests.DeliveryLimitDeadLetter_RedrivenViaXDeath_IsAppliedOnce_AndRepeatedRedriveIsDuplicate [FAIL]
+  Failed CashFlow.Consolidation.Tests.Messaging.OutboxPublisherTests.T15_Unroutable_IsNeverDropped_AttemptsGrow_ThenPublishedWhenBindingReturns [103 ms]
+  Error Message:
+   RabbitMQ.Client.Exceptions.OperationInterruptedException : The AMQP operation was interrupted: AMQP close-reason, initiated by Peer, code=403, text='ACCESS_REFUSED - write access to queue 'consolidation.transaction-registered' in vhost '/' refused for user 'test_rabbit_user'', classId=50, methodId=50
+  Stack Trace:
+     at RabbitMQ.Client.Impl.Channel.QueueUnbindAsync(String queue, String exchange, String routingKey, IDictionary`2 arguments, CancellationToken cancellationToken)
+   at CashFlow.Consolidation.Tests.Messaging.OutboxPublisherTests.T15_Unroutable_IsNeverDropped_AttemptsGrow_ThenPublishedWhenBindingReturns() in C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Messaging\OutboxPublisherTests.cs:line 102
+   at CashFlow.Consolidation.Tests.Messaging.OutboxPublisherTests.T15_Unroutable_IsNeverDropped_AttemptsGrow_ThenPublishedWhenBindingReturns() in C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Messaging\OutboxPublisherTests.cs:line 118
+   at CashFlow.Consolidation.Tests.Messaging.OutboxPublisherTests.T15_Unroutable_IsNeverDropped_AttemptsGrow_ThenPublishedWhenBindingReturns() in C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Messaging\OutboxPublisherTests.cs:line 118
+   at CashFlow.Consolidation.Tests.Messaging.OutboxPublisherTests.T15_Unroutable_IsNeverDropped_AttemptsGrow_ThenPublishedWhenBindingReturns() in C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Messaging\OutboxPublisherTests.cs:line 126
+--- End of stack trace from previous location ---
+  Failed CashFlow.Consolidation.Tests.Recon.ReconToolTests.DeliveryLimitDeadLetter_RedrivenViaXDeath_IsAppliedOnce_AndRepeatedRedriveIsDuplicate [192 ms]
+  Error Message:
+   Assert.NotNull() Failure: Value is null
+  Stack Trace:
+     at CashFlow.Consolidation.Tests.Recon.ReconToolTests.DeliveryLimitDeadLetter_RedrivenViaXDeath_IsAppliedOnce_AndRepeatedRedriveIsDuplicate() in C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Recon\ReconToolTests.cs:line 625
+   at CashFlow.Consolidation.Tests.Recon.ReconToolTests.DeliveryLimitDeadLetter_RedrivenViaXDeath_IsAppliedOnce_AndRepeatedRedriveIsDuplicate() in C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Recon\ReconToolTests.cs:line 626
+   at CashFlow.Consolidation.Tests.Recon.ReconToolTests.DeliveryLimitDeadLetter_RedrivenViaXDeath_IsAppliedOnce_AndRepeatedRedriveIsDuplicate() in C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Recon\ReconToolTests.cs:line 622
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:43.79]     CashFlow.Consolidation.Tests.Recon.ReconToolTests.Redrive_Unroutable_IsNotAcked_StaysInDlq_AndFailureIsRecorded [FAIL]
+  Failed CashFlow.Consolidation.Tests.Recon.ReconToolTests.Redrive_Unroutable_IsNotAcked_StaysInDlq_AndFailureIsRecorded [78 ms]
+  Error Message:
+   RabbitMQ.Client.Exceptions.OperationInterruptedException : The AMQP operation was interrupted: AMQP close-reason, initiated by Peer, code=403, text='ACCESS_REFUSED - write access to queue 'consolidation.transaction-registered' in vhost '/' refused for user 'test_rabbit_user'', classId=50, methodId=50
+  Stack Trace:
+     at RabbitMQ.Client.Impl.Channel.QueueUnbindAsync(String queue, String exchange, String routingKey, IDictionary`2 arguments, CancellationToken cancellationToken)
+   at CashFlow.Consolidation.Tests.Recon.ReconToolTests.Redrive_Unroutable_IsNotAcked_StaysInDlq_AndFailureIsRecorded() in C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Recon\ReconToolTests.cs:line 526
+   at CashFlow.Consolidation.Tests.Recon.ReconToolTests.Redrive_Unroutable_IsNotAcked_StaysInDlq_AndFailureIsRecorded() in C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Recon\ReconToolTests.cs:line 533
+   at CashFlow.Consolidation.Tests.Recon.ReconToolTests.Redrive_Unroutable_IsNotAcked_StaysInDlq_AndFailureIsRecorded() in C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Recon\ReconToolTests.cs:line 533
+--- End of stack trace from previous location ---
+
+Passed!  - Failed:     0, Passed:    53, Skipped:     0, Total:    53, Duration: 1 m 36 s - CashFlow.Security.Tests.dll (net10.0)
+
+Failed!  - Failed:     4, Passed:    61, Skipped:     0, Total:    65, Duration: 1 m 26 s - CashFlow.Consolidation.Tests.dll (net10.0)
+exit=1

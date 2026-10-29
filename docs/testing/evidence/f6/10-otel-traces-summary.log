@@ -1,0 +1,10 @@
+# Resumo gerado por f6-parse-otel.py sobre 09-otel-collector-raw.log (capturado em 2026-10-29 ~08:10Z, stack dev + observabilidade). Comando: python -I f6-parse-otel.py 09-otel-collector-raw.log
+spans: 150 traces: 125 traces com >1 servico: 0
+nomes de spans por servico:
+   3 ('consolidation-api', 'GET /api/v1/merchants/{merchantId:guid}/consolidations/daily')
+   3 ('consolidation-api', 'postgresql')
+   1 ('consolidation-worker', 'CONNECT consolidation_db')
+   6 ('consolidation-worker', 'postgresql')
+   1 ('transactions-api', 'CONNECT transactions_db')
+   2 ('transactions-api', 'POST /api/v1/merchants/{merchantId:guid}/transactions')
+   134 ('transactions-api', 'postgresql')

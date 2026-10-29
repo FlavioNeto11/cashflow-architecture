@@ -1,0 +1,81 @@
+# F9 11 - stack recriada com as imagens do repositorio publico - 2026-10-29T17:45:55Z
+ Container cashflow-gateway-1 Recreate 
+ Container cashflow-keycloak-1 Recreate 
+ Container cashflow-postgres-1 Recreate 
+ Container cashflow-rabbitmq-1 Recreate 
+ Container cashflow-postgres-1 Recreated 
+ Container cashflow-migrations-cons-1 Recreate 
+ Container cashflow-migrations-tx-1 Recreate 
+ Container cashflow-gateway-1 Recreated 
+ Container cashflow-rabbitmq-1 Recreated 
+ Container cashflow-migrations-cons-1 Recreated 
+ Container cashflow-consolidation-api-1 Recreate 
+ Container cashflow-consolidation-worker-1 Recreate 
+ Container cashflow-migrations-tx-1 Recreated 
+ Container cashflow-transactions-api-1 Recreate 
+ Container cashflow-keycloak-1 Recreated 
+ Container cashflow-consolidation-api-1 Recreated 
+ Container cashflow-consolidation-worker-1 Recreated 
+ Container cashflow-transactions-api-1 Recreated 
+ Container cashflow-gateway-1 Starting 
+ Container cashflow-keycloak-1 Starting 
+ Container cashflow-rabbitmq-1 Starting 
+ Container cashflow-postgres-1 Starting 
+ Container cashflow-rabbitmq-1 Started 
+ Container cashflow-keycloak-1 Started 
+ Container cashflow-keycloak-1 Waiting 
+ Container cashflow-postgres-1 Started 
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-gateway-1 Started 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-migrations-cons-1 Starting 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-migrations-tx-1 Starting 
+ Container cashflow-migrations-cons-1 Started 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-tx-1 Started 
+ Container cashflow-migrations-tx-1 Waiting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-worker-1 Starting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-api-1 Starting 
+ Container cashflow-consolidation-worker-1 Started 
+ Container cashflow-consolidation-api-1 Started 
+ Container cashflow-migrations-tx-1 Exited 
+ Container cashflow-transactions-api-1 Starting 
+ Container cashflow-transactions-api-1 Started 
+ Container cashflow-keycloak-1 Healthy 
+ Container cashflow-keycloak-init-1 Starting 
+ Container cashflow-keycloak-init-1 Started 
+ Container cashflow-consolidation-worker-1 Waiting 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-transactions-api-1 Waiting 
+ Container cashflow-migrations-tx-1 Waiting 
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-gateway-1 Waiting 
+ Container cashflow-keycloak-init-1 Waiting 
+ Container cashflow-consolidation-api-1 Waiting 
+ Container cashflow-keycloak-1 Waiting 
+ Container cashflow-rabbitmq-1 Waiting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-worker-1 Healthy 
+ Container cashflow-rabbitmq-1 Healthy 
+ Container cashflow-keycloak-init-1 Healthy 
+ Container cashflow-keycloak-1 Healthy 
+ Container cashflow-migrations-tx-1 Exited 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-consolidation-api-1 Healthy 
+ Container cashflow-transactions-api-1 Healthy 
+ Container cashflow-gateway-1 Healthy 
+up rc=0
+cashflow-consolidation-api-1 cashflow/consolidation-api:dev Up 50 seconds (healthy)
+cashflow-consolidation-worker-1 cashflow/consolidation-worker:dev Up 50 seconds (healthy)
+cashflow-gateway-1 cashflow/gateway:dev Up 59 seconds (healthy)
+cashflow-keycloak-1 quay.io/keycloak/keycloak:26.8.1@sha256:a78d6b79572168cb25886b80a8b5b8d4ed4390743e3eecb810538683e209dd6b Up 59 seconds (healthy)
+cashflow-keycloak-init-1 quay.io/keycloak/keycloak:26.8.1@sha256:a78d6b79572168cb25886b80a8b5b8d4ed4390743e3eecb810538683e209dd6b Up 8 seconds
+cashflow-postgres-1 postgres:17@sha256:31ba9c94a03ada9988f2bb493a22a75eef3a185884533e5cdbcd498ea835b08f Up 59 seconds (healthy)
+cashflow-rabbitmq-1 rabbitmq:4-management@sha256:af6f50d38098d8bd52fef7f3fa85015dd8b2bf6def58e995bf584ae9ba0f6407 Up 59 seconds (healthy)
+cashflow-transactions-api-1 cashflow/transactions-api:dev Up 49 seconds (healthy)
+gateway image id=sha256:4cd36dafafe88f7a6130aa232a18ba6e40add1568db2b8f3634b43bb8e3e1138 created=2026-10-29T17:45:56.53084175Z

@@ -1,0 +1,13 @@
+0.116.1: Pulling from otel/opentelemetry-collector-contrib
+463d13c4f09c: Pulling fs layer
+7f09d2e2e671: Pulling fs layer
+551e81ce641a: Pulling fs layer
+7f09d2e2e671: Download complete
+7f09d2e2e671: Pull complete
+463d13c4f09c: Download complete
+551e81ce641a: Download complete
+551e81ce641a: Pull complete
+463d13c4f09c: Pull complete
+Digest: sha256:d0ebf65280da2e1b1491d1b93648281afd353d4b9ea19160090303cec9a233bd
+Status: Downloaded newer image for otel/opentelemetry-collector-contrib:0.116.1
+docker.io/otel/opentelemetry-collector-contrib:0.116.1

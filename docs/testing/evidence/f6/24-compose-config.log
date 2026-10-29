@@ -1,0 +1,5 @@
+# 2026-10-29T10:43:37Z docker compose config -q nas 4 combinacoes (pos-F5, pos-P1-1/A1/A2/A3)
+OK: docker-compose.yml
+OK: docker-compose.yml docker-compose.dev.yml
+OK: docker-compose.yml docker-compose.observability.yml
+OK: docker-compose.yml docker-compose.dev.yml docker-compose.observability.yml

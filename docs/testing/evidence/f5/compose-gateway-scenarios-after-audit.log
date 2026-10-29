@@ -1,0 +1,287 @@
+
+=================== [11:20:34] 0. PKI local (infra/pki/make-certs.sh; no-op se ja existe) e .env (valores nunca impressos)
+ja existe: C:/git/cashflow-architecture/infra/pki/out (use --force para regenerar; os servicos precisam reiniciar)
+KEYCLOAK_MERCHANT_A_SYSTEM_SECRET: definido (28 chars)
+KEYCLOAK_MERCHANT_B_SYSTEM_SECRET: definido (28 chars)
+
+=================== [11:20:34] 1. Stack do zero: down -v + up -d --build (Compose BASE: gateway 127.0.0.1:8443, APIs sem porta publicada)
+ Container cashflow-keycloak-1 Started 
+ Container cashflow-keycloak-1 Waiting 
+ Container cashflow-rabbitmq-1 Started 
+ Container cashflow-gateway-1 Started 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-migrations-tx-1 Starting 
+ Container cashflow-migrations-cons-1 Starting 
+ Container cashflow-migrations-tx-1 Started 
+ Container cashflow-migrations-tx-1 Waiting 
+ Container cashflow-migrations-cons-1 Started 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-tx-1 Exited 
+ Container cashflow-transactions-api-1 Starting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-worker-1 Starting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-api-1 Starting 
+ Container cashflow-transactions-api-1 Started 
+ Container cashflow-consolidation-worker-1 Started 
+ Container cashflow-consolidation-api-1 Started 
+ Container cashflow-keycloak-1 Healthy 
+ Container cashflow-keycloak-init-1 Starting 
+ Container cashflow-keycloak-init-1 Started 
+[11:22:29] saude gateway/tx/cons: healthy healthy healthy  | keycloak-init: exited/0 (apos ~12 s)
+NAME                              STATUS                        PORTS
+cashflow-consolidation-api-1      Up 54 seconds (healthy)       
+cashflow-consolidation-worker-1   Up 54 seconds (healthy)       
+cashflow-gateway-1                Up About a minute (healthy)   127.0.0.1:8443->8080/tcp
+cashflow-keycloak-1               Up About a minute (healthy)   127.0.0.1:8080->8080/tcp
+cashflow-postgres-1               Up About a minute (healthy)   5432/tcp
+cashflow-rabbitmq-1               Up About a minute (healthy)   127.0.0.1:15672->15672/tcp
+cashflow-transactions-api-1       Up 54 seconds (healthy)       
+--- keycloak-init:
+keycloak-init: secrets de merchant-a-system/merchant-b-system e senhas de demo-a/demo-b aplicados
+
+=================== [11:22:30] 2. Tokens Client Credentials no Keycloak publicado (127.0.0.1:8080); KC_HOSTNAME fixo => iss=http://keycloak:8080/realms/cashflow
+token A (3 escopos): 933 chars
+  vida=300 s
+  "iss":"http://keycloak:8080/realms/cashflow"
+  "aud":"cashflow-api"
+  "typ":"Bearer"
+  "azp":"merchant-a-system"
+  "scope":"consolidation.read transactions.write transactions.read"
+  "merchant_id":"33333333-3333-4333-8333-333333333333"
+token A (so write): 883 chars
+  "azp":"merchant-a-system"
+  "scope":"transactions.write"
+  "merchant_id":"33333333-3333-4333-8333-333333333333"
+token B: 933 chars
+  "azp":"merchant-b-system"
+  "merchant_id":"44444444-4444-4444-8444-444444444444"
+--- sem segredo correto:
+status: 401
+
+=================== [11:22:31] 3. Caminho feliz pelo gateway (TLS de borda da CA local; mTLS gateway->APIs por dentro)
+--- [11:22:31] POST transacao A (201)
+status: HTTP/1.1 201 Created
+  hdr: Content-Type: application/json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"id":"01a18765-bd12-76ba-a700-e9a865e5cabb","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"64.80","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T11:22:34.128788Z","reversalOf":null,"createdAt":"2026-10-29T11:22:34.128788Z"}
+--- [11:22:34] replay mesma chave (201 + Idempotency-Replayed)
+status: HTTP/1.1 201 Created
+  hdr: Content-Type: application/json
+  hdr: Cache-Control: no-store
+  hdr: idempotency-replayed: true
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"id": "01a18765-bd12-76ba-a700-e9a865e5cabb", "type": "CREDIT", "amount": "64.80", "currency": "BRL", "createdAt": "2026-10-29T11:22:34.128788Z", "merchantId": "33333333-3333-4333-8333-333333333333", "occurredAt": "2026-10-29T11:22:34.128788Z", "reversalOf": null, "effectiveDate": "2026-10-29"}
+--- [11:22:35] GET transacao por id (200)
+status: HTTP/1.1 200 OK
+  hdr: Content-Type: application/json; charset=utf-8
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"id":"01a18765-bd12-76ba-a700-e9a865e5cabb","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"64.80","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T11:22:34.128788Z","reversalOf":null,"createdAt":"2026-10-29T11:22:34.128788Z","description":null,"reversedBy":null}
+--- [11:22:35] GET consolidado diario A (200)
+status: HTTP/1.1 200 OK
+  hdr: Content-Type: application/json; charset=utf-8
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"64.80","debits":"0.00","dailyNet":"64.80","entriesCount":1,"asOf":"2026-10-29T11:22:34.128788Z"}
+--- [11:22:36] POST transacao B (201)
+status: HTTP/1.1 201 Created
+  hdr: Content-Type: application/json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"id":"01a18765-c4c2-7542-87c2-0175f1c572b8","merchantId":"44444444-4444-4444-8444-444444444444","type":"DEBIT","amount":"10.00","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T11:22:36.098219Z","reversalOf":null,"createdAt":"2026-10-29T11:22:36.098219Z"}
+
+=================== [11:22:36] 4. Negativos na borda (ADR-0006: 401 / 403 / 404 identico / 413)
+--- [11:22:36] sem token (401 + WWW-Authenticate)
+status: HTTP/1.1 401 Unauthorized
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: WWW-Authenticate: Bearer realm="cashflow"
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.2","title":"Não autenticado.","status":401,"traceId":"00-5a3856ba4eb6fbd57d126e8aa6e6c7d9-dc62fa7f3e735f74-01"}
+--- [11:22:36] token adulterado (401)
+status: HTTP/1.1 401 Unauthorized
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: WWW-Authenticate: Bearer realm="cashflow", error="invalid_token"
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.2","title":"Não autenticado.","status":401,"traceId":"00-5b854f3d3b810aafe223ae4d06436b3a-aecfee855a8f4071-01"}
+--- [11:22:36] alg=none (401)
+status: HTTP/1.1 401 Unauthorized
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: WWW-Authenticate: Bearer realm="cashflow", error="invalid_token"
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.2","title":"Não autenticado.","status":401,"traceId":"00-e821ca2536b07cfbe4f7c30378648cab-e35e75941922fdc7-01"}
+--- [11:22:37] escopo errado: token so write em consolidado (403)
+status: HTTP/1.1 403 Forbidden
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.4","title":"Acesso negado.","status":403,"traceId":"00-3b3bef88898b80fa459d191715ae1a0b-5c8b35dc885db563-01"}
+--- [11:22:37] cross-tenant: token A em POST de B (404)
+status: HTTP/1.1 404 Not Found
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Recurso não encontrado.","status":404,"traceId":"00-cea11ce6f2ad34e19f415c3a0f8cbe9e-ce2e11495b32bc5f-01"}
+--- [11:22:37] cross-tenant: token A le consolidado de B (404)
+status: HTTP/1.1 404 Not Found
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Recurso não encontrado.","status":404,"traceId":"00-3e5ac167a24be475c17be1be5420a199-27dade421338545e-01"}
+--- [11:22:37] recurso inexistente do proprio A (404, mesmo corpo)
+status: HTTP/1.1 404 Not Found
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Recurso não encontrado.","status":404,"traceId":"00-b0745d2c7b654745e149fb8e625d1534-af5ab751117bfad3-01"}
+--- [11:22:38] X-Dev-* sem token (401: cabecalhos de dev nao autenticam)
+status: HTTP/1.1 401 Unauthorized
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: WWW-Authenticate: Bearer realm="cashflow"
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.2","title":"Não autenticado.","status":401,"traceId":"00-5d3655def251e068b886e6b892171229-0b676146038153bd-01"}
+--- [11:22:38] corpo 17 KB (413, antes de autenticar)
+status: HTTP/1.1 413 Payload Too Large
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.14","title":"Corpo da requisição excede o limite.","status":413,"detail":"Limite: 16384 bytes.","traceId":"00-3b4c7b22c8d76557394dd9931ed476de-16d0a2f5bc80c2a1-01"}
+--- [11:22:38] /health/ready pelo gateway (404: saude nao e roteada)
+status: HTTP/1.1 404 Not Found
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: 
+--- [11:22:38] GET lista sem transactions.read (403)
+status: HTTP/1.1 403 Forbidden
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.4","title":"Acesso negado.","status":403,"traceId":"00-1f0fbe1e0d22a92e3a51ae921efa5ff2-4c72ebe7d995b06e-01"}
+
+=================== [11:22:39] 5. Rate limit por merchant no consolidado (padrao 60/s por merchant, 120/s global; 200 GETs em paralelo como A)
+      200 200
+  200 requisicoes em 6 s (~33 req/s do host). Se nao houve 429, o gerador (um processo curl por requisicao no Windows) nao atingiu 60 req/s: o 429 por merchant esta validado em processo (T-28, limite 3/s) e a medicao com os numeros do Compose fica para T-08 (k6, F7).
+--- [11:22:45] B logo em seguida (200: balde independente)
+status: HTTP/1.1 200 OK
+  hdr: Content-Type: application/json; charset=utf-8
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"merchantId":"44444444-4444-4444-8444-444444444444","date":"2026-10-29","currency":"BRL","credits":"0.00","debits":"10.00","dailyNet":"-10.00","entriesCount":1,"asOf":"2026-10-29T11:22:36.098219Z"}
+
+=================== [11:22:45] 6. Direto as APIs na rede app (porta mTLS 8080): so o certificado do gateway completa o handshake
+--- [11:22:45] direto (rede app): sem certificado de cliente
+  curl exit=56 http=000
+  * SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / x25519 / id-ecPublicKey
+  * Server certificate:
+  *  SSL certificate verify ok.
+  *   Certificate level 0: Public key type EC/prime256v1 (256/128 Bits/secBits), signed using ecdsa-with-SHA256
+--- [11:22:47] direto (rede app): certificado neg-foreign-ca
+  curl exit=56 http=000
+  * SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / x25519 / id-ecPublicKey
+  * Server certificate:
+  *  SSL certificate verify ok.
+  *   Certificate level 0: Public key type EC/prime256v1 (256/128 Bits/secBits), signed using ecdsa-with-SHA256
+--- [11:22:48] direto (rede app): certificado neg-expired
+  curl exit=56 http=000
+  * SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / x25519 / id-ecPublicKey
+  * Server certificate:
+  *  SSL certificate verify ok.
+  *   Certificate level 0: Public key type EC/prime256v1 (256/128 Bits/secBits), signed using ecdsa-with-SHA256
+--- [11:22:50] direto (rede app): certificado neg-wrong-san
+  curl exit=56 http=000
+  * SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / x25519 / id-ecPublicKey
+  * Server certificate:
+  *  SSL certificate verify ok.
+  *   Certificate level 0: Public key type EC/prime256v1 (256/128 Bits/secBits), signed using ecdsa-with-SHA256
+--- [11:22:51] direto (rede app): certificado neg-wrong-eku
+  curl exit=56 http=000
+  * SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / x25519 / id-ecPublicKey
+  * Server certificate:
+  *  SSL certificate verify ok.
+  *   Certificate level 0: Public key type EC/prime256v1 (256/128 Bits/secBits), signed using ecdsa-with-SHA256
+--- [11:22:53] direto (rede app): HTTP puro na porta TLS
+  curl exit=52 http=000
+  * Empty reply from server
+  curl: (52) Empty reply from server
+--- [11:22:54] direto (rede app): certificado do gateway, sem token (handshake OK -> 401 da API)
+  curl exit=0 http=401
+  * SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / x25519 / id-ecPublicKey
+  * Server certificate:
+  *  SSL certificate verify ok.
+  *   Certificate level 0: Public key type EC/prime256v1 (256/128 Bits/secBits), signed using ecdsa-with-SHA256
+--- [11:22:55] direto (rede app): certificado do gateway + token A (handshake OK -> 200 da consolidation-api)
+  curl exit=0 http=200
+  * SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / x25519 / id-ecPublicKey
+  * Server certificate:
+  *  SSL certificate verify ok.
+  *   Certificate level 0: Public key type EC/prime256v1 (256/128 Bits/secBits), signed using ecdsa-with-SHA256
+--- [11:22:57] direto (rede app): porta de saude 8081 sem TLS: /health/ready
+  curl exit=0 http=200
+--- [11:22:58] direto (rede app): porta de saude 8081: rota de negocio (404)
+  curl exit=0 http=404
+
+=================== [11:22:59] 7. Revogacao local: thumbprint do gateway na blocklist (recarregada sem reinicio) e volta
+thumbprint gateway-client: 5B689C20... (40 hex)
+--- [11:23:02] direto (rede app): gateway bloqueado: handshake NOVO recusado
+  curl exit=56 http=000
+  * SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / x25519 / id-ecPublicKey
+  * Server certificate:
+  *  SSL certificate verify ok.
+  *   Certificate level 0: Public key type EC/prime256v1 (256/128 Bits/secBits), signed using ecdsa-with-SHA256
+--- [11:23:03] pelo gateway com o cliente bloqueado, conexao do pool ainda aberta (200 esperado: o handshake nao se repete; PooledConnectionLifetime=2 min limita a janela)
+status: HTTP/1.1 200 OK
+  hdr: Content-Type: application/json; charset=utf-8
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"64.80","debits":"0.00","dailyNet":"64.80","entriesCount":1,"asOf":"2026-10-29T11:22:34.128788Z"}
+--- [11:23:04] docker compose restart gateway (forca conexoes novas; equivale a esperar o fim da vida do pool)
+--- [11:23:12] pelo gateway apos restart, cliente bloqueado (502, sem vazar o destino)
+status: HTTP/1.1 502 Bad Gateway
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.6.3","title":"Serviço indisponível.","status":502,"traceId":"00-8cf851ab0da241c12c477f844762c43d-1a62c22741421422-01"}
+--- [11:23:16] blocklist limpa: pelo gateway de novo (200)
+status: HTTP/1.1 200 OK
+  hdr: Content-Type: application/json; charset=utf-8
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"64.80","debits":"0.00","dailyNet":"64.80","entriesCount":1,"asOf":"2026-10-29T11:22:34.128788Z"}
+
+=================== [11:23:16] 8. Logs de seguranca (sem token): gateway e transactions-api
+      2 "Message":"mTLS para as APIs: certificado de cliente CN=gateway.internal (expira 2027-04-27 08:43:25Z); servidores validados contra CA local.
+      2 "Message":"Listener de neg\u00F3cio com TLS: certificado de servidor CN=gateway (expira 2027-04-27 08:43:25Z); certificado de cliente n\u00E3o exigido (borda).
+      2 "Message":"Authentication:JwtBearer:AllowHttpMetadata=true: documento OIDC/JWKS obtido por HTTP sem TLS (keycloak). Aceit\u00E1vel s\u00F3 com o IdP local do Compose; em qualquer outro ambiente isto \u00E9 um GA
+      1 "Message":"Listener de neg\u00F3cio com TLS: certificado de servidor CN=transactions-api (expira 2027-04-27 08:43:25Z); certificado de cliente obrigat\u00F3rio, nomes acei
+
+[11:23:17] fim. Stack permanece de pe (Compose base).
+
+limpeza: blocklist restaurada (vazia)
+exit=0

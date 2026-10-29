@@ -1,0 +1,8 @@
+# GAP-F5-10: KeycloakFixture (Testcontainers) com WithCreateParameterModifier HostIP=127.0.0.1 - verificado com docker ps/inspect durante 'dotnet test --filter GatewayEdgeTests.UpstreamUnreachable' (2026-10-29)
+[11:28:57] docker ps (Testcontainers Keycloak):
+quirky_zhukovsky | quay.io/keycloak/keycloak:26.8.1 | 127.0.0.1:49590->8080/tcp, 127.0.0.1:49682->9000/tcp
+docker inspect PortBindings:
+{"8080/tcp":[{"HostIp":"127.0.0.1","HostPort":"49590"}],"9000/tcp":[{"HostIp":"127.0.0.1","HostPort":""}]}
+Passed!  - Failed:     0, Passed:     1, Skipped:     0, Total:     1, Duration: 2 s - CashFlow.Security.Tests.dll (net10.0)
+test exit=0
+

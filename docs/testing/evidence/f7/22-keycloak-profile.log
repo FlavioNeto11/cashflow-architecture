@@ -1,0 +1,14 @@
+# F7 22 - User Profile do realm cashflow (merchant_id) - 2026-10-29T14:21:01Z
+
+=================== [14:21:01.946] 1. token de admin (realm master, client admin-cli, grant password; credencial do .env, nao impressa)
+token de admin obtido (749 chars; nao impresso)
+
+=================== [14:21:02.124] 2. GET /admin/realms/cashflow/users/profile
+http=200
+atributos do User Profile: ['email', 'firstName', 'lastName', 'merchant_id', 'username']
+unmanagedAttributePolicy: None
+merchant_id.permissions: {"edit": ["admin"], "view": ["admin", "user"]}
+merchant_id.required: null | validations: ['pattern']
+OK: merchant_id.permissions.edit == ["admin"]
+rc_verificacao=0
+exit=0

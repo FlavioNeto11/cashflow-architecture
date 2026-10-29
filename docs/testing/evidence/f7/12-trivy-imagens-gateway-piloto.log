@@ -1,0 +1,39 @@
+# F7 12 - trivy (container efemero aquasec/trivy) sobre tar de imagem local - 2026-10-29T13:16:03Z
+Digest: sha256:790fd66d1697395d8693d1acaa1ea702406a20f109b6fc7bac8db623eca6c06c
+Status: Downloaded newer image for aquasec/trivy:latest
+docker.io/aquasec/trivy:latest
+total 117936
+drwxr-xr-x 1 Administrator 197121         0 Oct 29 10:16 .
+drwxr-xr-x 1 Administrator 197121         0 Oct 29 10:16 ..
+-rw-r--r-- 1 Administrator 197121 101155840 Oct 29 10:16 gateway.tar
+2026-10-29T13:16:18Z	INFO	[vulndb] Need to update DB
+2026-10-29T13:16:18Z	INFO	[vulndb] Downloading vulnerability DB...
+2026-10-29T13:16:18Z	INFO	[vulndb] Downloading artifact...	repo="mirror.gcr.io/aquasec/trivy-db:2"
+2026-10-29T13:16:35Z	INFO	[vulndb] Artifact successfully downloaded	repo="mirror.gcr.io/aquasec/trivy-db:2"
+2026-10-29T13:16:35Z	INFO	[vuln] Vulnerability scanning is enabled
+2026-10-29T13:16:49Z	INFO	Detected OS	family="ubuntu" version="24.04"
+2026-10-29T13:16:49Z	INFO	[ubuntu] Detecting vulnerabilities...	os_version="24.04" pkg_num=97
+2026-10-29T13:16:50Z	INFO	Number of language-specific files	num=3
+2026-10-29T13:16:50Z	INFO	[dotnet-core] Detecting vulnerabilities...
+
+Report Summary
+
+┌──────────────────────────────────────────────────────────────────────────────────┬─────────────┬─────────────────┐
+│                                      Target                                      │    Type     │ Vulnerabilities │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ /in/gateway.tar (ubuntu 24.04)                                                   │   ubuntu    │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ app/CashFlow.Gateway.deps.json                                                   │ dotnet-core │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ usr/share/dotnet/shared/Microsoft.AspNetCore.App/10.0.14/Microsoft.AspNetCore.A- │ dotnet-core │        0        │
+│ pp.deps.json                                                                     │             │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼─────────────┼─────────────────┤
+│ usr/share/dotnet/shared/Microsoft.NETCore.App/10.0.14/Microsoft.NETCore.App.dep- │ dotnet-core │        0        │
+│ s.json                                                                           │             │                 │
+└──────────────────────────────────────────────────────────────────────────────────┴─────────────┴─────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+exit-trivy=0
+exit=0

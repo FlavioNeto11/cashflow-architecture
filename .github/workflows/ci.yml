@@ -1,0 +1,55 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      DOTNET_NOLOGO: "true"
+      DOTNET_CLI_TELEMETRY_OPTOUT: "true"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore CashFlow.slnx
+
+      - name: Build (Release, avisos como erro conforme Directory.Build.props)
+        run: dotnet build CashFlow.slnx -c Release --no-restore
+
+      # Os testes de integração sobem PostgreSQL, RabbitMQ e Keycloak reais por Testcontainers (Docker do runner).
+      - name: Testes - Transactions.Api
+        run: dotnet test tests/CashFlow.Transactions.Api.Tests -c Release --no-build --logger trx --results-directory TestResults
+
+      - name: Testes - Consolidation
+        run: dotnet test tests/CashFlow.Consolidation.Tests -c Release --no-build --logger trx --results-directory TestResults
+
+      - name: Testes - Security
+        run: dotnet test tests/CashFlow.Security.Tests -c Release --no-build --logger trx --results-directory TestResults
+
+      - name: Testes - Persistence
+        run: dotnet test tests/CashFlow.Persistence.Tests -c Release --no-build --logger trx --results-directory TestResults
+
+      - name: Publicar resultados
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults/*.trx
+          if-no-files-found: ignore

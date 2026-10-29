@@ -1,0 +1,110 @@
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Persistence.Tests\bin\Release\net10.0\CashFlow.Persistence.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.14)
+[xUnit.net 00:00:00.44]   Discovering: CashFlow.Persistence.Tests
+[xUnit.net 00:00:00.48]   Discovered:  CashFlow.Persistence.Tests
+[xUnit.net 00:00:00.52]   Starting:    CashFlow.Persistence.Tests
+  Passed CashFlow.Persistence.Tests.ConnectionBudgetTests.ConsolidationApi_TwoInstancesOf12_FitIn25 [338 ms]
+  Passed CashFlow.Persistence.Tests.ConnectionBudgetTests.AppSettings_HasNoConnectionStrings_SoMissingEnvironmentFailsAtStartup(project: "CashFlow.Consolidation.Api") [< 1 ms]
+  Passed CashFlow.Persistence.Tests.ConnectionBudgetTests.AppSettings_HasNoConnectionStrings_SoMissingEnvironmentFailsAtStartup(project: "CashFlow.Transactions.Api") [< 1 ms]
+  Passed CashFlow.Persistence.Tests.ConnectionBudgetTests.ComposeDeclaresPoolsForEveryRoleThatConnects [1 ms]
+  Passed CashFlow.Persistence.Tests.ConnectionBudgetTests.TransactionsApi_DefaultAndPublisherPools_FitInTxAppLimit [3 ms]
+  Passed CashFlow.Persistence.Tests.ConnectionBudgetTests.SumOfPoolsTimesInstances_FitsRoleConnectionLimit(role: "migrator") [1 ms]
+  Passed CashFlow.Persistence.Tests.ConnectionBudgetTests.SumOfPoolsTimesInstances_FitsRoleConnectionLimit(role: "cons_worker") [< 1 ms]
+  Passed CashFlow.Persistence.Tests.ConnectionBudgetTests.SumOfPoolsTimesInstances_FitsRoleConnectionLimit(role: "tx_app") [< 1 ms]
+  Passed CashFlow.Persistence.Tests.ConnectionBudgetTests.SumOfPoolsTimesInstances_FitsRoleConnectionLimit(role: "cons_ro") [< 1 ms]
+[testcontainers.org 00:00:00.13] Connected to Docker:
+  Host: npipe://./pipe/docker_engine
+  Server Version: 29.7.2
+  Kernel Version: 6.18.33.2-microsoft-standard-WSL2
+  API Version: 1.55
+  Operating System: Docker Desktop
+  Total Memory: 7.76 GB
+  Labels: 
+    com.docker.desktop.address=npipe://\\.\pipe\docker_cli
+[testcontainers.org 00:00:00.44] Docker container 779e9f279f6a created
+[testcontainers.org 00:00:00.49] Start Docker container 779e9f279f6a
+[testcontainers.org 00:00:00.81] Wait for Docker container 779e9f279f6a to complete readiness checks
+  Passed CashFlow.Persistence.Tests.ConnectionBudgetTests.SumOfPoolsTimesInstances_FitsRoleConnectionLimit(role: "recon_ro") [< 1 ms]
+  Passed CashFlow.Persistence.Tests.ConnectionBudgetTests.SumOfPoolsTimesInstances_FitsRoleConnectionLimit(role: "recon_writer") [< 1 ms]
+  Passed CashFlow.Persistence.Tests.ConnectionBudgetTests.EveryComposeConnectionString_ParsesAndDeclaresExplicitPoolSize [2 ms]
+[testcontainers.org 00:00:01.87] Docker container 779e9f279f6a ready
+[testcontainers.org 00:00:02.04] Docker container ec90c42f83fa created
+[testcontainers.org 00:00:02.15] Add file to tar archive: Source file: "C:\git\cashflow-architecture\infra\postgres\init\01-roles.sql", Target file: "/docker-entrypoint-initdb.d/01-roles.sql", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.15] Add file to tar archive: Source file: "C:\git\cashflow-architecture\infra\postgres\init\02-databases.sql", Target file: "/docker-entrypoint-initdb.d/02-databases.sql", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.15] Add file to tar archive: Source file: "C:\git\cashflow-architecture\infra\postgres\init\03-role-timeouts.sql", Target file: "/docker-entrypoint-initdb.d/03-role-timeouts.sql", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.16] Copy tar archive to container: Content length: 3905 byte(s), Docker container: ec90c42f83fa
+[testcontainers.org 00:00:02.18] Start Docker container ec90c42f83fa
+[testcontainers.org 00:00:02.44] Wait for Docker container ec90c42f83fa to complete readiness checks
+[testcontainers.org 00:00:02.46] Execute "pg_isready -h 127.0.0.1 -U postgres" at Docker container ec90c42f83fa
+[testcontainers.org 00:00:03.63] Execute "pg_isready -h 127.0.0.1 -U postgres" at Docker container ec90c42f83fa
+[testcontainers.org 00:00:04.71] Execute "pg_isready -h 127.0.0.1 -U postgres" at Docker container ec90c42f83fa
+[testcontainers.org 00:00:04.87] Docker container ec90c42f83fa ready
+  Passed CashFlow.Persistence.Tests.RoleAndHealthTests.ApplicationRoles_HaveNoTemporaryPrivilege(database: "consolidation_db", role: "cons_ro") [154 ms]
+  Passed CashFlow.Persistence.Tests.RoleAndHealthTests.ApplicationRoles_HaveNoTemporaryPrivilege(database: "consolidation_db", role: "cons_worker") [14 ms]
+  Passed CashFlow.Persistence.Tests.RoleAndHealthTests.ApplicationRoles_HaveNoTemporaryPrivilege(database: "consolidation_db", role: "recon_writer") [11 ms]
+  Passed CashFlow.Persistence.Tests.RoleAndHealthTests.ApplicationRoles_HaveNoTemporaryPrivilege(database: "transactions_db", role: "recon_ro") [11 ms]
+  Passed CashFlow.Persistence.Tests.RoleAndHealthTests.ApplicationRoles_HaveNoTemporaryPrivilege(database: "transactions_db", role: "tx_app") [7 ms]
+  Passed CashFlow.Persistence.Tests.RoleAndHealthTests.MissingConnectionString_FailsEarly [261 ms]
+  Passed CashFlow.Persistence.Tests.RoleAndHealthTests.ConnectPrivilege_IsRevokedFromPublicAndGrantedPerRole [92 ms]
+  Passed CashFlow.Persistence.Tests.RoleAndHealthTests.KeyedDataSource_IsRegisteredSeparatelyFromDefault [18 ms]
+  Passed CashFlow.Persistence.Tests.RoleAndHealthTests.ReadyHealthCheck_WithUnreachableDatabase_IsUnhealthy [2 s]
+  Passed CashFlow.Persistence.Tests.RoleAndHealthTests.Roles_HaveConnectionLimitsFromBudget [63 ms]
+  Passed CashFlow.Persistence.Tests.RoleAndHealthTests.Roles_TimeoutsExistOnlyOnConsolidationAndReconRoles [20 ms]
+  Passed CashFlow.Persistence.Tests.RoleAndHealthTests.ReadyHealthCheck_WithReachableDatabase_IsHealthy [39 ms]
+  Passed CashFlow.Persistence.Tests.RoleAndHealthTests.ApplicationRoles_CannotConnectToAdministrativeDatabase [12 ms]
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de TransactionsDbContext aplicadas.","State":{"Context":"TransactionsDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de TransactionsDbContext aplicadas.","State":{"Context":"TransactionsDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de TransactionsDbContext aplicadas.","State":{"Context":"TransactionsDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de TransactionsDbContext aplicadas.","State":{"Context":"TransactionsDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+  Passed CashFlow.Persistence.Tests.ReconRoGrantsTests.ReconRo_HasSelectOnlyOnTransactions_AndNothingElse [1 s]
+  Passed CashFlow.Persistence.Tests.MigrationTests.EfSchema_HasNoUsageForApplicationRoles(database: "consolidation_db", role: "cons_worker") [329 ms]
+  Passed CashFlow.Persistence.Tests.MigrationTests.EfSchema_HasNoUsageForApplicationRoles(database: "transactions_db", role: "tx_app") [107 ms]
+  Passed CashFlow.Persistence.Tests.MigrationTests.EfSchema_HasNoUsageForApplicationRoles(database: "consolidation_db", role: "recon_writer") [39 ms]
+  Passed CashFlow.Persistence.Tests.MigrationTests.EfSchema_HasNoUsageForApplicationRoles(database: "transactions_db", role: "recon_ro") [41 ms]
+  Passed CashFlow.Persistence.Tests.MigrationTests.EfSchema_HasNoUsageForApplicationRoles(database: "consolidation_db", role: "cons_ro") [45 ms]
+  Passed CashFlow.Persistence.Tests.MigrationTests.Migrate_TransactionsContext_AppliesInitialAsMigratorRole [57 ms]
+  Passed CashFlow.Persistence.Tests.MigrationTests.Migrate_ConsolidationContext_AppliesInitialAsMigratorRole [56 ms]
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de TransactionsDbContext aplicadas.","State":{"Context":"TransactionsDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Error","Category":"CashFlow.Hosting.MigrationCommand","Message":"Falha ao migrar TransactionsDbContext.","Exception":"Npgsql.PostgresException (0x80004005): 28P01: password authentication failed for user \u0022migrator\u0022\r\n   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)\r\n   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder\u00601.StateMachineBox\u00601.System.Threading.Tasks.Sources.IValueTaskSource\u003CTResult\u003E.GetResult(Int16 token)\r\n   at Npgsql.Internal.NpgsqlConnector.AuthenticateSASL(List\u00601 mechanisms, String username, Boolean async, CancellationToken cancellationToken)\r\n   at Npgsql.Internal.NpgsqlConnector.Authenticate(String username, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)\r\n   at Npgsql.Internal.NpgsqlConnector.\u003COpen\u003Eg__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)\r\n   at Npgsql.Internal.NpgsqlConnector.\u003COpen\u003Eg__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)\r\n   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)\r\n   at Npgsql.UnpooledDataSource.Get(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)\r\n   at Npgsql.NpgsqlConnection.\u003COpen\u003Eg__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)\r\n   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)\r\n   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)\r\n   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)\r\n   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)\r\n   at Microsoft.EntityFrameworkCore.Migrations.HistoryRepository.GetAppliedMigrationsAsync(CancellationToken cancellationToken)\r\n   at Npgsql.EntityFrameworkCore.PostgreSQL.Migrations.Internal.NpgsqlHistoryRepository.GetAppliedMigrationsAsync(CancellationToken cancellationToken)\r\n   at Npgsql.EntityFrameworkCore.PostgreSQL.Migrations.Internal.NpgsqlMigrator.MigrateAsync(String targetMigration, CancellationToken cancellationToken)\r\n   at CashFlow.Hosting.MigrationCommand.RunAsync[TContext](IConfiguration configuration, Func\u00602 create, CancellationToken cancellationToken) in C:\\git\\cashflow-architecture\\src\\CashFlow.Hosting\\MigrationCommand.cs:line 55\r\n   at CashFlow.Hosting.MigrationCommand.RunAsync[TContext](IConfiguration configuration, Func\u00602 create, CancellationToken cancellationToken) in C:\\git\\cashflow-architecture\\src\\CashFlow.Hosting\\MigrationCommand.cs:line 57\r\n  Exception data:\r\n    Severity: FATAL\r\n    SqlState: 28P01\r\n    MessageText: password authentication failed for user \u0022migrator\u0022\r\n    File: auth.c\r\n    Line: 329\r\n    Routine: auth_failed","State":{"Context":"TransactionsDbContext","{OriginalFormat}":"Falha ao migrar {Context}."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de TransactionsDbContext aplicadas.","State":{"Context":"TransactionsDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de TransactionsDbContext aplicadas.","State":{"Context":"TransactionsDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Error","Category":"CashFlow.Hosting.MigrationCommand","Message":"ConnectionStrings__Migrator n\u00E3o definida; migra\u00E7\u00E3o de TransactionsDbContext abortada.","State":{"Context":"TransactionsDbContext","{OriginalFormat}":"ConnectionStrings__Migrator n\u00E3o definida; migra\u00E7\u00E3o de {Context} abortada."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+  Passed CashFlow.Persistence.Tests.MigrationTests.ApplicationRole_CannotTamperWithMigrationHistory [55 ms]
+  Passed CashFlow.Persistence.Tests.MigrationTests.Migrate_WithWrongPassword_ExitsWith1 [28 ms]
+  Passed CashFlow.Persistence.Tests.MigrationTests.ApplicationRole_CannotCreateTables [9 ms]
+  Passed CashFlow.Persistence.Tests.MigrationTests.Migrate_CalledTwice_IsIdempotent [75 ms]
+  Passed CashFlow.Persistence.Tests.MigrationTests.Migrate_WithoutMigratorConnectionString_ExitsWith1 [1 ms]
+  Passed CashFlow.Persistence.Tests.ConsolidationGrantsTests.Role_HasExactlyTheExpectedTablePrivileges(role: "recon_writer", table: "processed_messages", expected: "SELECT,INSERT,DELETE") [60 ms]
+  Passed CashFlow.Persistence.Tests.ConsolidationGrantsTests.Role_HasExactlyTheExpectedTablePrivileges(role: "cons_worker", table: "daily_consolidations", expected: "SELECT,INSERT,UPDATE") [57 ms]
+  Passed CashFlow.Persistence.Tests.ConsolidationGrantsTests.Role_HasExactlyTheExpectedTablePrivileges(role: "cons_ro", table: "reconciliation_runs", expected: "") [50 ms]
+  Passed CashFlow.Persistence.Tests.ConsolidationGrantsTests.Role_HasExactlyTheExpectedTablePrivileges(role: "cons_worker", table: "reconciliation_runs", expected: "") [60 ms]
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+[testcontainers.org 00:00:10.17] Delete Docker container ec90c42f83fa
+[xUnit.net 00:00:11.69]   Finished:    CashFlow.Persistence.Tests
+  Passed CashFlow.Persistence.Tests.ConsolidationGrantsTests.Role_HasExactlyTheExpectedTablePrivileges(role: "recon_writer", table: "reconciliation_runs", expected: "SELECT,INSERT") [54 ms]
+  Passed CashFlow.Persistence.Tests.ConsolidationGrantsTests.Role_HasExactlyTheExpectedTablePrivileges(role: "recon_writer", table: "daily_consolidations", expected: "SELECT,INSERT,UPDATE") [45 ms]
+  Passed CashFlow.Persistence.Tests.ConsolidationGrantsTests.Role_HasExactlyTheExpectedTablePrivileges(role: "cons_ro", table: "daily_consolidations", expected: "SELECT") [53 ms]
+  Passed CashFlow.Persistence.Tests.ConsolidationGrantsTests.Role_HasExactlyTheExpectedTablePrivileges(role: "cons_ro", table: "processed_messages", expected: "") [54 ms]
+  Passed CashFlow.Persistence.Tests.ConsolidationGrantsTests.Role_HasExactlyTheExpectedTablePrivileges(role: "cons_worker", table: "processed_messages", expected: "SELECT,INSERT") [69 ms]
+  Passed CashFlow.Persistence.Tests.ConsolidationGrantsTests.ConsWorker_CannotDeleteFromInbox_ButReconWriterCan [76 ms]
+  Passed CashFlow.Persistence.Tests.ConsolidationGrantsTests.ConsRo_CannotWriteTheProjection [62 ms]
+
+Test Run Successful.
+Total tests: 49
+     Passed: 49
+ Total time: 12,3343 Seconds

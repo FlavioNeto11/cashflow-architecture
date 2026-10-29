@@ -1,0 +1,12 @@
+# custo do healthcheck por processo .NET (--healthcheck), medido 2026-10-29T08:23:14Z; host Windows/Docker Desktop, valores indicativos
+exec 1: rc=0 639 ms (inclui docker exec)
+exec 2: rc=0 607 ms (inclui docker exec)
+exec 3: rc=0 558 ms (inclui docker exec)
+exec 4: rc=0 627 ms (inclui docker exec)
+exec 5: rc=0 548 ms (inclui docker exec)
+cashflow-transactions-api-1 cpu=0.28% mem=82.03MiB / 7.756GiB
+cashflow-consolidation-api-1 cpu=0.18% mem=72.62MiB / 7.756GiB
+cashflow-consolidation-worker-1 cpu=10.85% mem=42.71MiB / 7.756GiB
+cashflow-rabbitmq-1 cpu=14.95% mem=144.7MiB / 7.756GiB
+cashflow-postgres-1 cpu=0.15% mem=63.23MiB / 7.756GiB
+cashflow-otel-collector-1 cpu=0.08% mem=38.69MiB / 7.756GiB

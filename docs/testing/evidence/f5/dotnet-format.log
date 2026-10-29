@@ -1,0 +1,2 @@
+$ dotnet format CashFlow.slnx --verify-no-changes
+exit=0

@@ -1,0 +1,42 @@
+# F7 11 - vulnerabilidades NuGet e imagens - 2026-10-29T13:15:35Z
+dotnet: 10.0.403
+--- dotnet list package --vulnerable --include-transitive (CashFlow.slnx)
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+   C:\Program Files (x86)\Microsoft SDKs\NuGetPackages\
+
+The given project `CashFlow.Consolidation.Api` has no vulnerable packages given the current sources.
+The given project `CashFlow.Consolidation.Persistence` has no vulnerable packages given the current sources.
+The given project `CashFlow.Consolidation.Worker` has no vulnerable packages given the current sources.
+The given project `CashFlow.Gateway` has no vulnerable packages given the current sources.
+The given project `CashFlow.Hosting` has no vulnerable packages given the current sources.
+The given project `CashFlow.Messaging` has no vulnerable packages given the current sources.
+The given project `CashFlow.ReconTool` has no vulnerable packages given the current sources.
+The given project `CashFlow.Transactions.Api` has no vulnerable packages given the current sources.
+The given project `CashFlow.Consolidation.Tests` has no vulnerable packages given the current sources.
+The given project `CashFlow.Persistence.Tests` has no vulnerable packages given the current sources.
+The given project `CashFlow.Security.Tests` has no vulnerable packages given the current sources.
+The given project `CashFlow.Transactions.Api.Tests` has no vulnerable packages given the current sources.
+exit-list=0
+--- ferramentas de imagem
+trivy: nao instalado
+grype: nao instalado
+
+      ⢀⢀⢀             ⣀⣀⡤⣔⢖⣖⢽⢝
+   ⡠⡢⡣⡣⡣⡣⡣⡣⡢⡀    ⢀⣠⢴⡲⣫⡺⣜⢞⢮⡳⡵⡹⡅
+--- docker scout quickview (imagem local)
+    i New version 1.29.0 available (installed version is 1.24.0) at https://github.com/docker/scout-cli
+Log in with your Docker ID or email address to use docker scout.
+
+If you don't have a Docker ID, head over to https://hub.docker.com to
+create one. You can log in with your password or a Personal Access Token (PAT)
+by running docker login.
+Using a limited-scope PAT grants better security and is required for organizations
+using SSO. Learn more at https://docs.docker.com/go/access-tokens/
+
+You can also log in using Docker Desktop.
+exit-scout=0
+exit=0

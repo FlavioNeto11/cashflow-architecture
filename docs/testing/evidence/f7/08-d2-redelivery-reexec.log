@@ -1,0 +1,36 @@
+# F7 08 - redelivery / DLQ / redrive / purge - 2026-10-29T14:05:21Z
+estado inicial: DLQ(rabbitmqctl)=0 fila principal=0 consumidores: consolidation.transaction-registered 1
+
+=================== [14:05:28.309] D2. redelivery do MESMO evento (5x) -> sem dupla contabilizacao (COM prova de consumo: routed:true 5x e 5 linhas 'Reentrega ... sem efeito' no worker)
+POST A 12.34 em 2026-03-10 -> 201
+[14:05:30.509] converge(2026-03-10): fonte='124.68 0.00 3' consolidado='124.68 0.00 3' apos 1s -> IGUAL
+eventId=01a187fa-e782-7b41-b079-b5e7c0043c7e transactionId=01a187fa-e782-7b96-88ff-2729d5b7778e; linhas de outbox com este eventId: 1
+  OK: a transacao deste POST e a que acabou de ser aplicada (credito 12.34 na fonte para a chave f7-d2-1793282721) = 12.34
+baseline apos o 1o processamento: projecao='124.68 0.00 3' Inbox=3
+  publish #1 -> {"routed":true}
+  publish #2 -> {"routed":true}
+  publish #3 -> {"routed":true}
+  publish #4 -> {"routed":true}
+  publish #5 -> {"routed":true}
+  OK: publicacoes com routed:true = 5
+linhas 'Reentrega' do worker para a transactionId 01a187fa-e782-7b96-88ff-2729d5b7778e (UUID novo: so podem ser deste teste): 5 (apos 1s)
+  OK: linhas 'Reentrega do lancamento 01a187fa-e782-7b96-88ff-2729d5b7778e ... sem efeito' no log do worker = 5
+  OK: projecao (credits debits count) inalterada apos 5 redeliveries = 124.68 0.00 3
+  OK: Inbox: linhas da data inalteradas = 3
+  OK: DLQ nao cresceu (duplicata e ACK, nao DLQ) = 0
+  OK: fila principal vazia = 0
+
+=================== [14:05:39.831] estado final
+  rabbitmqctl: name messages_ready messages_unacknowledged consumers
+  rabbitmqctl: consolidation.dlq 0 0 0
+  rabbitmqctl: consolidation.transaction-registered 0 0 1
+NAME                              STATUS
+cashflow-consolidation-api-1      Up About an hour (healthy)
+cashflow-consolidation-worker-1   Up 56 minutes (healthy)
+cashflow-gateway-1                Up About an hour (healthy)
+cashflow-keycloak-1               Up 3 hours (healthy)
+cashflow-postgres-1               Up 3 hours (healthy)
+cashflow-rabbitmq-1               Up About an hour (healthy)
+cashflow-transactions-api-1       Up About an hour (healthy)
+FALHAS=0
+exit=0

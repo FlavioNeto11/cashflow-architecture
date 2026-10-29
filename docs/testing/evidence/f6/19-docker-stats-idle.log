@@ -1,0 +1,9 @@
+# docker stats --no-stream, capturado em 2026-10-29T08:28:03Z (stack dev + otel-collector, sem carga; amostra unica). Soma da coluna MEM USAGE = ~1,05 GiB (35,05+42,25+120,1+88,92+77,14+39,3+671,3 = 1074,06 MiB)
+NAME                              CPU %     MEM USAGE / LIMIT
+cashflow-postgres-1               0.25%     35.05MiB / 7.756GiB
+cashflow-consolidation-worker-1   0.01%     42.25MiB / 7.756GiB
+cashflow-rabbitmq-1               0.66%     120.1MiB / 7.756GiB
+cashflow-transactions-api-1       25.34%    88.92MiB / 7.756GiB
+cashflow-consolidation-api-1      0.06%     77.14MiB / 7.756GiB
+cashflow-otel-collector-1         0.03%     39.3MiB / 7.756GiB
+cashflow-keycloak-1               0.69%     671.3MiB / 7.756GiB

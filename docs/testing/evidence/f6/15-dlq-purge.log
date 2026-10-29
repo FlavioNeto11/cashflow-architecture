@@ -1,0 +1,4 @@
+# purge da DLQ local (dados de teste de F6) 2026-10-29T08:19:36Z
+consolidation.dlq	0
+Purging queue 'consolidation.dlq' in vhost '/' ...
+consolidation.dlq	0

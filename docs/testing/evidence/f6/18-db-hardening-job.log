@@ -1,0 +1,5 @@
+# job db-hardening (override descartavel; conecta em transactions_db porque migrator nao tem CONNECT em 'postgres') 2026-10-29T08:24:07Z
+# reaberto: worker le reconciliation_runs?    18 
+== /post-migrate/01-consolidation-least-privilege.sql
+== /post-migrate/02-transactions-least-privilege.sql
+# depois:    ERROR:  permission denied for table reconciliation_runs 

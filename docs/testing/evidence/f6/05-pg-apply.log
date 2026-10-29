@@ -1,0 +1,6 @@
+# apply post-migrate 2026-10-29T08:08:18Z
+== 01-consolidation-least-privilege.sql
+== 02-transactions-least-privilege.sql
+# segunda execucao (idempotencia)
+== 01-consolidation-least-privilege.sql
+== 02-transactions-least-privilege.sql

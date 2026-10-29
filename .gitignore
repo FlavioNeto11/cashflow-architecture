@@ -1,0 +1,42 @@
+# Ambiente de desenvolvimento / secrets
+.env
+.env.*
+!.env.example
+secrets/
+*.pfx
+*.p12
+*.pem
+*.key
+*.crt
+!.gitkeep
+# PKI local de demonstracao (F5): gerada por infra/pki/make-certs.sh, nunca versionada
+infra/pki/out/
+
+# .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+.vs/
+TestResults/
+coverage/
+*.coverage
+*.trx
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Python tooling
+__pycache__/
+*.pyc
+.venv/
+
+
+# Test perf outputs / generated results
+artifacts/
+*.log
+# Evidencias de verificacao sao versionadas (referenciadas por docs/testing/evidence-log.md)
+!docs/testing/evidence/**/*.log

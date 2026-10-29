@@ -1,0 +1,325 @@
+# F4 — stack do zero e cenarios de falha (verificacao) — 2026-10-29T07:44:04Z
+## 0. stack do zero
+ Volume cashflow_rabbitmq-data Removed 
+ Network cashflow_app Removed 
+ Network cashflow_data Removed 
+ Container cashflow-migrations-cons-1 Starting 
+ Container cashflow-migrations-cons-1 Started 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-tx-1 Started 
+ Container cashflow-migrations-tx-1 Waiting 
+ Container cashflow-migrations-tx-1 Exited 
+ Container cashflow-transactions-api-1 Starting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-api-1 Starting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-worker-1 Starting 
+ Container cashflow-transactions-api-1 Started 
+ Container cashflow-consolidation-worker-1 Started 
+ Container cashflow-consolidation-api-1 Started 
+up exit=0
+#17 DONE 0.0s
+ Image cashflow/recon-tool:dev Built 
+build recon-tool exit=0
+NAME                              STATUS
+cashflow-consolidation-api-1      Up 55 seconds (healthy)
+cashflow-consolidation-worker-1   Up 55 seconds (healthy)
+cashflow-keycloak-1               Up About a minute (healthy)
+cashflow-postgres-1               Up About a minute (healthy)
+cashflow-rabbitmq-1               Up About a minute (healthy)
+cashflow-transactions-api-1       Up 55 seconds (healthy)
+--- topologia declarada pela infraestrutura
+{"arguments":{},"auto_delete":false,"durable":true,"incoming":[],"internal":false,"name":"cashflow.transactions","outgoing":[],"type":"topic","user_who_performed_action":"rmq-internal","vhost":"/"}
+fila principal: quorum {'x-dead-letter-exchange': 'cashflow.dlx', 'x-dead-letter-strategy': 'at-least-once', 'x-delivery-limit': 5, 'x-overflow': 'reject-publish', 'x-queue-type': 'quorum'}
+fila consolidation.transaction-registered: messages=0 ready=0 unacked=0 consumers=1
+fila consolidation.dlq: messages=0 ready=0 unacked=0 consumers=0
+--- readiness
+18081: 200
+18083: 200
+18084 live: 200
+
+## 1. caminho feliz (RF-09): 100,00 + 35,20 -> 64,80 em 2026-10-29; retroativo 5,00 em 2026-10-01
+--- [07:45:20] credito 100.00 (k1)
+status: HTTP/1.1 201 Created
+  body: {"id":"01a1869e-e50b-7294-bc01-55afe09a0d1d","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"100.00","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T07:45:22.692987Z","reversalOf":null,"createdAt":"2026-10-29T07:45:22.692987Z"}
+
+--- [07:45:23] debito 35.20 (k2)
+status: HTTP/1.1 201 Created
+  body: {"id":"01a1869e-e867-7ce1-83de-2d115d1a1962","merchantId":"33333333-3333-4333-8333-333333333333","type":"DEBIT","amount":"35.20","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T07:45:23.559626Z","reversalOf":null,"createdAt":"2026-10-29T07:45:23.559626Z"}
+
+--- [07:45:23] retroativo 5.00 em 2026-10-01 (k3)
+status: HTTP/1.1 201 Created
+  body: {"id":"01a1869e-e91e-7a90-bb0b-b6352edce82d","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"5.00","currency":"BRL","effectiveDate":"2026-10-01","occurredAt":"2026-10-29T07:45:23.742555Z","reversalOf":null,"createdAt":"2026-10-29T07:45:23.742555Z"}
+
+[07:45:25] dailyNet(2026-10-29) = 64.80 (esperado 64.80) apos 2s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"100.00","debits":"35.20","dailyNet":"64.80","entriesCount":2,"asOf":"2026-10-29T07:45:23.559626Z"}
+[07:45:25] dailyNet(2026-10-01) = 5.00 (esperado 5.00) apos 1s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-01","currency":"BRL","credits":"5.00","debits":"0.00","dailyNet":"5.00","entriesCount":1,"asOf":"2026-10-29T07:45:23.742555Z"}
+--- [07:45:25] dia sem movimento -> zeros, asOf null
+status: HTTP/1.1 200 OK
+  body: {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-09-01","currency":"BRL","credits":"0.00","debits":"0.00","dailyNet":"0.00","entriesCount":0,"asOf":null}
+
+--- [07:45:25] closingBalance em 2026-10-01 -> 5.00
+status: HTTP/1.1 200 OK
+  body: {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-01","currency":"BRL","credits":"5.00","debits":"0.00","dailyNet":"5.00","entriesCount":1,"asOf":"2026-10-29T07:45:23.742555Z","closingBalance":"5.00","openingBalanceAssumption":"ZERO_AT_FIRST_DATE"}
+
+--- [07:45:25] closingBalance em 2026-10-29 -> 69.80
+status: HTTP/1.1 200 OK
+  body: {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"100.00","debits":"35.20","dailyNet":"64.80","entriesCount":2,"asOf":"2026-10-29T07:45:23.559626Z","closingBalance":"69.80","openingBalanceAssumption":"ZERO_AT_FIRST_DATE"}
+
+--- [07:45:25] sem principal -> 401
+status: HTTP/1.1 401 Unauthorized
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.2","title":"Não autenticado.","status":401,"traceId":"00-a2c3150ef6f6efb77eda59e50ca7c6e8-72a42afdb592ecd4-01"}
+
+--- [07:45:26] sem escopo consolidation.read -> 403
+status: HTTP/1.1 403 Forbidden
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.4","title":"Acesso negado.","status":403,"traceId":"00-09a3cc9a1143fbaebd9cc434b476806b-99c264ab7a965174-01"}
+
+--- [07:45:26] claim B na rota de A -> 404
+status: HTTP/1.1 404 Not Found
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Recurso não encontrado.","status":404,"traceId":"00-b48e59a5b5a397316fc7db2e11e9c2a6-84a36ef21c76721a-01"}
+
+--- [07:45:26] date invalida -> 400/422
+status: HTTP/1.1 422 Unprocessable Entity
+  body: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Dados inválidos.","status":422,"errors":{"date":["Informe um único 'date' no formato yyyy-MM-dd."]},"traceId":"00-b274ae74f8d0d47f2d37fe2d9963e3cf-4f3d17d0a3fbdcce-01"}
+
+0|3|0|
+fila consolidation.transaction-registered: messages=0 ready=0 unacked=0 consumers=1
+fila consolidation.dlq: messages=0 ready=0 unacked=0 consumers=0
+
+## 2. §10.3 consolidado parado (worker + api): POST continua 201; apos start, backlog aplicado
+ Container cashflow-consolidation-api-1 Stopped 
+ Container cashflow-consolidation-worker-1 Stopped 
+--- [07:45:28] credito 10.00 com consolidado parado (k4) -> 201
+status: HTTP/1.1 201 Created
+  body: {"id":"01a1869e-fb2e-7d95-8a80-21f083e177e4","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"10.00","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T07:45:28.366446Z","reversalOf":null,"createdAt":"2026-10-29T07:45:28.366446Z"}
+
+GET consolidado com api parada: 000conexao recusada (sem gateway ate F5)
+fila consolidation.transaction-registered: messages=0 ready=0 unacked=0 consumers=1
+ Container cashflow-consolidation-worker-1 Started 
+ Container cashflow-consolidation-api-1 Started 
+curl: (52) Empty reply from server
+[07:45:37] dailyNet(2026-10-29) = 74.80 (esperado 74.80) apos 2s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"110.00","debits":"35.20","dailyNet":"74.80","entriesCount":3,"asOf":"2026-10-29T07:45:28.366446Z"}
+
+## 3. §10.4 broker parado (RNF-01): POST 201; readiness da transactions-api saudavel; outbox acumula; broker volta -> publicado
+ Container cashflow-rabbitmq-1 Stopped 
+--- [07:45:38] credito 20.00 com broker parado (k5) -> 201
+status: HTTP/1.1 201 Created
+  body: {"id":"01a1869f-2289-7679-bdd3-35b2aa3e1eb3","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"20.00","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T07:45:38.441664Z","reversalOf":null,"createdAt":"2026-10-29T07:45:38.441664Z"}
+
+readiness tx-api com broker parado: 200 0.003412s | worker ready: 200 live: 200 | list_consumers: 0
+readiness tx-api com broker parado: 200 0.004133s | worker ready: 200 live: 200 | list_consumers: 0
+readiness tx-api com broker parado: 200 0.003343s | worker ready: 200 live: 200 | list_consumers: 0
+1|5|3|broker_unavailable
+ Container cashflow-rabbitmq-1 Started 
+[07:46:04] outbox pendentes=0 apos 9s
+0|5|4|broker_unavailable
+[07:46:05] dailyNet(2026-10-29) = 94.80 (esperado 94.80) apos 1s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"130.00","debits":"35.20","dailyNet":"94.80","entriesCount":4,"asOf":"2026-10-29T07:45:38.441664Z"}
+[07:46:06] list_consumers=1 (esperado 1) apos 1s
+worker ready apos broker voltar: 200 | compose health: healthy
+
+## 4. §10.5 / T-03 reentrega e replay: mesma mensagem publicada de novo (API de gestao) -> ROLLBACK + ACK, projecao inalterada
+evento duplicado: message-id=01a1869e-e551-7d26-a1f9-30aa62f372b9
+{"routed":true}
+[07:46:11] dailyNet(2026-10-29) = 94.80 (esperado 94.80) apos 1s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"130.00","debits":"35.20","dailyNet":"94.80","entriesCount":4,"asOf":"2026-10-29T07:45:38.441664Z"}
+inbox: 5 linhas (esperado = lancamentos de A: 5)
+--- docker kill do worker durante rajada de 10 POST (crash sem ACK); reinicio; soma deve bater com a fonte
+ Container cashflow-consolidation-worker-1 Stopped 
+201 201 201 201 201 201 201 201 201 201 
+fila consolidation.transaction-registered: messages=0 ready=0 unacked=0 consumers=1
+ Container cashflow-consolidation-worker-1 Started 
+[07:46:21] worker morto (SIGKILL) 0,4 s apos start
+fila consolidation.transaction-registered: messages=10 ready=10 unacked=0 consumers=0
+ Container cashflow-consolidation-worker-1 Started 
+[07:46:28] dailyNet(2026-10-29) = 104.80 (esperado 104.80) apos 2s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"140.00","debits":"35.20","dailyNet":"104.80","entriesCount":14,"asOf":"2026-10-29T07:46:13.601987Z"}
+
+## 5. §10.6 payload invalido -> DLQ com x-reason; projecao inalterada; infra fora NUNCA manda para a DLQ
+{"routed":true}
+{"routed":true}
+{"routed":true}
+fila consolidation.dlq: messages=0 ready=0 unacked=0 consumers=0
+DLQ: message_id= 11111111-1111-4111-8111-111111111111 x-reason= invalid_payload x-original-routing-key= transaction.registered.v1 x-death= nao payload= {"eventId":"11111111-1111-4111-8111-111111111111","type":"TransactionRegistered"
+DLQ: message_id= 11111111-1111-4111-8111-111111111112 x-reason= merchant_mismatch x-original-routing-key= transaction.registered.v1 x-death= nao payload= {"eventId":"11111111-1111-4111-8111-111111111112","type":"TransactionRegistered"
+DLQ: message_id= 11111111-1111-4111-8111-111111111113 x-reason= malformed_json x-original-routing-key= transaction.registered.v1 x-death= nao payload= nao-e-json
+[07:46:32] dailyNet(2026-10-29) = 104.80 (esperado 104.80) apos 1s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"140.00","debits":"35.20","dailyNet":"104.80","entriesCount":14,"asOf":"2026-10-29T07:46:13.601987Z"}
+--- pausa: consolidation_db sem conexoes (ALLOW_CONNECTIONS false + terminate cons_worker) durante 2 POST -> sem ACK, consumers=0, DLQ inalterada; volta -> aplicados uma vez
+ALTER DATABASE
+2
+--- [07:46:32] credito 2.00 com consolidation_db fora (k6) -> 201
+status: HTTP/1.1 201 Created
+  body: {"id":"01a1869f-f6aa-7d50-b811-032b0f7cb164","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"2.00","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T07:46:32.746101Z","reversalOf":null,"createdAt":"2026-10-29T07:46:32.746101Z"}
+
+--- [07:46:32] credito 3.00 com consolidation_db fora (k7) -> 201
+status: HTTP/1.1 201 Created
+  body: {"id":"01a1869f-f744-7ffc-b8c0-bb871779ab92","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"3.00","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T07:46:32.900879Z","reversalOf":null,"createdAt":"2026-10-29T07:46:32.900879Z"}
+
+[07:46:38] fila consolidation.transaction-registered: messages=0 ready=0 unacked=0 consumers=1 | list_consumers: 0 | worker live: 200 ready: 200 compose: healthy
+[07:46:44] fila consolidation.transaction-registered: messages=2 ready=1 unacked=1 consumers=1 | list_consumers: 0 | worker live: 200 ready: 200 compose: healthy
+[07:46:51] fila consolidation.transaction-registered: messages=2 ready=1 unacked=1 consumers=1 | list_consumers: 0 | worker live: 200 ready: 200 compose: healthy
+[07:46:58] fila consolidation.transaction-registered: messages=2 ready=1 unacked=1 consumers=1 | list_consumers: 0 | worker live: 200 ready: 200 compose: healthy
+[07:47:04] fila consolidation.transaction-registered: messages=2 ready=1 unacked=1 consumers=1 | list_consumers: 0 | worker live: 200 ready: 200 compose: healthy
+[07:47:11] fila consolidation.transaction-registered: messages=2 ready=1 unacked=1 consumers=1 | list_consumers: 0 | worker live: 200 ready: 200 compose: healthy
+[07:47:18] fila consolidation.transaction-registered: messages=2 ready=1 unacked=1 consumers=1 | list_consumers: 0 | worker live: 200 ready: 200 compose: healthy
+[07:47:25] fila consolidation.transaction-registered: messages=2 ready=1 unacked=1 consumers=1 | list_consumers: 0 | worker live: 200 ready: 200 compose: healthy
+[07:47:32] fila consolidation.transaction-registered: messages=2 ready=1 unacked=1 consumers=1 | list_consumers: 0 | worker live: 200 ready: 503 compose: healthy
+[07:47:38] fila consolidation.transaction-registered: messages=2 ready=1 unacked=1 consumers=1 | list_consumers: 0 | worker live: 200 ready: 503 compose: healthy
+[07:47:45] fila consolidation.transaction-registered: messages=2 ready=1 unacked=1 consumers=1 | list_consumers: 0 | worker live: 200 ready: 503 compose: healthy
+[07:47:52] fila consolidation.transaction-registered: messages=2 ready=1 unacked=1 consumers=1 | list_consumers: 0 | worker live: 200 ready: 503 compose: healthy
+[07:47:59] fila consolidation.transaction-registered: messages=2 ready=1 unacked=1 consumers=1 | list_consumers: 0 | worker live: 200 ready: 503 compose: healthy
+[07:48:06] fila consolidation.transaction-registered: messages=2 ready=1 unacked=1 consumers=1 | list_consumers: 0 | worker live: 200 ready: 503 compose: healthy
+[07:48:07] esperado ao fim da pausa (>60 s sem consumidor): ready=503, compose=unhealthy (C-21); DLQ inalterada
+DLQ antes=0 depois=3 (esperado igual)
+ALTER DATABASE
+[07:48:14] dailyNet(2026-10-29) = 109.80 (esperado 109.80) apos 7s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"145.00","debits":"35.20","dailyNet":"109.80","entriesCount":16,"asOf":"2026-10-29T07:46:32.900879Z"}
+--- retomada (P0 da verificacao, C-19): consumidor re-registrado em list_consumers; 3o lancamento consumido; ready volta a 200
+[07:48:16] list_consumers=1 (esperado 1) apos 1s
+[07:48:16] fila consolidation.transaction-registered: messages=2 ready=1 unacked=1 consumers=1 | worker ready: 200 compose: healthy
+--- [07:48:16] credito 1.00 apos a retomada (k-resume) -> 201
+status: HTTP/1.1 201 Created
+  body: {"id":"01a186a1-8d11-71bc-b4bb-3493d6a0e0ab","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"1.00","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T07:48:16.785886Z","reversalOf":null,"createdAt":"2026-10-29T07:48:16.785886Z"}
+
+[07:48:18] dailyNet(2026-10-29) = 110.80 (esperado 110.80) apos 2s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"146.00","debits":"35.20","dailyNet":"110.80","entriesCount":17,"asOf":"2026-10-29T07:48:16.785886Z"}
+[07:48:18] fila consolidation.transaction-registered: messages=2 ready=1 unacked=1 consumers=1 | list_consumers: 1 | worker ready: 200 compose: healthy
+--- worker: linhas de pausa/retomada
+      1 "Message":"Banco consolidation_db acess\u00EDvel novamente."
+      1 "Message":"Banco consolidation_db indispon\u00EDvel para o worker; consumo pausado at\u00E9 a sonda passar."
+      1 "Message":"Broker amqp://rabbitmq:5672/ indispon\u00EDvel para o worker (InvalidOperationException); reconectando com backoff."
+      1 "Message":"Consumo retomado na fila consolidation.transaction-registered."
+      1 "Message":"Falha de infraestrutura: consumo pausado (basic.cancel); a entrega aberta fica sem ACK."
+
+## 6. §10.7 / T-14a reconciliacao x evento em transito (opcao b)
+--- (i) broker parado -> POST 100,00 em 2026-10-02 -> recon -> broker volta -> 100,00 (nao 200,00)
+ Container cashflow-rabbitmq-1 Stopped 
+--- [07:48:20] credito 100.00 em 2026-10-02 com broker parado (k8) -> 201
+status: HTTP/1.1 201 Created
+  body: {"id":"01a186a1-9da5-7fa6-a35a-04eb8106dc09","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"100.00","currency":"BRL","effectiveDate":"2026-10-02","occurredAt":"2026-10-29T07:48:21.029637Z","reversalOf":null,"createdAt":"2026-10-29T07:48:21.029637Z"}
+
+ Container cashflow-recon-tool-run-cda6fc6f3a18 Creating 
+ Container cashflow-recon-tool-run-cda6fc6f3a18 Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+2026-10-02 corrected divergencias=1 catch_up=1 posse_lock_ms=118
+total: modo=reconcile linhas=1 divergencias=1 abortadas=0 posse_lock_max_ms=118
+recon exit=0
+[07:48:23] dailyNet(2026-10-02) = 100.00 (esperado 100.00) apos 1s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-02","currency":"BRL","credits":"100.00","debits":"0.00","dailyNet":"100.00","entriesCount":1,"asOf":"2026-10-29T07:48:21.029637Z"}
+ Container cashflow-rabbitmq-1 Started 
+[07:48:32] outbox pendentes=0 apos 7s
+[07:48:36] dailyNet(2026-10-02) = 100.00 (esperado 100.00) apos 1s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-02","currency":"BRL","credits":"100.00","debits":"0.00","dailyNet":"100.00","entriesCount":1,"asOf":"2026-10-29T07:48:21.029637Z"}
+inbox 2026-10-02: recon-tool:1
+--- (ii) linha 64,80 em 2026-10-03; broker parado; retroativo 5,00; recon -> 69,80; broker volta -> 69,80
+--- [07:48:36] credito 100.00 em 2026-10-03 (k9)
+status: HTTP/1.1 201 Created
+  body: {"id":"01a186a1-da8b-7f1f-a5d5-f361dfcacfee","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"100.00","currency":"BRL","effectiveDate":"2026-10-03","occurredAt":"2026-10-29T07:48:36.619282Z","reversalOf":null,"createdAt":"2026-10-29T07:48:36.619282Z"}
+
+--- [07:48:36] debito 35.20 em 2026-10-03 (k10)
+status: HTTP/1.1 201 Created
+  body: {"id":"01a186a1-db3e-74c7-bbe9-080ce8f8dcad","merchantId":"33333333-3333-4333-8333-333333333333","type":"DEBIT","amount":"35.20","currency":"BRL","effectiveDate":"2026-10-03","occurredAt":"2026-10-29T07:48:36.798539Z","reversalOf":null,"createdAt":"2026-10-29T07:48:36.798539Z"}
+
+[07:48:37] dailyNet(2026-10-03) = 64.80 (esperado 64.80) apos 1s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-03","currency":"BRL","credits":"100.00","debits":"35.20","dailyNet":"64.80","entriesCount":2,"asOf":"2026-10-29T07:48:36.798539Z"}
+ Container cashflow-rabbitmq-1 Stopped 
+--- [07:48:38] retroativo 5.00 em 2026-10-03 com broker parado (k11) -> 201
+status: HTTP/1.1 201 Created
+  body: {"id":"01a186a1-e0b3-7d7e-a805-4f472e1aba99","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"5.00","currency":"BRL","effectiveDate":"2026-10-03","occurredAt":"2026-10-29T07:48:38.195941Z","reversalOf":null,"createdAt":"2026-10-29T07:48:38.195941Z"}
+
+ Container cashflow-recon-tool-run-0e069e4f321d Creating 
+ Container cashflow-recon-tool-run-0e069e4f321d Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+2026-10-03 corrected divergencias=1 catch_up=1 posse_lock_ms=116
+total: modo=reconcile linhas=1 divergencias=1 abortadas=0 posse_lock_max_ms=116
+recon exit=0
+[07:48:40] dailyNet(2026-10-03) = 69.80 (esperado 69.80) apos 1s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-03","currency":"BRL","credits":"105.00","debits":"35.20","dailyNet":"69.80","entriesCount":3,"asOf":"2026-10-29T07:48:38.195941Z"}
+ Container cashflow-rabbitmq-1 Started 
+[07:48:50] outbox pendentes=0 apos 7s
+[07:48:53] dailyNet(2026-10-03) = 69.80 (esperado 69.80) apos 1s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-03","currency":"BRL","credits":"105.00","debits":"35.20","dailyNet":"69.80","entriesCount":3,"asOf":"2026-10-29T07:48:38.195941Z"}
+--- segunda execucao: 0 divergencias
+ Container cashflow-recon-tool-run-6f37c6bf48c8 Creating 
+ Container cashflow-recon-tool-run-6f37c6bf48c8 Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+2026-10-01 clean divergencias=0  posse_lock_ms=39
+2026-10-02 clean divergencias=0  posse_lock_ms=7
+2026-10-03 clean divergencias=0  posse_lock_ms=3
+2026-10-29 clean divergencias=0  posse_lock_ms=4
+total: modo=reconcile linhas=4 divergencias=0 abortadas=0 posse_lock_max_ms=39
+recon exit=0
+--- corrupcao induzida (credits+1 em 2026-10-03 como migrator) -> corrected_corruption -> 69,80
+UPDATE 1
+[07:48:56] dailyNet(2026-10-03) = 70.80 (esperado 70.80) apos 1s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-03","currency":"BRL","credits":"106.00","debits":"35.20","dailyNet":"70.80","entriesCount":3,"asOf":"2026-10-29T07:48:38.195941Z"}
+ Container cashflow-recon-tool-run-2b44828196a5 Creating 
+ Container cashflow-recon-tool-run-2b44828196a5 Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+2026-10-03 corrected divergencias=1 corrected_corruption=1 posse_lock_ms=111
+total: modo=reconcile linhas=1 divergencias=1 abortadas=0 posse_lock_max_ms=111
+recon exit=0
+[07:48:58] dailyNet(2026-10-03) = 69.80 (esperado 69.80) apos 1s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-03","currency":"BRL","credits":"105.00","debits":"35.20","dailyNet":"69.80","entriesCount":3,"asOf":"2026-10-29T07:48:38.195941Z"}
+--- rebuild de 2026-10-03 -> 69,80 e inbox reinserido
+ Container cashflow-recon-tool-run-a4027037f6e1 Creating 
+ Container cashflow-recon-tool-run-a4027037f6e1 Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+2026-10-03 corrected divergencias=0 rebuild=1 posse_lock_ms=114
+total: modo=rebuild linhas=1 divergencias=0 abortadas=0 posse_lock_max_ms=114
+rebuild exit=0
+[07:49:00] dailyNet(2026-10-03) = 69.80 (esperado 69.80) apos 1s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-03","currency":"BRL","credits":"105.00","debits":"35.20","dailyNet":"69.80","entriesCount":3,"asOf":"2026-10-29T07:48:38.195941Z"}
+--- dlq redrive --all: mensagem VALIDA ja aplicada colocada na DLX a mao + as 3 invalidas -> valida absorvida pelo Inbox; invalidas republicadas voltam a DLQ (politica da implementacao) ou sao recusadas (sem occurredAt legivel)
+{"routed":true}
+fila consolidation.dlq: messages=3 ready=3 unacked=0 consumers=0
+ Container cashflow-recon-tool-run-c552d016a8c3 Creating 
+ Container cashflow-recon-tool-run-c552d016a8c3 Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+11111111-1111-4111-8111-111111111111 republicada em cashflow.transactions (transaction.registered.v1) e removida da DLQ
+11111111-1111-4111-8111-111111111112 republicada em cashflow.transactions (transaction.registered.v1) e removida da DLQ
+11111111-1111-4111-8111-111111111113 recusada anomaly: occurredAt ilegível: retenção não verificável
+01a1869e-e551-7d26-a1f9-30aa62f372b9 republicada em cashflow.transactions (transaction.registered.v1) e removida da DLQ
+redrive: republicadas=3 recusadas=1 ignoradas=0 devolvidas_nesta_execucao=2
+
+redrive exit=0
+fila consolidation.dlq: messages=3 ready=3 unacked=0 consumers=0
+[07:49:07] dailyNet(2026-10-29) = 110.80 (esperado 110.80) apos 1s
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"146.00","debits":"35.20","dailyNet":"110.80","entriesCount":17,"asOf":"2026-10-29T07:48:16.785886Z"}
+reconciliation_runs por kind:
+{"catch_up": 1}|4
+{"dlq_redrive": 1}|3
+{"corrected_corruption": 1}|2
+{"rebuild": 1}|2
+{}|1
+{"anomaly": 1}|1
+
+## 7. cross-check fonte x projecao
+fonte (transactions, A) por data: 
+2026-10-01|5.00|0|1
+2026-10-02|100.00|0|1
+2026-10-03|105.00|35.20|3
+2026-10-29|146.00|35.20|17
+projecao (daily_consolidations, A): 
+2026-10-01|5.00|0.00|1
+2026-10-02|100.00|0.00|1
+2026-10-03|105.00|35.20|3
+2026-10-29|146.00|35.20|17
+inbox por consumer: 
+recon-tool|4
+worker|18
+lancamentos A: 22 | inbox A: 22
+0|22|4|broker_unavailable
+fila consolidation.transaction-registered: messages=0 ready=0 unacked=0 consumers=1
+fila consolidation.dlq: messages=3 ready=3 unacked=0 consumers=0
+## fim — 2026-10-29T07:49:10Z

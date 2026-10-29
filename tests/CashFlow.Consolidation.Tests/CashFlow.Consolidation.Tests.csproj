@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Integração de F4: PostgreSQL e RabbitMQ reais (Testcontainers) com os MESMOS arquivos de infra/ do Compose. -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Testcontainers.PostgreSql" />
+    <PackageReference Include="Testcontainers.RabbitMq" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CashFlow.Messaging\CashFlow.Messaging.csproj" />
+    <ProjectReference Include="..\..\src\CashFlow.Consolidation.Persistence\CashFlow.Consolidation.Persistence.csproj" />
+    <ProjectReference Include="..\..\src\CashFlow.Transactions.Api\CashFlow.Transactions.Api.csproj" />
+    <!-- recon-tool: Program com namespace (sem alias); ReconCli/Reconciler/DlqRedriver chamados direto. -->
+    <ProjectReference Include="..\..\src\CashFlow.ReconTool\CashFlow.ReconTool.csproj" />
+    <!-- Aliases: Worker, Consolidation.Api e Transactions.Api declaram "Program" no namespace global. -->
+    <ProjectReference Include="..\..\src\CashFlow.Consolidation.Worker\CashFlow.Consolidation.Worker.csproj" Aliases="worker" />
+    <ProjectReference Include="..\..\src\CashFlow.Consolidation.Api\CashFlow.Consolidation.Api.csproj" Aliases="consapi" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\CashFlow.Persistence.Tests\PostgresFixture.cs" Link="Support\PostgresFixture.cs" />
+    <Compile Include="..\CashFlow.Persistence.Tests\RepositoryPaths.cs" Link="Support\RepositoryPaths.cs" />
+    <Compile Include="..\CashFlow.Transactions.Api.Tests\Support\ApiClient.cs" Link="Support\ApiClient.cs" />
+  </ItemGroup>
+
+</Project>

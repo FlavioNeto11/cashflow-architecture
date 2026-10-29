@@ -1,0 +1,63 @@
+# 2026-10-29T10:39:07Z docker buildx imagetools inspect (digest do manifest list)
+=== postgres:17
+Name:      docker.io/library/postgres:17
+MediaType: application/vnd.oci.image.index.v1+json
+Digest:    sha256:31ba9c94a03ada9988f2bb493a22a75eef3a185884533e5cdbcd498ea835b08f
+           
+Manifests: 
+  Name:        docker.io/library/postgres:17@sha256:0b81cec82228160abfa753aeaad0609b709eb26eeb950f2e404ad2326e1cc370
+  MediaType:   application/vnd.oci.image.manifest.v1+json
+  Platform:    linux/amd64
+rc=0
+=== rabbitmq:4-management
+Name:      docker.io/library/rabbitmq:4-management
+MediaType: application/vnd.oci.image.index.v1+json
+Digest:    sha256:af6f50d38098d8bd52fef7f3fa85015dd8b2bf6def58e995bf584ae9ba0f6407
+           
+Manifests: 
+  Name:        docker.io/library/rabbitmq:4-management@sha256:9f48a2c0a501c5a7cf520d69eb3369ba85e614a195dde071f3dfa20077e54d26
+  MediaType:   application/vnd.oci.image.manifest.v1+json
+  Platform:    linux/amd64
+rc=0
+=== quay.io/keycloak/keycloak:26.8.1
+Name:      quay.io/keycloak/keycloak:26.8.1
+MediaType: application/vnd.oci.image.index.v1+json
+Digest:    sha256:a78d6b79572168cb25886b80a8b5b8d4ed4390743e3eecb810538683e209dd6b
+           
+Manifests: 
+  Name:        quay.io/keycloak/keycloak:26.8.1@sha256:3e1ac632e743660017b1e6bb4c3ffc800fd02c82cdd0db858cd03456a98a8dfc
+  MediaType:   application/vnd.oci.image.manifest.v1+json
+  Platform:    linux/amd64
+rc=0
+=== mcr.microsoft.com/dotnet/sdk:10.0
+Name:      mcr.microsoft.com/dotnet/sdk:10.0
+MediaType: application/vnd.docker.distribution.manifest.list.v2+json
+Digest:    sha256:de4fe90a98845d75910b9769662465c84de1a934665c431279d1382b2bddc02b
+           
+Manifests: 
+  Name:      mcr.microsoft.com/dotnet/sdk:10.0@sha256:9c7b6b263d9d4c2e4718e16dae6d75cd8f4b5ccf206f1e7d48a98eb429981b03
+  MediaType: application/vnd.docker.distribution.manifest.v2+json
+  Platform:  linux/amd64
+rc=0
+=== mcr.microsoft.com/dotnet/aspnet:10.0
+Name:      mcr.microsoft.com/dotnet/aspnet:10.0
+MediaType: application/vnd.docker.distribution.manifest.list.v2+json
+Digest:    sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee
+           
+Manifests: 
+  Name:      mcr.microsoft.com/dotnet/aspnet:10.0@sha256:43cbcf11fd6f88c0375c9c0f7fe59af619abeb323befe5f57dc1502b5a05d8c3
+  MediaType: application/vnd.docker.distribution.manifest.v2+json
+  Platform:  linux/amd64
+rc=0
+=== mcr.microsoft.com/dotnet/runtime:10.0
+Name:      mcr.microsoft.com/dotnet/runtime:10.0
+MediaType: application/vnd.docker.distribution.manifest.list.v2+json
+Digest:    sha256:a3f9f81954b9c810af2ed18849716c8dc74a4707bd0907fdbd69be81554c0f30
+           
+Manifests: 
+  Name:      mcr.microsoft.com/dotnet/runtime:10.0@sha256:de1261f1b137a580e6620fa3f20323efa7bb131a2aeb103cab95077d3445122d
+  MediaType: application/vnd.docker.distribution.manifest.v2+json
+  Platform:  linux/amd64
+rc=0
+=== rabbitmqctl version
+4.4.0

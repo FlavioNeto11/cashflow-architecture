@@ -1,0 +1,53 @@
+# F7 21-06 - 2026-10-29T14:37:07Z | gateway: sha256:aea4b28e0c3c | transactions-api: sha256:7ee170af2fba
+# F7 21-06 falha ambigua - run=143707 tentativas=45 data=2026-07-03 atrasos(ms)=[0, 0, 2, 5, 10, 20, 50, 100, 200] (ciclo)
+  000 atraso=  0ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  001 atraso=  0ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  002 atraso=  2ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  003 atraso=  5ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  004 atraso= 10ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  005 atraso= 20ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  006 atraso= 50ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  007 atraso=100ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  008 atraso=200ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  009 atraso=  0ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  010 atraso=  0ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  011 atraso=  2ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  012 atraso=  5ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  013 atraso= 10ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  014 atraso= 20ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  015 atraso= 50ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  016 atraso=100ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  017 atraso=200ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  018 atraso=  0ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  019 atraso=  0ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  020 atraso=  2ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  021 atraso=  5ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  022 atraso= 10ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  023 atraso= 20ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  024 atraso= 50ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  025 atraso=100ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  026 atraso=200ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  027 atraso=  0ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  028 atraso=  0ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  029 atraso=  2ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  030 atraso=  5ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  031 atraso= 10ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  032 atraso= 20ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  033 atraso= 50ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  034 atraso=100ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  035 atraso=200ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  036 atraso=  0ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  037 atraso=  0ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  038 atraso=  2ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  039 atraso=  5ms abort-ok | antes(tx,idem,outbox)=(0, 0, 0) | retry=HTTP 201 replayed=ausente | depois=(1, 1, 1) | NAO_PERSISTIDA_ANTES | OK
+  040 atraso= 10ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  041 atraso= 20ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  042 atraso= 50ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  043 atraso=100ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+  044 atraso=200ms abort-ok | antes(tx,idem,outbox)=(1, 1, 1) | retry=HTTP 201 replayed=true | depois=(1, 1, 1) | PERSISTIDA_ANTES_DO_RETRY | OK
+resumo (classe, status do retry, Idempotency-Replayed) -> n:
+  ('NAO_PERSISTIDA_ANTES', 201, 'ausente') -> 21
+  ('PERSISTIDA_ANTES_DO_RETRY', 201, 'true') -> 24
+tentativas=45 persistidas_antes_do_retry=24 nao_persistidas_antes=21 FALHAS=0
+JANELA AMBIGUA ATINGIDA (ha tentativas em que o cliente nao viu a resposta e o lancamento ja existia)
+exit=0

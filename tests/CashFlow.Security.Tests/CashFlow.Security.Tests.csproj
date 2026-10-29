@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- F5 (security.md 12): Keycloak real (Testcontainers, realm-export.json do repositorio), APIs reais com JwtBearer e
+       mTLS (CA e certificados gerados em memoria por TestPki), gateway real. T-07 (IdP fora), T-17 (mTLS), T-18
+       (tokens/escopo/tenant), T-28 (independencia A/B) e testes unitarios dos validadores. Exige Docker. -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Testcontainers.PostgreSql" />
+    <PackageReference Include="Testcontainers.Keycloak" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CashFlow.Consolidation.Persistence\CashFlow.Consolidation.Persistence.csproj" />
+    <ProjectReference Include="..\..\src\CashFlow.Transactions.Api\CashFlow.Transactions.Api.csproj" />
+    <!-- Aliases: Gateway e Consolidation.Api tambem declaram "Program" no namespace global. -->
+    <ProjectReference Include="..\..\src\CashFlow.Gateway\CashFlow.Gateway.csproj" Aliases="gateway" />
+    <ProjectReference Include="..\..\src\CashFlow.Consolidation.Api\CashFlow.Consolidation.Api.csproj" Aliases="consapi" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\CashFlow.Persistence.Tests\PostgresFixture.cs" Link="Support\PostgresFixture.cs" />
+    <Compile Include="..\CashFlow.Persistence.Tests\RepositoryPaths.cs" Link="Support\RepositoryPaths.cs" />
+    <Compile Include="..\CashFlow.Consolidation.Tests\Support\DatabasesFixture.cs" Link="Support\DatabasesFixture.cs" />
+    <Compile Include="..\CashFlow.Consolidation.Tests\Support\MetricCapture.cs" Link="Support\MetricCapture.cs" />
+    <Compile Include="..\CashFlow.Consolidation.Tests\Support\Eventually.cs" Link="Support\Eventually.cs" />
+  </ItemGroup>
+
+</Project>

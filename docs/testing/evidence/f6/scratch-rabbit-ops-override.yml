@@ -1,0 +1,5 @@
+services:
+  rabbitmq:
+    environment:
+      RABBITMQ_OPS_USER: ${RABBITMQ_OPS_USER:?}
+      RABBITMQ_OPS_PASS: ${RABBITMQ_OPS_PASS:?}

@@ -1,0 +1,309 @@
+# F7 09 - itens herdados testaveis - 2026-10-29T13:14:01Z
+
+=================== [13:14:01.411] I1. pageSize e Cache-Control nas respostas de erro (via gateway)
+pageSize=200 -> 200
+pageSize=201 -> 422
+pageSize=0 -> 422
+pageSize=abc -> 422
+  OK: pageSize=200 aceito = 200
+  OK: pageSize=201 rejeitado = 422
+--- [13:14:01.859] 422 (pageSize=201): cabecalhos de cache
+status: HTTP/1.1 422 Unprocessable Entity
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Dados inválidos.","status":422,"errors":{"pageSize":["Deve ser um inteiro entre 1 e 200."]},"traceId":"00-c09a1584c1b162408bb493b7f0fe7c67-246614f25160f86e-01"}
+--- [13:14:02.081] 404 de recurso inexistente da API (via gateway)
+status: HTTP/1.1 404 Not Found
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Recurso não encontrado.","status":404,"traceId":"00-197434322131938fc1f570a2f8fd02f7-2a38b5bbb10fd87b-01"}
+--- [13:14:02.304] 200 de referencia (consolidado)
+status: HTTP/1.1 200 OK
+  hdr: Content-Type: application/json; charset=utf-8
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-02-10","currency":"BRL","credits":"145.20","debits":"25.00","dailyNet":"120.20","entriesCount":5,"asOf":"2026-10-29T12:04:40.466844Z"}
+--- [13:14:02.536] 401 sem token
+status: HTTP/1.1 401 Unauthorized
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: WWW-Authenticate: Bearer realm="cashflow"
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.2","title":"Não autenticado.","status":401,"traceId":"00-27d5523dc2ae4019637dfea40c732e31-ed1d5fabf3a43121-01"}
+
+=================== [13:14:02.773] I2. privilegios por papel (information_schema, como postgres)
+--- transactions_db
+recon_ro transactions SELECT
+tx_app idempotency_keys DELETE,INSERT,SELECT,UPDATE
+tx_app outbox_messages INSERT,SELECT
+tx_app transactions INSERT,SELECT
+  colunas com grant proprio:
+    recon_ro transactions.amount SELECT
+    recon_ro transactions.created_at SELECT
+    recon_ro transactions.created_by_client_id SELECT
+    recon_ro transactions.created_by_sub SELECT
+    recon_ro transactions.currency SELECT
+    recon_ro transactions.description SELECT
+    recon_ro transactions.effective_date SELECT
+    recon_ro transactions.entry_type SELECT
+    recon_ro transactions.id SELECT
+    recon_ro transactions.merchant_id SELECT
+    recon_ro transactions.occurred_at SELECT
+    recon_ro transactions.reversal_of SELECT
+    tx_app idempotency_keys.created_at INSERT
+    tx_app idempotency_keys.created_at SELECT
+    tx_app idempotency_keys.created_at UPDATE
+    tx_app idempotency_keys.expires_at INSERT
+    tx_app idempotency_keys.expires_at SELECT
+    tx_app idempotency_keys.expires_at UPDATE
+    tx_app idempotency_keys.idempotency_key INSERT
+    tx_app idempotency_keys.idempotency_key SELECT
+    tx_app idempotency_keys.idempotency_key UPDATE
+    tx_app idempotency_keys.merchant_id INSERT
+    tx_app idempotency_keys.merchant_id SELECT
+    tx_app idempotency_keys.merchant_id UPDATE
+    tx_app idempotency_keys.request_hash INSERT
+    tx_app idempotency_keys.request_hash SELECT
+    tx_app idempotency_keys.request_hash UPDATE
+    tx_app idempotency_keys.response_body INSERT
+    tx_app idempotency_keys.response_body SELECT
+    tx_app idempotency_keys.response_body UPDATE
+    tx_app idempotency_keys.response_status INSERT
+    tx_app idempotency_keys.response_status SELECT
+    tx_app idempotency_keys.response_status UPDATE
+    tx_app idempotency_keys.transaction_id INSERT
+    tx_app idempotency_keys.transaction_id SELECT
+    tx_app idempotency_keys.transaction_id UPDATE
+    tx_app outbox_messages.aggregate_id INSERT
+    tx_app outbox_messages.aggregate_id SELECT
+    tx_app outbox_messages.attempts INSERT
+    tx_app outbox_messages.attempts SELECT
+    tx_app outbox_messages.attempts UPDATE
+    tx_app outbox_messages.headers INSERT
+    tx_app outbox_messages.headers SELECT
+    tx_app outbox_messages.id INSERT
+    tx_app outbox_messages.id SELECT
+    tx_app outbox_messages.last_error INSERT
+    tx_app outbox_messages.last_error SELECT
+    tx_app outbox_messages.last_error UPDATE
+    tx_app outbox_messages.locked_by INSERT
+    tx_app outbox_messages.locked_by SELECT
+    tx_app outbox_messages.locked_by UPDATE
+    tx_app outbox_messages.locked_until INSERT
+    tx_app outbox_messages.locked_until SELECT
+    tx_app outbox_messages.locked_until UPDATE
+    tx_app outbox_messages.merchant_id INSERT
+    tx_app outbox_messages.merchant_id SELECT
+    tx_app outbox_messages.next_attempt_at INSERT
+    tx_app outbox_messages.next_attempt_at SELECT
+    tx_app outbox_messages.next_attempt_at UPDATE
+    tx_app outbox_messages.occurred_at INSERT
+    tx_app outbox_messages.occurred_at SELECT
+    tx_app outbox_messages.payload INSERT
+    tx_app outbox_messages.payload SELECT
+    tx_app outbox_messages.published_at INSERT
+    tx_app outbox_messages.published_at SELECT
+    tx_app outbox_messages.published_at UPDATE
+    tx_app outbox_messages.type INSERT
+    tx_app outbox_messages.type SELECT
+    tx_app outbox_messages.version INSERT
+    tx_app outbox_messages.version SELECT
+    tx_app transactions.amount INSERT
+    tx_app transactions.amount SELECT
+    tx_app transactions.created_at INSERT
+    tx_app transactions.created_at SELECT
+    tx_app transactions.created_by_client_id INSERT
+    tx_app transactions.created_by_client_id SELECT
+    tx_app transactions.created_by_sub INSERT
+    tx_app transactions.created_by_sub SELECT
+    tx_app transactions.currency INSERT
+    tx_app transactions.currency SELECT
+    tx_app transactions.description INSERT
+    tx_app transactions.description SELECT
+    tx_app transactions.effective_date INSERT
+    tx_app transactions.effective_date SELECT
+    tx_app transactions.entry_type INSERT
+    tx_app transactions.entry_type SELECT
+    tx_app transactions.id INSERT
+    tx_app transactions.id SELECT
+    tx_app transactions.merchant_id INSERT
+    tx_app transactions.merchant_id SELECT
+    tx_app transactions.occurred_at INSERT
+    tx_app transactions.occurred_at SELECT
+    tx_app transactions.reversal_of INSERT
+    tx_app transactions.reversal_of SELECT
+--- consolidation_db
+cons_ro daily_consolidations SELECT
+cons_worker daily_consolidations INSERT,SELECT,UPDATE
+cons_worker processed_messages INSERT,SELECT
+recon_writer daily_consolidations INSERT,SELECT,UPDATE
+recon_writer processed_messages DELETE,INSERT,SELECT
+recon_writer reconciliation_runs INSERT,SELECT
+  colunas com grant proprio:
+    cons_ro daily_consolidations.credits SELECT
+    cons_ro daily_consolidations.debits SELECT
+    cons_ro daily_consolidations.effective_date SELECT
+    cons_ro daily_consolidations.entries_count SELECT
+    cons_ro daily_consolidations.last_applied_at SELECT
+    cons_ro daily_consolidations.merchant_id SELECT
+    cons_ro daily_consolidations.updated_at SELECT
+    cons_worker daily_consolidations.credits INSERT
+    cons_worker daily_consolidations.credits SELECT
+    cons_worker daily_consolidations.credits UPDATE
+    cons_worker daily_consolidations.debits INSERT
+    cons_worker daily_consolidations.debits SELECT
+    cons_worker daily_consolidations.debits UPDATE
+    cons_worker daily_consolidations.effective_date INSERT
+    cons_worker daily_consolidations.effective_date SELECT
+    cons_worker daily_consolidations.effective_date UPDATE
+    cons_worker daily_consolidations.entries_count INSERT
+    cons_worker daily_consolidations.entries_count SELECT
+    cons_worker daily_consolidations.entries_count UPDATE
+    cons_worker daily_consolidations.last_applied_at INSERT
+    cons_worker daily_consolidations.last_applied_at SELECT
+    cons_worker daily_consolidations.last_applied_at UPDATE
+    cons_worker daily_consolidations.merchant_id INSERT
+    cons_worker daily_consolidations.merchant_id SELECT
+    cons_worker daily_consolidations.merchant_id UPDATE
+    cons_worker daily_consolidations.updated_at INSERT
+    cons_worker daily_consolidations.updated_at SELECT
+    cons_worker daily_consolidations.updated_at UPDATE
+    cons_worker processed_messages.consumer INSERT
+    cons_worker processed_messages.consumer SELECT
+    cons_worker processed_messages.effective_date INSERT
+    cons_worker processed_messages.effective_date SELECT
+    cons_worker processed_messages.event_id INSERT
+    cons_worker processed_messages.event_id SELECT
+    cons_worker processed_messages.merchant_id INSERT
+    cons_worker processed_messages.merchant_id SELECT
+    cons_worker processed_messages.processed_at INSERT
+    cons_worker processed_messages.processed_at SELECT
+    cons_worker processed_messages.transaction_id INSERT
+    cons_worker processed_messages.transaction_id SELECT
+    recon_writer daily_consolidations.credits INSERT
+    recon_writer daily_consolidations.credits SELECT
+    recon_writer daily_consolidations.credits UPDATE
+    recon_writer daily_consolidations.debits INSERT
+    recon_writer daily_consolidations.debits SELECT
+    recon_writer daily_consolidations.debits UPDATE
+    recon_writer daily_consolidations.effective_date INSERT
+    recon_writer daily_consolidations.effective_date SELECT
+    recon_writer daily_consolidations.effective_date UPDATE
+    recon_writer daily_consolidations.entries_count INSERT
+    recon_writer daily_consolidations.entries_count SELECT
+    recon_writer daily_consolidations.entries_count UPDATE
+    recon_writer daily_consolidations.last_applied_at INSERT
+    recon_writer daily_consolidations.last_applied_at SELECT
+    recon_writer daily_consolidations.last_applied_at UPDATE
+    recon_writer daily_consolidations.merchant_id INSERT
+    recon_writer daily_consolidations.merchant_id SELECT
+    recon_writer daily_consolidations.merchant_id UPDATE
+    recon_writer daily_consolidations.updated_at INSERT
+    recon_writer daily_consolidations.updated_at SELECT
+    recon_writer daily_consolidations.updated_at UPDATE
+    recon_writer processed_messages.consumer INSERT
+    recon_writer processed_messages.consumer SELECT
+    recon_writer processed_messages.effective_date INSERT
+    recon_writer processed_messages.effective_date SELECT
+    recon_writer processed_messages.event_id INSERT
+    recon_writer processed_messages.event_id SELECT
+    recon_writer processed_messages.merchant_id INSERT
+    recon_writer processed_messages.merchant_id SELECT
+    recon_writer processed_messages.processed_at INSERT
+    recon_writer processed_messages.processed_at SELECT
+    recon_writer processed_messages.transaction_id INSERT
+    recon_writer processed_messages.transaction_id SELECT
+    recon_writer reconciliation_runs.details INSERT
+    recon_writer reconciliation_runs.details SELECT
+    recon_writer reconciliation_runs.divergences INSERT
+    recon_writer reconciliation_runs.divergences SELECT
+    recon_writer reconciliation_runs.finished_at INSERT
+    recon_writer reconciliation_runs.finished_at SELECT
+    recon_writer reconciliation_runs.from_date INSERT
+    recon_writer reconciliation_runs.from_date SELECT
+    recon_writer reconciliation_runs.id INSERT
+    recon_writer reconciliation_runs.id SELECT
+    recon_writer reconciliation_runs.kinds INSERT
+    recon_writer reconciliation_runs.kinds SELECT
+    recon_writer reconciliation_runs.merchant_id INSERT
+    recon_writer reconciliation_runs.merchant_id SELECT
+    recon_writer reconciliation_runs.started_at INSERT
+    recon_writer reconciliation_runs.started_at SELECT
+    recon_writer reconciliation_runs.to_date INSERT
+    recon_writer reconciliation_runs.to_date SELECT
+  OK: tx_app NAO tem UPDATE em transactions = f
+  OK: tx_app NAO tem DELETE em transactions = f
+tx_app UPDATE/DELETE em idempotency_keys: t|t (esperado t,t para o expurgo por expires_at)
+
+=================== [13:14:05.851] I3. recon-tool: casos de borda
+--- rebuild de data sem lancamentos na fonte (2031-01-01)
+ Container cashflow-recon-tool-run-a2c76a1d99ed Creating 
+ Container cashflow-recon-tool-run-a2c76a1d99ed Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+total: modo=rebuild linhas=0 divergencias=0 abortadas=0 posse_lock_max_ms=0
+rebuild vazio exit=0
+--- reconcile com from > to
+  recon-tool reconcile --merchant <uuid> --from <yyyy-MM-dd> --to <yyyy-MM-dd>
+  recon-tool rebuild   --merchant <uuid> --from <yyyy-MM-dd> --to <yyyy-MM-dd>
+  recon-tool dlq redrive (--all | --id <message-id>)
+
+exit=64
+--- intervalo de 400 dias (teto 366)
+  recon-tool reconcile --merchant <uuid> --from <yyyy-MM-dd> --to <yyyy-MM-dd>
+  recon-tool rebuild   --merchant <uuid> --from <yyyy-MM-dd> --to <yyyy-MM-dd>
+  recon-tool dlq redrive (--all | --id <message-id>)
+
+exit=64
+--- comando desconhecido
+  recon-tool reconcile --merchant <uuid> --from <yyyy-MM-dd> --to <yyyy-MM-dd>
+  recon-tool rebuild   --merchant <uuid> --from <yyyy-MM-dd> --to <yyyy-MM-dd>
+  recon-tool dlq redrive (--all | --id <message-id>)
+
+exit=64
+
+=================== [13:14:12.699] I4. recon-tool x lock de linha mantido por 9 s (data 2026-06-05, A; massa criada no 07)
+ Container cashflow-recon-tool-run-8c53ea65823f Creating 
+ Container cashflow-recon-tool-run-8c53ea65823f Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+2026-06-05 aborted divergencias=0 lock_timeout=1 posse_lock_ms=0 linha ativa, repetir
+total: modo=reconcile linhas=1 divergencias=0 abortadas=1 posse_lock_max_ms=0
+
+recon exit=2 apos 4295 ms
+--- mesma reconciliacao sem o lock
+ Container cashflow-recon-tool-run-ef39f560bd04 Creating 
+ Container cashflow-recon-tool-run-ef39f560bd04 Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+2026-06-05 clean divergencias=0  posse_lock_ms=62
+total: modo=reconcile linhas=1 divergencias=0 abortadas=0 posse_lock_max_ms=62
+recon exit=0
+
+=================== [13:14:24.733] I5. limitador anonimo por IP atras do NAT do Docker (20 req/s por IP, HIPOTESE C-F5-08)
+host (IP de origem visto pelo gateway = NAT do Docker Desktop) 60 anonimas:      36 401      24 429 
+container na rede cashflow_app (IP proprio) 60 anonimas, em paralelo com outra rajada do host:
+  container:      27 401      33 429   host (simultaneo):      42 401      18 429 
+leitura: 429 em requisicoes SEM token = o limitador por IP atua ANTES da autenticacao (401); contagens por status acima
+
+=================== [13:14:30.933] I6. idempotency_keys: expires_at (retencao)
+7520 7 days 7 days 0
+(o job de expurgo, se existir, nao e exercitado aqui: depende de codigo/infra fora do escopo de F7)
+
+=================== [13:14:31.355] estado final
+NAME                              STATUS
+cashflow-consolidation-api-1      Up 11 minutes (healthy)
+cashflow-consolidation-worker-1   Up 4 minutes (healthy)
+cashflow-gateway-1                Up 11 minutes (healthy)
+cashflow-keycloak-1               Up 2 hours (healthy)
+cashflow-postgres-1               Up 2 hours (healthy)
+cashflow-rabbitmq-1               Up 13 minutes (healthy)
+cashflow-transactions-api-1       Up 12 minutes (healthy)
+FALHAS=0
+exit=0

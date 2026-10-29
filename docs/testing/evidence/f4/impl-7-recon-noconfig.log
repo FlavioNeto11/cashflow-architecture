@@ -1,0 +1,1 @@
+falha: InvalidOperationException: Configuração obrigatória ausente: ConnectionStrings:Default.

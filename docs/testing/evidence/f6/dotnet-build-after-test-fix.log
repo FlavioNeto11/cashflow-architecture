@@ -1,0 +1,8 @@
+$ dotnet build CashFlow.slnx -c Release -warnaserror
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:07.36
+exit=0

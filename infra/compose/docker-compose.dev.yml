@@ -1,0 +1,62 @@
+# SOMENTE DESENVOLVIMENTO LOCAL / VERIFICACAO. Nao faz parte da topologia do desafio (deployment.md 1.2:
+# bancos e portas de saude nao sao publicados). Publica portas em 127.0.0.1 para curl/psql na maquina local.
+# Uso:
+#   docker compose -f infra/compose/docker-compose.yml -f infra/compose/docker-compose.dev.yml --env-file infra/compose/.env up -d
+# (a porta 8080 do host ja pertence ao keycloak; por isso os apps usam 18080+)
+#
+# F5: neste perfil as APIs voltam a HTTP puro com identidade por cabecalhos X-Dev-* (C-09) e o gateway fala HTTP com elas,
+# sem TLS/mTLS e sem certificados (nao e preciso rodar make-certs.sh). O gateway continua exigindo JWT, mas as APIs em
+# DevelopmentHeaders ignoram o Authorization e exigem X-Dev-* (que o gateway remove): o caminho via gateway NAO e
+# funcional aqui, so o acesso direto 18080/18082 (roteiro F4). Para o caminho completo use o Compose base.
+services:
+  postgres:
+    ports:
+      - "127.0.0.1:15432:5432"
+
+  transactions-api:
+    # C-09 (F3): autenticacao por cabecalhos X-Dev-* SOMENTE neste override de desenvolvimento. O Compose base e JwtBearer + mTLS.
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      Authentication__Mode: DevelopmentHeaders
+      Hosting__Tls__ServerCertificate: "" # vazio = listener de negocio sem TLS
+      Hosting__Tls__ServerKey: ""
+      Hosting__Tls__ClientCa: ""
+      Hosting__Tls__BlockedThumbprintsFile: ""
+    volumes: !reset []
+    ports:
+      - "127.0.0.1:18080:8080" # negocio
+      - "127.0.0.1:18081:8081" # saude
+
+  consolidation-api:
+    # Mesmo modo de desenvolvimento da transactions-api (C-09): so neste override; o base e JwtBearer + mTLS.
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      Authentication__Mode: DevelopmentHeaders
+      Hosting__Tls__ServerCertificate: ""
+      Hosting__Tls__ServerKey: ""
+      Hosting__Tls__ClientCa: ""
+      Hosting__Tls__BlockedThumbprintsFile: ""
+    volumes: !reset []
+    ports:
+      - "127.0.0.1:18082:8080" # negocio
+      - "127.0.0.1:18083:8081" # saude
+
+  consolidation-worker:
+    ports:
+      - "127.0.0.1:18084:8081" # saude
+
+  gateway:
+    environment:
+      Hosting__Tls__ServerCertificate: ""
+      Hosting__Tls__ServerKey: ""
+      Hosting__Tls__AllowPlainHttp: "true" # GAP declarado: borda em HTTP so neste perfil
+      Gateway__Upstream__TransactionsApi: http://transactions-api:8080
+      Gateway__Upstream__ConsolidationApi: http://consolidation-api:8080
+      Gateway__Upstream__AllowPlainHttp: "true" # GAP declarado: so neste perfil
+      Gateway__Upstream__ClientCertificate: ""
+      Gateway__Upstream__ClientKey: ""
+      Gateway__Upstream__ServerCa: ""
+    volumes: !reset []
+    ports: !override
+      - "127.0.0.1:18443:8080" # HTTP puro neste perfil
+      - "127.0.0.1:18085:8081" # saude

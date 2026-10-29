@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Npgsql puro (sem EF) e o contrato AMQP compartilhado: a imagem runtime só precisa disso. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CashFlow.Messaging\CashFlow.Messaging.csproj" />
+  </ItemGroup>
+
+</Project>

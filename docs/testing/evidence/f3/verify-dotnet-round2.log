@@ -1,0 +1,51 @@
+# Rodada 2 (verificação) após correções da implementação (P1-02, P2-06, P2-09, P2-10) — 2026-10-29T04:37:47Z
+$ git status --short (escopo)
+ M docs/project/decisions-needed.md
+ M docs/testing/evidence-log.md
+ M infra/compose/docker-compose.dev.yml
+ M src/CashFlow.Transactions.Api/Migrations/TransactionsDbContextModelSnapshot.cs
+ M src/CashFlow.Transactions.Api/Program.cs
+ M src/CashFlow.Transactions.Api/TransactionsDbContext.cs
+ M tests/CashFlow.Transactions.Api.Tests/CashFlow.Transactions.Api.Tests.csproj
+ M tests/CashFlow.Transactions.Api.Tests/DualListenerTests.cs
+ M tests/CashFlow.Transactions.Api.Tests/TracingFilterTests.cs
+?? src/CashFlow.Transactions.Api/Application/
+?? src/CashFlow.Transactions.Api/Domain/
+?? src/CashFlow.Transactions.Api/Http/
+?? src/CashFlow.Transactions.Api/Migrations/20261029035707_TransactionsSchema.Designer.cs
+?? src/CashFlow.Transactions.Api/Migrations/20261029035707_TransactionsSchema.cs
+?? src/CashFlow.Transactions.Api/Persistence/
+?? src/CashFlow.Transactions.Api/Security/
+?? tests/CashFlow.Transactions.Api.Tests/Api/
+?? tests/CashFlow.Transactions.Api.Tests/Database/
+?? tests/CashFlow.Transactions.Api.Tests/Domain/
+?? tests/CashFlow.Transactions.Api.Tests/Support/
+
+$ dotnet build CashFlow.slnx -c Release -warnaserror --no-incremental
+  CashFlow.Persistence.Tests -> C:\git\cashflow-architecture\tests\CashFlow.Persistence.Tests\bin\Release\net10.0\CashFlow.Persistence.Tests.dll
+  CashFlow.Transactions.Api.Tests -> C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\bin\Release\net10.0\CashFlow.Transactions.Api.Tests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:03.84
+exit=0
+
+$ dotnet test CashFlow.slnx -c Release --no-build
+Passed!  - Failed:     0, Passed:    35, Skipped:     0, Total:    35, Duration: 10 s - CashFlow.Persistence.Tests.dll (net10.0)
+Passed!  - Failed:     0, Passed:   145, Skipped:     0, Total:   145, Duration: 14 s - CashFlow.Transactions.Api.Tests.dll (net10.0)
+exit=0
+
+$ dotnet format CashFlow.slnx --verify-no-changes
+exit=0
+
+$ grep -c SecondRequestBlockedOnTheKey tests/.../IdempotencyTests.cs
+2
+$ grep -rn EnableRetryOnFailure src/ || echo nenhum
+Binary file src/CashFlow.Consolidation.Api/bin/Debug/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll matches
+Binary file src/CashFlow.Consolidation.Api/bin/Release/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll matches
+Binary file src/CashFlow.Consolidation.Worker/bin/Debug/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll matches
+Binary file src/CashFlow.Consolidation.Worker/bin/Release/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll matches
+Binary file src/CashFlow.Transactions.Api/bin/Debug/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll matches
+Binary file src/CashFlow.Transactions.Api/bin/Release/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll matches

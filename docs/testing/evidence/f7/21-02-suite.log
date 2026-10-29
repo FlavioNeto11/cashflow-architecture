@@ -1,0 +1,20 @@
+# F7 21-02 - 2026-10-29T14:34:14Z | dotnet 10.0.403
+$ dotnet build CashFlow.slnx -c Release -warnaserror
+  CashFlow.Consolidation.Tests -> C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\bin\Release\net10.0\CashFlow.Consolidation.Tests.dll
+  CashFlow.Security.Tests -> C:\git\cashflow-architecture\tests\CashFlow.Security.Tests\bin\Release\net10.0\CashFlow.Security.Tests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:04.06
+exit-build=0
+$ dotnet test CashFlow.slnx -c Release --no-build   (resumo por projeto)
+Passed!  - Failed:     0, Passed:    49, Skipped:     0, Total:    49, Duration: 15 s - CashFlow.Persistence.Tests.dll (net10.0)
+Passed!  - Failed:     0, Passed:   169, Skipped:     0, Total:   169, Duration: 20 s - CashFlow.Transactions.Api.Tests.dll (net10.0)
+Passed!  - Failed:     0, Passed:    66, Skipped:     0, Total:    66, Duration: 1 m 27 s - CashFlow.Consolidation.Tests.dll (net10.0)
+Passed!  - Failed:     0, Passed:    68, Skipped:     0, Total:    68, Duration: 1 m 46 s - CashFlow.Security.Tests.dll (net10.0)
+exit-test=0
+$ dotnet format CashFlow.slnx --verify-no-changes
+exit-format=0
+fim 2026-10-29T14:36:28Z

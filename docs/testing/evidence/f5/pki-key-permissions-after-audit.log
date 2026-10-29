@@ -1,0 +1,72 @@
+# P1-1: permissoes das chaves privadas em infra/pki/out (antes/depois do chmod; sem regenerar a PKI)
+# 2026-10-29T10:53:18Z host: MINGW64_NT-10.0-26100 (Git Bash sobre NTFS; modo POSIX emulado pelo MSYS)
+## antes
+total 56
+drwxr-xr-x 1 Administrator 197121   0 Oct 29 05:43 .
+drwxr-xr-x 1 Administrator 197121   0 Oct 29 05:43 ..
+-rw-r--r-- 1 Administrator 197121  46 Oct 29 07:42 blocked-thumbprints.txt
+-rw-r--r-- 1 Administrator 197121 656 Oct 29 05:43 ca.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 ca.key
+-rw-r--r-- 1 Administrator 197121 730 Oct 29 05:43 consolidation-api.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 consolidation-api.key
+-rw-r--r-- 1 Administrator 197121 642 Oct 29 05:43 foreign-ca.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 foreign-ca.key
+-rw-r--r-- 1 Administrator 197121 704 Oct 29 05:43 gateway-client.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 gateway-client.key
+-rw-r--r-- 1 Administrator 197121 704 Oct 29 05:43 gateway-edge.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 gateway-edge.key
+-rw-r--r-- 1 Administrator 197121 704 Oct 29 05:43 neg-expired.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 neg-expired.key
+-rw-r--r-- 1 Administrator 197121 696 Oct 29 05:43 neg-foreign-ca.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 neg-foreign-ca.key
+-rw-r--r-- 1 Administrator 197121 704 Oct 29 05:43 neg-wrong-eku.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 neg-wrong-eku.key
+-rw-r--r-- 1 Administrator 197121 704 Oct 29 05:43 neg-wrong-san.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 neg-wrong-san.key
+-rw-r--r-- 1 Administrator 197121 726 Oct 29 05:43 transactions-api.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 transactions-api.key
+## chmod 600 *.key ; chmod 644 *.crt blocked-thumbprints.txt
+exit=0
+## depois
+total 56
+drwxr-xr-x 1 Administrator 197121   0 Oct 29 05:43 .
+drwxr-xr-x 1 Administrator 197121   0 Oct 29 05:43 ..
+-rw-r--r-- 1 Administrator 197121  46 Oct 29 07:42 blocked-thumbprints.txt
+-rw-r--r-- 1 Administrator 197121 656 Oct 29 05:43 ca.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 ca.key
+-rw-r--r-- 1 Administrator 197121 730 Oct 29 05:43 consolidation-api.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 consolidation-api.key
+-rw-r--r-- 1 Administrator 197121 642 Oct 29 05:43 foreign-ca.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 foreign-ca.key
+-rw-r--r-- 1 Administrator 197121 704 Oct 29 05:43 gateway-client.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 gateway-client.key
+-rw-r--r-- 1 Administrator 197121 704 Oct 29 05:43 gateway-edge.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 gateway-edge.key
+-rw-r--r-- 1 Administrator 197121 704 Oct 29 05:43 neg-expired.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 neg-expired.key
+-rw-r--r-- 1 Administrator 197121 696 Oct 29 05:43 neg-foreign-ca.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 neg-foreign-ca.key
+-rw-r--r-- 1 Administrator 197121 704 Oct 29 05:43 neg-wrong-eku.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 neg-wrong-eku.key
+-rw-r--r-- 1 Administrator 197121 704 Oct 29 05:43 neg-wrong-san.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 neg-wrong-san.key
+-rw-r--r-- 1 Administrator 197121 726 Oct 29 05:43 transactions-api.crt
+-rw-r--r-- 1 Administrator 197121 246 Oct 29 05:43 transactions-api.key
+## o que o container ve (leitura: docker exec ls -ln /certs no gateway em execucao, bind mount do Docker Desktop)
+ls: cannot access 'C:/Program Files/Git/certs': No such file or directory
+exit=2
+uid=1654(app) gid=1654(app) groups=1654(app)
+## (repetido com MSYS_NO_PATHCONV=1: o Git Bash havia convertido /certs em caminho Windows)
+total 8
+-rwxrwxrwx 1 0 0 656 Oct 29 08:43 ca.crt
+-rwxrwxrwx 1 0 0 704 Oct 29 08:43 gateway-client.crt
+-rwxrwxrwx 1 0 0 246 Oct 29 08:43 gateway-client.key
+-rwxrwxrwx 1 0 0 704 Oct 29 08:43 gateway-edge.crt
+-rwxrwxrwx 1 0 0 246 Oct 29 08:43 gateway-edge.key
+exit=0
+uid=1654(app) gid=1654(app) groups=1654(app)
+777 0 /certs/ca.crt
+777 0 /certs/gateway-client.crt
+777 0 /certs/gateway-client.key
+777 0 /certs/gateway-edge.crt
+777 0 /certs/gateway-edge.key

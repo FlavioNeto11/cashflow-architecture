@@ -1,0 +1,164 @@
+# F7 07 - resiliencia - 2026-10-29T12:59:27Z
+estado inicial: cashflow-consolidation-api-1=healthy cashflow-consolidation-worker-1=healthy cashflow-gateway-1=healthy cashflow-keycloak-1=healthy cashflow-postgres-1=healthy cashflow-rabbitmq-1=healthy cashflow-transactions-api-1=healthy 
+NOTA: f7_poster.py abre UMA conexao HTTPS nova por requisicao (inclui handshake TLS); suas latencias NAO sao comparaveis com as do k6 (keep-alive).
+pre-checagem (linhas por data, merchant A, esperado 0 antes do script): 2026-06-01=0 2026-06-02=0 2026-06-03=0 2026-06-04=0 2026-06-05=0 2026-06-06=0 2026-06-07=0 
+healthcheck presente nos alvos de kill: cashflow-consolidation-worker-1=sim cashflow-transactions-api-1=sim cashflow-gateway-1=sim cashflow-consolidation-api-1=sim 
+
+=================== [12:59:32.570] R0. 'docker kill' NAO aciona restart: unless-stopped (observacao empirica, worker ocioso)
+[12:59:33.270] docker kill -s KILL cashflow-consolidation-worker-1
+20 s depois: exited exit=137 rc=1
+  OK: docker kill: o container continua exited (sem restart automatico) = exited
+[13:00:00.163] cashflow-consolidation-worker-1 health=healthy apos 5s
+
+=================== [13:00:00.472] R1. worker E consolidation-api parados; POSTs continuam (RNF-01); religa -> convergencia
+ Container cashflow-consolidation-api-1 Stopped 
+ Container cashflow-consolidation-worker-1 Stopped 
+apos 15 s parados (docker stop manual NAO deve reiniciar): cashflow-consolidation-api-1=exited cashflow-consolidation-worker-1=exited 
+--- [13:00:17.264] GET consolidado pelo gateway com consolidation-api parada (captura de 5xx real: Server/headers)
+status: HTTP/1.1 502 Bad Gateway
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.6.3","title":"Serviço indisponível.","status":502,"traceId":"00-897c4dd808f80c410cc508a6963a59c3-901a82e7f5569f0e-01"}
+rotulo=f7-r1 enviados=200 status={201: 200} lat_ms p50=19.8 p95=32.2 p99=37.4 max=241.7
+  rabbitmqctl: name messages_ready messages_unacknowledged consumers
+  rabbitmqctl: consolidation.dlq 0 0 0
+  rabbitmqctl: consolidation.transaction-registered 177 0 0
+outbox pendentes (broker no ar: esperado ~0, mensagens enfileiradas): 0
+--- headers de uma mensagem enfileirada (peek, requeue) - ha traceparent? (item F7 herdado)
+  chaves de properties.headers: ['merchant_id', 'traceparent', 'version', 'x-dotnet-pub-seq-no'] | message_id presente: True
+ Container cashflow-consolidation-worker-1 Started 
+ Container cashflow-consolidation-api-1 Started 
+[13:00:51.514] cashflow-consolidation-worker-1 health=healthy apos 5s
+[13:00:52.174] cashflow-consolidation-api-1 health=healthy apos 1s
+  [oraculo f7-r1 2026-06-01] requisicoes=200 201=200 nao-201=0 | chaves do poster no banco=200 | linhas em transactions (merchant+rotulo+data)=200 | nao-201 que mesmo assim gravaram=0 | chaves de execucoes anteriores com o mesmo prefixo (ignoradas)=600
+  OK: chaves confirmadas (201) ausentes no banco (perda) = 0
+  OK: linhas em transactions (merchant+rotulo+data) == chaves do poster no banco (duplicacao) = 200
+  [13:00:54.851] converge(2026-06-01): fonte='200.00 0.00 200' consolidado='200.00 0.00 200' apos 1s -> IGUAL
+  OK: consolidado (gateway) == fonte = IGUAL
+  OK: processed_messages (Inbox) == lancamentos da data, sem duplicata = 200 200
+tempo desde o start ate o fim da verificacao: 14 s
+  OK: POSTs nao-201 com worker+consolidation-api parados = 0
+  rabbitmqctl: name messages_ready messages_unacknowledged consumers
+  rabbitmqctl: consolidation.dlq 0 0 0
+  rabbitmqctl: consolidation.transaction-registered 0 0 1
+
+=================== [13:00:57.188] R2. rabbitmq PARADO durante rajada de POST (10/s por 30 s; para em +8 s, volta em ~+20 s) -> outbox entrega depois
+ Container cashflow-rabbitmq-1 Stopped 
+[13:01:06.297] rabbitmq parado
+outbox pendentes durante a queda: 76 | transactions-api health=healthy
+ Container cashflow-rabbitmq-1 Started 
+[13:01:13.971] rabbitmq religado
+rotulo=f7-r2 enviados=300 status={201: 300} lat_ms p50=21.0 p95=34.9 p99=38.3 max=76.4
+[13:01:27.672] cashflow-rabbitmq-1 health=healthy apos 1s
+[13:01:41.304] outbox pendentes=0 apos 10s
+tentativas maximas na outbox: 5
+  [oraculo f7-r2 2026-06-02] requisicoes=300 201=300 nao-201=0 | chaves do poster no banco=300 | linhas em transactions (merchant+rotulo+data)=300 | nao-201 que mesmo assim gravaram=0 | chaves de execucoes anteriores com o mesmo prefixo (ignoradas)=900
+  OK: chaves confirmadas (201) ausentes no banco (perda) = 0
+  OK: linhas em transactions (merchant+rotulo+data) == chaves do poster no banco (duplicacao) = 300
+  [13:01:43.784] converge(2026-06-02): fonte='300.00 0.00 300' consolidado='300.00 0.00 300' apos 1s -> IGUAL
+  OK: consolidado (gateway) == fonte = IGUAL
+  OK: processed_messages (Inbox) == lancamentos da data, sem duplicata = 300 300
+  OK: POSTs nao-201 durante a queda do broker = 0
+  rabbitmqctl: name messages_ready messages_unacknowledged consumers
+  rabbitmqctl: consolidation.dlq 0 0 0
+  rabbitmqctl: consolidation.transaction-registered 0 0 1
+
+=================== [13:01:45.995] R3. QUEDA (SIGKILL no PID) do WORKER durante rajada de POST (10/s por 25 s; kill em +6 s)
+politica de restart de cashflow-consolidation-worker-1: unless-stopped | RestartCount antes: 0
+[13:01:54.009] kill -9 do PID 82034 (container cashflow-consolidation-worker-1) via container efemero --pid=host
+  [+1511 ms] estado=running/starting/rc=1
+  [+7232 ms] estado=running/healthy/rc=1
+  tempo ate running: 1536 ms | ate healthy: 7250 ms (limite 90s, granularidade ~0,5 s + custo do docker inspect) | ExitCode do processo morto: 0
+  OK: worker reiniciado sozinho (running/healthy) = 0
+rotulo=f7-r3 enviados=250 status={201: 250} lat_ms p50=18.5 p95=32.7 p99=47.7 max=91.3
+[13:02:11.546] outbox pendentes=0 apos 1s
+  [oraculo f7-r3 2026-06-03] requisicoes=250 201=250 nao-201=0 | chaves do poster no banco=250 | linhas em transactions (merchant+rotulo+data)=250 | nao-201 que mesmo assim gravaram=0 | chaves de execucoes anteriores com o mesmo prefixo (ignoradas)=750
+  OK: chaves confirmadas (201) ausentes no banco (perda) = 0
+  OK: linhas em transactions (merchant+rotulo+data) == chaves do poster no banco (duplicacao) = 250
+  [13:02:13.342] converge(2026-06-03): fonte='250.00 0.00 250' consolidado='250.00 0.00 250' apos 1s -> IGUAL
+  OK: consolidado (gateway) == fonte = IGUAL
+  OK: processed_messages (Inbox) == lancamentos da data, sem duplicata = 250 250
+  OK: POSTs nao-201 com o worker morto = 0
+
+=================== [13:02:14.273] R4a. QUEDA (SIGKILL no PID) da TRANSACTIONS-API durante rajada de POST (10/s por 30 s; kill em +6 s) + retry com a MESMA chave
+politica de restart de cashflow-transactions-api-1: unless-stopped | RestartCount antes: 2
+[13:02:22.168] kill -9 do PID 44655 (container cashflow-transactions-api-1) via container efemero --pid=host
+  [+1468 ms] estado=running/starting/rc=3
+  [+7363 ms] estado=running/healthy/rc=3
+  tempo ate running: 1488 ms | ate healthy: 7383 ms (limite 90s, granularidade ~0,5 s + custo do docker inspect) | ExitCode do processo morto: 0
+  OK: transactions-api reiniciada sozinha = 0
+rotulo=f7-r4a enviados=300 status={201: 281, 502: 19} lat_ms p50=21.7 p95=45.9 p99=269.1 max=2912.3
+status das requisicoes nao-201 (rotulo f7-r4a):      19 502;
+rotulo=f7-r4a chaves_nao_201_no_poster=19 status_dos_retries={201: 19}
+[13:02:45.562] outbox pendentes=0 apos 1s
+  [oraculo f7-r4a 2026-06-04] requisicoes=300 201=281 nao-201=19 | chaves do poster no banco=300 | linhas em transactions (merchant+rotulo+data)=300 | nao-201 que mesmo assim gravaram=19 | chaves de execucoes anteriores com o mesmo prefixo (ignoradas)=600
+  OK: chaves confirmadas (201) ausentes no banco (perda) = 0
+  OK: linhas em transactions (merchant+rotulo+data) == chaves do poster no banco (duplicacao) = 300
+  OK: chaves do poster sem lancamento apos retry com a mesma chave = 0
+  OK: linhas na fonte == chaves distintas enviadas = 300
+  [13:02:47.319] converge(2026-06-04): fonte='300.00 0.00 300' consolidado='300.00 0.00 300' apos 1s -> IGUAL
+  OK: consolidado (gateway) == fonte = IGUAL
+  OK: processed_messages (Inbox) == lancamentos da data, sem duplicata = 300 300
+
+=================== [13:02:48.255] R4b. QUEDA (SIGKILL no PID) do GATEWAY durante rajada de POST (10/s por 25 s; kill em +6 s) + retry com a MESMA chave
+politica de restart de cashflow-gateway-1: unless-stopped | RestartCount antes: 2
+[13:02:56.138] kill -9 do PID 46327 (container cashflow-gateway-1) via container efemero --pid=host
+  [+1554 ms] estado=running/starting/rc=3
+  [+7527 ms] estado=running/healthy/rc=3
+  tempo ate running: 1577 ms | ate healthy: 7547 ms (limite 90s, granularidade ~0,5 s + custo do docker inspect) | ExitCode do processo morto: 0
+  OK: gateway reiniciado sozinho = 0
+rotulo=f7-r4b enviados=250 status={201: 230, 0: 20} lat_ms p50=18.3 p95=50.6 p99=162.4 max=564.4
+status das requisicoes nao-201 (rotulo f7-r4b):      20 0;
+rotulo=f7-r4b chaves_nao_201_no_poster=20 status_dos_retries={201: 20}
+[13:03:16.066] outbox pendentes=0 apos 2s
+  [oraculo f7-r4b 2026-06-06] requisicoes=250 201=230 nao-201=20 | chaves do poster no banco=250 | linhas em transactions (merchant+rotulo+data)=250 | nao-201 que mesmo assim gravaram=20 | chaves de execucoes anteriores com o mesmo prefixo (ignoradas)=500
+  OK: chaves confirmadas (201) ausentes no banco (perda) = 0
+  OK: linhas em transactions (merchant+rotulo+data) == chaves do poster no banco (duplicacao) = 250
+  OK: chaves do poster sem lancamento apos retry com a mesma chave = 0
+  OK: linhas na fonte == chaves distintas enviadas = 250
+  [13:03:17.988] converge(2026-06-06): fonte='250.00 0.00 250' consolidado='250.00 0.00 250' apos 1s -> IGUAL
+  OK: consolidado (gateway) == fonte = IGUAL
+  OK: processed_messages (Inbox) == lancamentos da data, sem duplicata = 250 250
+
+=================== [13:03:18.873] R4c. QUEDA (SIGKILL no PID) da CONSOLIDATION-API: GET pelo gateway ate voltar 200; POST segue funcionando
+[13:03:20.347] kill -9 do PID 82035 (consolidation-api)
+  [+3906 ms] GET consolidado via gateway -> 502
+  [+4836 ms] GET consolidado via gateway -> 200
+  restart policy: unless-stopped rc=1 running/starting
+  OK: POST durante/apos a queda da consolidation-api = 201
+[13:03:27.192] cashflow-consolidation-api-1 health=healthy apos 3s
+  [13:03:28.222] converge(2026-06-07): fonte='7.00 0.00 1' consolidado='7.00 0.00 1' apos 1s -> IGUAL
+  OK: consolidado == fonte apos o restart = IGUAL
+
+=================== [13:03:28.295] R5. lock de linha de 9 s em daily_consolidations(A) (PROXY do recon segurando o lock; NAO e o recon-tool): B fica bloqueado? (worker com ConsumerDispatchConcurrency=1)
+semente: 1 lancamento por merchant em 2026-06-05
+  A -> 201  B -> 201
+[13:03:29.395] converge(2026-06-05): fonte='10.00 0.00 1' consolidado='10.00 0.00 1' apos 1s -> IGUAL
+[13:03:29.939] converge(2026-06-05): fonte='20.00 0.00 1' consolidado='20.00 0.00 1' apos 1s -> IGUAL
+--- (a) lock mantido sobre A; chega SO um evento de B (nenhum de A na fila)
+  POST B=201; projecao de B reflete o 2o lancamento em 486 ms (lock de A ainda ativo: 8473 ms restantes aprox.)
+--- (b) AINDA sob o lock: chega um evento de A e, logo depois, outro de B
+  [13:03:32.236] POST A=201 POST B=201
+BEGIN lock tomado  COMMIT 
+  tempo, contado a partir do POST de A em (b): evento de A (travado no lock)=7917 ms | evento de B posterior=7486 ms
+  worker: linhas com 55P03/lock desde 2026-10-29T13:03:29Z: 0
+  OK: A convergiu depois que o lock foi liberado = IGUAL
+  OK: B convergiu = IGUAL
+
+=================== [13:03:41.847] estado final
+  rabbitmqctl: name messages_ready messages_unacknowledged consumers
+  rabbitmqctl: consolidation.dlq 0 0 0
+  rabbitmqctl: consolidation.transaction-registered 0 0 1
+NAME                              STATUS
+cashflow-consolidation-api-1      Up 23 seconds (healthy)
+cashflow-consolidation-worker-1   Up About a minute (healthy)
+cashflow-gateway-1                Up 47 seconds (healthy)
+cashflow-keycloak-1               Up 2 hours (healthy)
+cashflow-postgres-1               Up 2 hours (healthy)
+cashflow-rabbitmq-1               Up 2 minutes (healthy)
+cashflow-transactions-api-1       Up About a minute (healthy)
+nao saudaveis: 
+FALHAS=0
+exit=0

@@ -1,0 +1,127 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  CashFlow.Messaging -> C:\git\cashflow-architecture\src\CashFlow.Messaging\bin\Release\net10.0\CashFlow.Messaging.dll
+  CashFlow.Consolidation.Persistence -> C:\git\cashflow-architecture\src\CashFlow.Consolidation.Persistence\bin\Release\net10.0\CashFlow.Consolidation.Persistence.dll
+  CashFlow.Hosting -> C:\git\cashflow-architecture\src\CashFlow.Hosting\bin\Release\net10.0\CashFlow.Hosting.dll
+  CashFlow.ReconTool -> C:\git\cashflow-architecture\src\CashFlow.ReconTool\bin\Release\net10.0\CashFlow.ReconTool.dll
+  CashFlow.Consolidation.Api -> C:\git\cashflow-architecture\src\CashFlow.Consolidation.Api\bin\Release\net10.0\CashFlow.Consolidation.Api.dll
+  CashFlow.Transactions.Api -> C:\git\cashflow-architecture\src\CashFlow.Transactions.Api\bin\Release\net10.0\CashFlow.Transactions.Api.dll
+  CashFlow.Consolidation.Worker -> C:\git\cashflow-architecture\src\CashFlow.Consolidation.Worker\bin\Release\net10.0\CashFlow.Consolidation.Worker.dll
+  CashFlow.Consolidation.Tests -> C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\bin\Release\net10.0\CashFlow.Consolidation.Tests.dll
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\bin\Release\net10.0\CashFlow.Consolidation.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.14)
+[xUnit.net 00:00:00.21]   Discovering: CashFlow.Consolidation.Tests
+[xUnit.net 00:00:00.27]   Discovered:  CashFlow.Consolidation.Tests
+[xUnit.net 00:00:00.30]   Starting:    CashFlow.Consolidation.Tests
+[testcontainers.org 00:00:00.18] Connected to Docker:
+  Host: npipe://./pipe/docker_engine
+  Server Version: 29.7.2
+  Kernel Version: 6.18.33.2-microsoft-standard-WSL2
+  API Version: 1.55
+  Operating System: Docker Desktop
+  Total Memory: 7.76 GB
+  Labels: 
+    com.docker.desktop.address=npipe://\\.\pipe\docker_cli
+[testcontainers.org 00:00:00.53] Docker container 008c673fec3e created
+[testcontainers.org 00:00:00.60] Start Docker container 008c673fec3e
+[testcontainers.org 00:00:01.23] Wait for Docker container 008c673fec3e to complete readiness checks
+[testcontainers.org 00:00:02.28] Docker container 008c673fec3e ready
+[testcontainers.org 00:00:02.56] Docker container 8597ec5a93fd created
+[testcontainers.org 00:00:02.57] Add file to tar archive: Content length: 1593 byte(s), Target file: "/opt/cashflow/entrypoint.sh", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.58] Copy tar archive to container: Content length: 1593 byte(s), Docker container: 8597ec5a93fd
+[testcontainers.org 00:00:02.58] Add file to tar archive: Content length: 766 byte(s), Target file: "/etc/rabbitmq/conf.d/20-cashflow.conf", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.58] Copy tar archive to container: Content length: 766 byte(s), Docker container: 8597ec5a93fd
+[testcontainers.org 00:00:02.58] Add file to tar archive: Content length: 1495 byte(s), Target file: "/etc/rabbitmq/definitions.d/10-topology.json", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.58] Copy tar archive to container: Content length: 1495 byte(s), Docker container: 8597ec5a93fd
+[testcontainers.org 00:00:02.59] Docker container a826349630a4 created
+[testcontainers.org 00:00:02.59] Add file to tar archive: Source file: "C:\git\cashflow-architecture\infra\postgres\init\01-roles.sql", Target file: "/docker-entrypoint-initdb.d/01-roles.sql", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.60] Add file to tar archive: Source file: "C:\git\cashflow-architecture\infra\postgres\init\02-databases.sql", Target file: "/docker-entrypoint-initdb.d/02-databases.sql", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.60] Add file to tar archive: Source file: "C:\git\cashflow-architecture\infra\postgres\init\03-role-timeouts.sql", Target file: "/docker-entrypoint-initdb.d/03-role-timeouts.sql", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.60] Copy tar archive to container: Content length: 3707 byte(s), Docker container: a826349630a4
+[testcontainers.org 00:00:02.64] Start Docker container a826349630a4
+[testcontainers.org 00:00:02.68] Start Docker container 8597ec5a93fd
+[testcontainers.org 00:00:03.16] Wait for Docker container a826349630a4 to complete readiness checks
+[testcontainers.org 00:00:03.18] Execute "pg_isready -h 127.0.0.1 -U postgres" at Docker container a826349630a4
+[testcontainers.org 00:00:03.27] Wait for Docker container 8597ec5a93fd to complete readiness checks
+[testcontainers.org 00:00:04.45] Execute "pg_isready -h 127.0.0.1 -U postgres" at Docker container a826349630a4
+[testcontainers.org 00:00:05.57] Execute "pg_isready -h 127.0.0.1 -U postgres" at Docker container a826349630a4
+[testcontainers.org 00:00:05.69] Docker container a826349630a4 ready
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de TransactionsDbContext aplicadas.","State":{"Context":"TransactionsDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+[testcontainers.org 00:00:10.41] Docker container 8597ec5a93fd ready
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"consolidation-worker iniciado (broker amqp://127.0.0.1:57127/, fila consolidation.transaction-registered).","State":{"Broker":"amqp://127.0.0.1:57127/","Queue":"consolidation.transaction-registered","{OriginalFormat}":"consolidation-worker iniciado (broker {Broker}, fila {Queue})."},"Scopes":[]}
+{"EventId":14,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Now listening on: http://127.0.0.1:57364","State":{"address":"http://127.0.0.1:57364","{OriginalFormat}":"Now listening on: {address}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Development","State":{"EnvName":"Development","{OriginalFormat}":"Hosting environment: {EnvName}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: C:\\git\\cashflow-architecture\\src\\CashFlow.Consolidation.Worker","State":{"ContentRoot":"C:\\git\\cashflow-architecture\\src\\CashFlow.Consolidation.Worker","{OriginalFormat}":"Content root path: {ContentRoot}"},"Scopes":[]}
+[testcontainers.org 00:00:10.78] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"Worker consumindo consolidation.transaction-registered em amqp://127.0.0.1:57127/ (antes: unknown).","State":{"Queue":"consolidation.transaction-registered","Broker":"amqp://127.0.0.1:57127/","Previous":"unknown","{OriginalFormat}":"Worker consumindo {Queue} em {Broker} (antes: {Previous})."},"Scopes":[]}
+[testcontainers.org 00:00:11.84] Execute "rabbitmqctl -q list_connections pid client_properties" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:12.66] Execute "rabbitmqctl -q close_connection <rabbit@8597ec5a93fd.1793258319.1099.0> teste: queda for�ada da conexao" at Docker container 8597ec5a93fd
+{"EventId":0,"LogLevel":"Warning","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"Broker amqp://127.0.0.1:57127/ indispon\u00EDvel para o worker (InvalidOperationException); reconectando com backoff.","State":{"Broker":"amqp://127.0.0.1:57127/","Error":"InvalidOperationException","{OriginalFormat}":"Broker {Broker} indispon\u00EDvel para o worker ({Error}); reconectando com backoff."},"Scopes":[]}
+[testcontainers.org 00:00:13.41] Execute "rabbitmqctl -q list_connections pid client_properties" at Docker container 8597ec5a93fd
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"Worker consumindo consolidation.transaction-registered em amqp://127.0.0.1:57127/ (antes: unavailable).","State":{"Queue":"consolidation.transaction-registered","Broker":"amqp://127.0.0.1:57127/","Previous":"unavailable","{OriginalFormat}":"Worker consumindo {Queue} em {Broker} (antes: {Previous})."},"Scopes":[]}
+[testcontainers.org 00:00:14.50] Execute "rabbitmqctl -q list_connections pid client_properties" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:15.49] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:16.60] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+{"EventId":0,"LogLevel":"Error","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"Banco consolidation_db indispon\u00EDvel para o worker; consumo pausado at\u00E9 a sonda passar.","Exception":"Npgsql.PostgresException (0x80004005): 55000: database \u0022consolidation_db\u0022 is not currently accepting connections\r\n   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)\r\n   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder\u00601.StateMachineBox\u00601.System.Threading.Tasks.Sources.IValueTaskSource\u003CTResult\u003E.GetResult(Int16 token)\r\n   at Npgsql.Internal.NpgsqlConnector.\u003COpen\u003Eg__OpenCore|209_0(NpgsqlConnector conn, String username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)\r\n   at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)\r\n   at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)\r\n   at Npgsql.PoolingDataSource.\u003CGet\u003Eg__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)\r\n   at Npgsql.NpgsqlConnection.\u003COpen\u003Eg__OpenAsync|42_0(Boolean async, CancellationToken cancellationToken)\r\n   at Npgsql.NpgsqlDataSource.OpenConnectionAsync(CancellationToken cancellationToken)\r\n   at Npgsql.NpgsqlDataSource.OpenConnectionAsync(CancellationToken cancellationToken)\r\n   at CashFlow.Consolidation.Worker.ConsolidationStore.ApplyAsync(TransactionRegisteredEvent message, CancellationToken cancellationToken) in C:\\git\\cashflow-architecture\\src\\CashFlow.Consolidation.Worker\\ConsolidationStore.cs:line 55\r\n   at CashFlow.Consolidation.Worker.ConsolidationConsumer.DecideAsync(BasicDeliverEventArgs delivery) in C:\\git\\cashflow-architecture\\src\\CashFlow.Consolidation.Worker\\ConsolidationConsumer.cs:line 240\r\n  Exception data:\r\n    Severity: FATAL\r\n    SqlState: 55000\r\n    MessageText: database \u0022consolidation_db\u0022 is not currently accepting connections\r\n    File: postinit.c\r\n    Line: 353\r\n    Routine: CheckMyDatabase","State":{"{OriginalFormat}":"Banco consolidation_db indispon\u00EDvel para o worker; consumo pausado at\u00E9 a sonda passar."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Warning","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"Falha de infraestrutura: consumo pausado (basic.cancel); a entrega aberta fica sem ACK.","State":{"{OriginalFormat}":"Falha de infraestrutura: consumo pausado (basic.cancel); a entrega aberta fica sem ACK."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"Banco consolidation_db acess\u00EDvel novamente.","State":{"{OriginalFormat}":"Banco consolidation_db acess\u00EDvel novamente."},"Scopes":[]}
+[testcontainers.org 00:00:19.58] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:20.82] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:22.00] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:23.04] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:24.38] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:25.51] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:26.73] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:27.85] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:28.88] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:30.19] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:31.56] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:32.62] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:33.78] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:35.06] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:36.28] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:37.39] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:38.62] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:40.02] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:41.44] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:42.64] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:43.81] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:44.76] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:45.69] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:46.96] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:48.05] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+[testcontainers.org 00:00:49.05] Execute "rabbitmqctl -q list_consumers queue_name" at Docker container 8597ec5a93fd
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"consolidation-worker encerrando.","State":{"{OriginalFormat}":"consolidation-worker encerrando."},"Scopes":[]}
+[xUnit.net 00:00:50.96]     CashFlow.Consolidation.Tests.Worker.ConsolidationWorkerTests.DatabaseDown_AfterBrokerReconnect_ResumesConsuming_AndThirdMessageIsApplied [FAIL]
+[xUnit.net 00:00:50.96]       Tempo esgotado (30 s) esperando: consumidor re-registrado após a pausa. Último valor: 0
+[xUnit.net 00:00:50.96]       Stack Trace:
+[xUnit.net 00:00:50.96]         C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Support\Eventually.cs(22,0): at CashFlow.Consolidation.Tests.Support.Eventually.WaitAsync[T](Func`1 probe, Func`2 done, TimeSpan timeout, String description)
+[xUnit.net 00:00:50.96]         C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Worker\ConsolidationWorkerTests.cs(319,0): at CashFlow.Consolidation.Tests.Worker.ConsolidationWorkerTests.DatabaseDown_AfterBrokerReconnect_ResumesConsuming_AndThirdMessageIsApplied()
+[xUnit.net 00:00:50.96]         C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Worker\ConsolidationWorkerTests.cs(327,0): at CashFlow.Consolidation.Tests.Worker.ConsolidationWorkerTests.DatabaseDown_AfterBrokerReconnect_ResumesConsuming_AndThirdMessageIsApplied()
+[xUnit.net 00:00:50.96]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:50.96]       Output:
+[xUnit.net 00:00:50.96]         Conexões derrubadas em consolidation_db: 0
+[testcontainers.org 00:00:50.47] Delete Docker container 8597ec5a93fd
+[testcontainers.org 00:00:50.47] Delete Docker container a826349630a4
+  Failed CashFlow.Consolidation.Tests.Worker.ConsolidationWorkerTests.DatabaseDown_AfterBrokerReconnect_ResumesConsuming_AndThirdMessageIsApplied [40 s]
+  Error Message:
+   Tempo esgotado (30 s) esperando: consumidor re-registrado após a pausa. Último valor: 0
+  Stack Trace:
+     at CashFlow.Consolidation.Tests.Support.Eventually.WaitAsync[T](Func`1 probe, Func`2 done, TimeSpan timeout, String description) in C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Support\Eventually.cs:line 22
+   at CashFlow.Consolidation.Tests.Worker.ConsolidationWorkerTests.DatabaseDown_AfterBrokerReconnect_ResumesConsuming_AndThirdMessageIsApplied() in C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Worker\ConsolidationWorkerTests.cs:line 319
+   at CashFlow.Consolidation.Tests.Worker.ConsolidationWorkerTests.DatabaseDown_AfterBrokerReconnect_ResumesConsuming_AndThirdMessageIsApplied() in C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\Worker\ConsolidationWorkerTests.cs:line 327
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ Conexões derrubadas em consolidation_db: 0
+
+
+[xUnit.net 00:00:51.57]   Finished:    CashFlow.Consolidation.Tests
+
+Test Run Failed.
+Total tests: 1
+     Failed: 1
+ Total time: 52,2258 Seconds

@@ -1,0 +1,62 @@
+# F7 10 - permissoes das chaves (C-25) - 2026-10-29T13:15:11Z
+docker: cliente=29.7.2 servidor=29.7.2 os/arch=linux/amd64 | nome=docker-desktop kernel=6.18.33.2-microsoft-standard-WSL2 so=Docker Desktop
+host: arquivos em infra/pki/out (ls -l do Git Bash; NTFS nao reflete o modo POSIX gravado por make-certs.sh: chmod 600 *.key):
+  -rw-r--r-- Administrator 197121 infra/pki/out/ca.key
+  -rw-r--r-- Administrator 197121 infra/pki/out/consolidation-api.key
+  -rw-r--r-- Administrator 197121 infra/pki/out/foreign-ca.key
+  -rw-r--r-- Administrator 197121 infra/pki/out/gateway-client.key
+  -rw-r--r-- Administrator 197121 infra/pki/out/gateway-edge.key
+  -rw-r--r-- Administrator 197121 infra/pki/out/neg-expired.key
+  -rw-r--r-- Administrator 197121 infra/pki/out/neg-foreign-ca.key
+  -rw-r--r-- Administrator 197121 infra/pki/out/neg-wrong-eku.key
+  -rw-r--r-- Administrator 197121 infra/pki/out/neg-wrong-san.key
+  -rw-r--r-- Administrator 197121 infra/pki/out/transactions-api.key
+
+=== cashflow-gateway-1
+Config.User='1654' | imagem: cashflow/gateway:dev
+processo principal (docker top): 1654                91054               entrypoint;
+  uid=1654(app) gid=1654(app) groups=1654(app)
+  total 8
+  -rwxrwxrwx 1 0 0 656 Oct 29 08:43 ca.crt
+  -rwxrwxrwx 1 0 0 704 Oct 29 08:43 gateway-client.crt
+  -rwxrwxrwx 1 0 0 246 Oct 29 08:43 gateway-client.key
+  -rwxrwxrwx 1 0 0 704 Oct 29 08:43 gateway-edge.crt
+  -rwxrwxrwx 1 0 0 246 Oct 29 08:43 gateway-edge.key
+  legivel pelo uid atual: /certs/gateway-client.key
+  legivel pelo uid atual: /certs/gateway-edge.key
+
+=== cashflow-transactions-api-1
+Config.User='1654' | imagem: cashflow/transactions-api:dev
+processo principal (docker top): 1654                89373               entrypoint;
+  uid=1654(app) gid=1654(app) groups=1654(app)
+  total 4
+  -rwxrwxrwx 1 0 0  46 Oct 29 11:23 blocked-thumbprints.txt
+  -rwxrwxrwx 1 0 0 656 Oct 29 08:43 ca.crt
+  -rwxrwxrwx 1 0 0 726 Oct 29 08:43 transactions-api.crt
+  -rwxrwxrwx 1 0 0 246 Oct 29 08:43 transactions-api.key
+  legivel pelo uid atual: /certs/transactions-api.key
+
+=== cashflow-consolidation-api-1
+Config.User='1654' | imagem: cashflow/consolidation-api:dev
+processo principal (docker top): 1654                92341               entrypoint;
+  uid=1654(app) gid=1654(app) groups=1654(app)
+  total 4
+  -rwxrwxrwx 1 0 0  46 Oct 29 11:23 blocked-thumbprints.txt
+  -rwxrwxrwx 1 0 0 656 Oct 29 08:43 ca.crt
+  -rwxrwxrwx 1 0 0 730 Oct 29 08:43 consolidation-api.crt
+  -rwxrwxrwx 1 0 0 246 Oct 29 08:43 consolidation-api.key
+  legivel pelo uid atual: /certs/consolidation-api.key
+
+=== Mecanismo (volume Linux efemero f7-c25-test, apagado ao fim): chave 600 de dono uid 1000 lida por uid 1654 (usuario padrao app das imagens .NET)
+  criar (root): -rw-------    1 1000     1000            17 Oct 29 13:15 /v/k.key
+  uid 1654 le (600, dono 1000): uid=1654 gid=0(root) groups=0(root)
+  uid 1654 le (600, dono 1000): NEGADO
+  uid 1654 le (600, dono 1000): cat: can't open '/v/k.key': Permission denied
+  correcao A (chown 1654): -rw-------    1 1654     1000            17 Oct 29 13:15 /v/k.key
+  uid 1654 le apos chown 1654: LEU
+  correcao B (640, grupo 1654): -rw-r-----    1 1000     1654            17 Oct 29 13:15 /v/k.key
+  uid:gid 1654:1654 le apos 640 e grupo 1654: uid=1654 gid=1654 groups=1654
+  uid:gid 1654:1654 le apos 640 e grupo 1654: LEU
+volume efemero f7-c25-test removido
+LIMITE: a leitura no bind mount de Docker Desktop depende do driver de arquivos (virtiofs/9p), que expoe o modo de forma diferente de um host Linux; so um host Linux nativo valida.
+exit=0

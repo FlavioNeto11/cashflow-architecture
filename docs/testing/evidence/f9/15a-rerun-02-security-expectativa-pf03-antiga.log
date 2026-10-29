@@ -1,0 +1,220 @@
+# F7 02 - seguranca/tenant pelo gateway - 2026-10-29T17:50:20Z
+
+=================== [17:50:20.415] 0. tokens (A com 3 escopos, A so write, B)
+token A: 933 chars
+  "iss":"http://keycloak:8080/realms/cashflow"
+  "aud":"cashflow-api"
+  "typ":"Bearer"
+  "azp":"merchant-a-system"
+  "scope":"consolidation.read transactions.write transactions.read"
+  "merchant_id":"33333333-3333-4333-8333-333333333333"
+token A (so write): 883 chars
+token B: 933 chars
+  "azp":"merchant-b-system"
+  "merchant_id":"44444444-4444-4444-8444-444444444444"
+
+=================== [17:50:21.047] 1. Autenticacao (T-07/T-26): 401 e cabecalho WWW-Authenticate
+  [OK]    sem token (esperado 401, obtido 401)
+  [OK]    token adulterado (ultimo caractere trocado) (esperado 401, obtido 401)
+  [OK]    alg=none (esperado 401, obtido 401)
+  [OK]    HS256 assinado com a chave publica/CA como segredo (confusao de algoritmo) (esperado 401, obtido 401)
+  [OK]    RS256 com kid desconhecido (esperado 401, obtido 401)
+  [OK]    esquema errado (Basic em vez de Bearer) (esperado 401, obtido 401)
+  [OK]    token vazio (esperado 401, obtido 401)
+--- [17:50:22.097] sem token: cabecalhos de 401
+status: HTTP/1.1 401 Unauthorized
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: WWW-Authenticate: Bearer realm="cashflow"
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.2","title":"Não autenticado.","status":401,"traceId":"00-4fcc31ef993b22bbb049d5ace6d32276-2ddd956161ee27fd-01"}
+--- rajada de 40 tokens com kid desconhecido (T-26, so codigos; a contagem de buscas ao JWKS no Keycloak NAO foi medida)
+       40 401
+  [OK]    token valido continua aceito apos a rajada (esperado 200, obtido 200)
+
+=================== [17:50:25.949] 2. Autorizacao por escopo (403) - ADR-0006
+  [OK]    token so write no consolidado (esperado 403, obtido 403)
+  [OK]    token so write na listagem (transactions.read) (esperado 403, obtido 403)
+--- [17:50:26.122] 403: cabecalhos e corpo
+status: HTTP/1.1 403 Forbidden
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.4","title":"Acesso negado.","status":403,"traceId":"00-c8c876a8f5a5951d775836df47cd7996-ad02fc8638d360c9-01"}
+
+=================== [17:50:26.357] 3. Isolamento de tenant (T-07/T-25): rota != claim => 404 identico; nenhuma linha/evento criado
+  [OK]    A faz POST na rota de B (esperado 404, obtido 404)
+  [OK]    A le consolidado de B (esperado 404, obtido 404)
+  [OK]    A lista transacoes de B (esperado 404, obtido 404)
+  [OK]    B cria seu lancamento (esperado 201, obtido 201)
+  [OK]    A le lancamento de B pela rota de A (esperado 404, obtido 404)
+  [OK]    A le lancamento de B pela rota de B (esperado 404, obtido 404)
+  [OK]    A estorna lancamento de B pela rota de A (esperado 404, obtido 404)
+  [OK]    A estorna lancamento de B pela rota de B (esperado 404, obtido 404)
+  [OK]    A usa a mesma Idempotency-Key de B na rota de A (nao deve devolver o replay de B) (esperado 201, obtido 201)
+  corpo do 201 de A (merchantId deve ser A): merchantId=33333333-3333-4333-8333-333333333333
+  [OK]    merchantId do 201 de A e A (esperado 33333333-3333-4333-8333-333333333333, obtido 33333333-3333-4333-8333-333333333333)
+--- 404 cross-tenant x 404 recurso inexistente do proprio A: corpos (ADR-0006 exige indistinguiveis)
+  cross-tenant GET : {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Recurso não encontrado.","status":404,"traceId":"00-0f496048a10aaa2eb2dbab45fa0b4977-315b3bca7e67ff4c-01"}
+  inexistente (A)  : {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Recurso não encontrado.","status":404,"traceId":"00-d94f44d31a038b9e149143d2d37d869e-23bbfa571d4f8381-01"}
+  comparacao (sem traceId/instance/detail): IGUAIS
+  campos comparados: ['status', 'title', 'type'] | detail cross: None | detail proprio: None
+  deltas apos a secao: transactions +2 (esperado +2: B 7.00 e A 3.00), idempotency_keys +2 (esperado +2), outbox +2 (esperado +2)
+  [OK]    delta de transactions (esperado 2, obtido 2)
+  [OK]    delta de idempotency_keys (esperado 2, obtido 2)
+  [OK]    delta de outbox (esperado 2, obtido 2)
+
+=================== [17:50:32.851] 4. merchant_id imutavel / derivado do token (ADR-0006)
+  Os clientes de servico do realm usam mapper HARDCODED (claim fixa por cliente): nao ha como o cliente alterar a claim; o
+  atributo de usuario merchant_id tem permissions.edit=[admin] no user profile (declarado no realm; edicao por usuario NAO exercitada: sem fluxo de senha/navegador).
+  [OK]    corpo com membro 'merchantId' (membro desconhecido => 400) (esperado 400, obtido 400)
+  [OK]    corpo com membro 'merchant_id' (idem) (esperado 400, obtido 400)
+  [OK]    query ?merchantId=B na rota de A e ignorada (GET consolidado de A devolve A) (esperado 200, obtido 200)
+  merchantId devolvido com ?merchantId=B: 33333333-3333-4333-8333-333333333333
+  [OK]    ?merchantId=B nao altera o tenant do consolidado (esperado 33333333-3333-4333-8333-333333333333, obtido 33333333-3333-4333-8333-333333333333)
+
+=================== [17:50:33.349] 5. Cabecalhos X-Dev-* (modo de desenvolvimento) no gateway
+  [OK]    X-Dev-* sem token (esperado 401, obtido 401)
+  token A + X-Dev-Merchant-Id=B + X-Dev-Scope extra, rota de B: o token governa => 404
+  [OK]    token A + X-Dev-* de B na rota de B (esperado 404, obtido 404)
+  [OK]    token so-write + X-Dev-Scope com consolidation.read no consolidado (nao eleva) (esperado 403, obtido 403)
+
+=================== [17:50:33.612] 6. Limite de corpo e rotas nao expostas
+  [OK]    corpo 17 KB com token valido (esperado 413, obtido 413)
+  [OK]    corpo 17 KB sem token (esperado 413, obtido 413)
+  [OK]    /health/ready pelo gateway publicado (nao roteado) (esperado 404, obtido 404)
+  [OK]    /metrics pelo gateway publicado (esperado 404, obtido 404)
+  [OK]    HTTP puro na porta TLS de borda (esperado 000, obtido 000)
+
+=================== [17:50:34.082] 7. Cabecalhos de seguranca (EdgeMiddleware.cs) e ausencia de Server em 2xx, 4xx e 5xx (o 502 do gateway e coberto no roteiro 07)
+--- [17:50:34.110] 200 consolidado
+status: HTTP/1.1 200 OK
+  hdr: Content-Type: application/json; charset=utf-8
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-08-17","currency":"BRL","credits":"3.00","debits":"0.00","dailyNet":"3.00","entriesCount":1,"asOf":"2026-10-29T17:50:30.867486Z"}
+  [OK]    200 consolidado: status (esperado 200, obtido 200)
+  [OK]    200 consolidado: Server ausente (esperado 0, obtido 0)
+  [OK]    200 consolidado: X-Content-Type-Options nosniff (esperado 1, obtido 1)
+  [OK]    200 consolidado: Cache-Control no-store (esperado 1, obtido 1)
+  [OK]    200 consolidado: Referrer-Policy no-referrer (esperado 1, obtido 1)
+--- [17:50:34.542] 201 POST
+status: HTTP/1.1 201 Created
+  hdr: Content-Type: application/json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"id":"01a188c8-f879-7195-b3bf-9a52c768ea55","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"0.01","currency":"BRL","effectiveDate":"2026-08-17","occurredAt":"2026-10-29T17:50:34.617503Z","reversalOf":null,"createdAt":"2026-10-29T17:50:34.617503Z"}
+  [OK]    201 POST: status (esperado 201, obtido 201)
+  [OK]    201 POST: Server ausente (esperado 0, obtido 0)
+  [OK]    201 POST: X-Content-Type-Options nosniff (esperado 1, obtido 1)
+  [OK]    201 POST: Cache-Control no-store (esperado 1, obtido 1)
+  [OK]    201 POST: Referrer-Policy no-referrer (esperado 1, obtido 1)
+--- [17:50:34.975] 404 rota inexistente do gateway
+status: HTTP/1.1 404 Not Found
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Not Found","status":404,"traceId":"00-b537055f9c9c05973295bb95d44a41da-e6f5d424ffd164b3-01"}
+  [OK]    404 gateway: status (esperado 404, obtido 404)
+  [OK]    404 gateway: Server ausente (esperado 0, obtido 0)
+  [OK]    404 gateway: X-Content-Type-Options nosniff (esperado 1, obtido 1)
+  [OK]    404 gateway: Cache-Control no-store (esperado 1, obtido 1)
+  [OK]    404 gateway: Referrer-Policy no-referrer (esperado 1, obtido 1)
+--- [17:50:35.427] 422 data invalida
+status: HTTP/1.1 422 Unprocessable Entity
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Dados inválidos.","status":422,"errors":{"date":["Informe um único 'date' no formato yyyy-MM-dd."]},"traceId":"00-67fcd3a7131c9da1075ba5ebf72bd3ef-3cde1cb08f176d91-01"}
+  [OK]    422 da API: status (esperado 422, obtido 422)
+  [OK]    422 da API: Server ausente (esperado 0, obtido 0)
+  [OK]    422 da API: X-Content-Type-Options nosniff (esperado 1, obtido 1)
+  [OK]    422 da API: Cache-Control no-store (esperado 1, obtido 1)
+  [OK]    422 da API: Referrer-Policy no-referrer (esperado 1, obtido 1)
+--- [17:50:35.859] 401
+status: HTTP/1.1 401 Unauthorized
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: WWW-Authenticate: Bearer realm="cashflow"
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.2","title":"Não autenticado.","status":401,"traceId":"00-a4eb7114d36b01262cc2578f736da87b-682f1b04852bd15c-01"}
+  [OK]    401 do gateway: status (esperado 401, obtido 401)
+  [OK]    401 do gateway: Server ausente (esperado 0, obtido 0)
+  [OK]    401 do gateway: X-Content-Type-Options nosniff (esperado 1, obtido 1)
+  [OK]    401 do gateway: Cache-Control no-store (esperado 1, obtido 1)
+  [OK]    401 do gateway: Referrer-Policy no-referrer (esperado 1, obtido 1)
+--- [17:50:36.299] 5xx da API via gateway (NUL em description)
+status: HTTP/1.1 422 Unprocessable Entity
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Dados inválidos.","status":422,"errors":{"description":["Não pode conter caracteres de controle."]},"traceId":"00-d9f1c32cc204e8f694d4eef1b42725b1-56a289168a59a391-01"}
+  [FALHA] 5xx da API via gateway: status (esperado 500, obtido 422)
+  [OK]    5xx da API via gateway: Server ausente (esperado 0, obtido 0)
+  [OK]    5xx da API via gateway: X-Content-Type-Options nosniff (esperado 1, obtido 1)
+  [OK]    5xx da API via gateway: Cache-Control no-store (esperado 1, obtido 1)
+  [OK]    5xx da API via gateway: Referrer-Policy no-referrer (esperado 1, obtido 1)
+
+=================== [17:50:36.742] 8. 404 do gateway x 404 da API (item 'F7 dados' de decisions-needed): corpos
+--- gateway, rota inexistente (sem token e com token)
+HTTP/1.1 404 Not Found
+  sem token: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Not Found","status":404,"traceId":"00-5961ed621ed363873ebc94252937d615-d3a8353a8e05ff53-01"}
+  com token: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Not Found","status":404,"traceId":"00-4d9c2540c8a11d96bb53dabfbd181480-bee593f0674b1600-01"}
+--- API direta (mTLS com o certificado do gateway, a partir da rede app), rota inexistente
+  API: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Not Found","status":404,"traceId":"00-183a2066e4bb2bb231d66500a17a9b50-0f2bf84c7b27edb1-01"}
+  API:   http=404
+
+=================== [17:50:38.089] 9. API direta na rede app (T-17/T-28): 8080 exige mTLS; 8081 so /health/*
+  [OK]    transactions-api:8080 sem certificado de cliente recusado (curl exit=56, http=000; esperado exit em (35|56) e http=000) * TLSv1.3 (OUT), TLS alert, decode error (562):
+  [OK]    transactions-api:8080 com certificado de CA estranha recusado (curl exit=56, http=000; esperado exit em (35|56) e http=000) * TLSv1.3 (OUT), TLS alert, decode error (562):
+  [OK]    transactions-api:8080 CONTROLE POSITIVO com gateway-client (chega a aplicacao: 404 de rota inexistente) (curl exit=0, http=404; esperado exit em (0) e http=404) 
+  [OK]    transactions-api:8080 HTTP puro recusado (resposta vazia ou reset) (curl exit=52, http=000; esperado exit em (52|56) e http=000) * Empty reply from server
+  [OK]    transactions-api:8081 /health/ready (porta de saude, texto claro, por desenho) (curl exit=0, http=200; esperado exit em (0) e http=200) 
+  [OK]    transactions-api:8081 rota de negocio nao existe (curl exit=0, http=404; esperado exit em (0) e http=404) 
+  [OK]    transactions-api:8081 /health/live/ (barra final) (curl exit=0, http=404; esperado exit em (0) e http=404) 
+  [OK]    transactions-api:8081 /HEALTH/LIVE (maiusculas) (curl exit=0, http=200; esperado exit em (0) e http=200) 
+  [OK]    transactions-api:8081 /health/ready?x=1 (query) (curl exit=0, http=200; esperado exit em (0) e http=200) 
+  [OK]    consolidation-api:8080 sem certificado de cliente recusado (curl exit=56, http=000; esperado exit em (35|56) e http=000) * TLSv1.3 (OUT), TLS alert, decode error (562):
+  [OK]    consolidation-api:8080 com certificado de CA estranha recusado (curl exit=56, http=000; esperado exit em (35|56) e http=000) * TLSv1.3 (OUT), TLS alert, decode error (562):
+  [OK]    consolidation-api:8080 CONTROLE POSITIVO com gateway-client (chega a aplicacao: 404 de rota inexistente) (curl exit=0, http=404; esperado exit em (0) e http=404) 
+  [OK]    consolidation-api:8080 HTTP puro recusado (resposta vazia ou reset) (curl exit=52, http=000; esperado exit em (52|56) e http=000) * Empty reply from server
+  [OK]    consolidation-api:8081 /health/ready (porta de saude, texto claro, por desenho) (curl exit=0, http=200; esperado exit em (0) e http=200) 
+  [OK]    consolidation-api:8081 rota de negocio nao existe (curl exit=0, http=404; esperado exit em (0) e http=404) 
+  [OK]    consolidation-api:8081 /health/live/ (barra final) (curl exit=0, http=404; esperado exit em (0) e http=404) 
+  [OK]    consolidation-api:8081 /HEALTH/LIVE (maiusculas) (curl exit=0, http=200; esperado exit em (0) e http=200) 
+  [OK]    consolidation-api:8081 /health/ready?x=1 (query) (curl exit=0, http=200; esperado exit em (0) e http=200) 
+  [OK]    consolidation-worker:8081 /health/ready (curl exit=0, http=200; esperado exit em (0) e http=200) 
+  [OK]    consolidation-worker:8081 /api/v1 nao existe (curl exit=0, http=404; esperado exit em (0) e http=404) 
+  [OK]    gateway:8081 /health/ready (porta de saude do gateway na rede app) (curl exit=0, http=200; esperado exit em (0) e http=200) 
+  [OK]    gateway:8081 rota de negocio nao existe (curl exit=0, http=404; esperado exit em (0) e http=404) 
+
+=================== [17:51:03.878] 10. C-25: o que o container ve nas chaves/certificados (Docker Desktop/Windows; Linux nativo NAO validado)
+  gateway: uid=1654(app) gid=1654(app) groups=1654(app)
+  gateway: total 8
+  gateway: -rwxrwxrwx 1 0 0 656 Oct 29 17:44 ca.crt
+  gateway: -rwxrwxrwx 1 0 0 704 Oct 29 17:44 gateway-client.crt
+  gateway: -rwxrwxrwx 1 0 0 246 Oct 29 17:44 gateway-client.key
+  gateway: -rwxrwxrwx 1 0 0 704 Oct 29 17:44 gateway-edge.crt
+  gateway: -rwxrwxrwx 1 0 0 246 Oct 29 17:44 gateway-edge.key
+  transactions-api: uid=1654(app) gid=1654(app) groups=1654(app)
+  transactions-api: total 4
+  transactions-api: -rwxrwxrwx 1 0 0  46 Oct 29 17:44 blocked-thumbprints.txt
+  transactions-api: -rwxrwxrwx 1 0 0 656 Oct 29 17:44 ca.crt
+  transactions-api: -rwxrwxrwx 1 0 0 726 Oct 29 17:44 transactions-api.crt
+  transactions-api: -rwxrwxrwx 1 0 0 246 Oct 29 17:44 transactions-api.key
+  no host (Git Bash, modo emulado pelo NTFS):
+  host: -rw-r--r-- 1 Administrator 197121 246 Oct 29 14:44 infra/pki/out/ca.key
+  host: -rw-r--r-- 1 Administrator 197121 246 Oct 29 14:44 infra/pki/out/consolidation-api.key
+  host: -rw-r--r-- 1 Administrator 197121 246 Oct 29 14:44 infra/pki/out/foreign-ca.key
+  host: -rw-r--r-- 1 Administrator 197121 246 Oct 29 14:44 infra/pki/out/gateway-client.key
+
+RESULTADO: 1 verificacao(oes) com FALHA
+exit=1

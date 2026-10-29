@@ -1,0 +1,31 @@
+# F7 13 - portas publicadas pelos fixtures - rotulo=DEPOIS-suite-completa - 2026-10-29T13:20:29Z
+--- dotnet test tests/CashFlow.Persistence.Tests/CashFlow.Persistence.Tests.csproj --filter "FullyQualifiedName~CashFlow"
+Passed!  - Failed:     0, Passed:    49, Skipped:     0, Total:    49, Duration: 9 s - CashFlow.Persistence.Tests.dll (net10.0)
+exit-dotnet-test=0
+--- dotnet test tests/CashFlow.Transactions.Api.Tests/CashFlow.Transactions.Api.Tests.csproj --filter "FullyQualifiedName~CashFlow"
+Passed!  - Failed:     0, Passed:   157, Skipped:     0, Total:   157, Duration: 13 s - CashFlow.Transactions.Api.Tests.dll (net10.0)
+exit-dotnet-test=0
+--- dotnet test tests/CashFlow.Consolidation.Tests/CashFlow.Consolidation.Tests.csproj --filter "FullyQualifiedName~CashFlow"
+Passed!  - Failed:     0, Passed:    66, Skipped:     0, Total:    66, Duration: 1 m 23 s - CashFlow.Consolidation.Tests.dll (net10.0)
+exit-dotnet-test=0
+--- dotnet test tests/CashFlow.Security.Tests/CashFlow.Security.Tests.csproj --filter "FullyQualifiedName~CashFlow"
+Passed!  - Failed:     0, Passed:    67, Skipped:     0, Total:    67, Duration: 1 m 27 s - CashFlow.Security.Tests.dll (net10.0)
+exit-dotnet-test=0
+--- publicacoes observadas (imagem | portas), linhas distintas, containers NAO-Compose:
+  postgres:17 | 127.0.0.1:50686->5432/tcp
+  postgres:17 | 127.0.0.1:60525->5432/tcp
+  postgres:17 | 127.0.0.1:60892->5432/tcp
+  postgres:17 | 127.0.0.1:61175->5432/tcp
+  quay.io/keycloak/keycloak:26.8.1 | 127.0.0.1:60814->8080/tcp, 127.0.0.1:60890->9000/tcp
+  quay.io/keycloak/keycloak:26.8.1 | 127.0.0.1:60814->8080/tcp, 127.0.0.1:63430->9000/tcp
+  rabbitmq:4-management | 127.0.0.1:61134->5672/tcp
+  rabbitmq:4-management | 5672/tcp
+  testcontainers/ryuk:0.14.0 | 0.0.0.0:50675->8080/tcp, [::]:50675->8080/tcp
+  testcontainers/ryuk:0.14.0 | 0.0.0.0:60490->8080/tcp, [::]:60490->8080/tcp
+  testcontainers/ryuk:0.14.0 | 0.0.0.0:60875->8080/tcp, [::]:60875->8080/tcp
+  testcontainers/ryuk:0.14.0 | 0.0.0.0:61137->8080/tcp, [::]:61137->8080/tcp
+  testcontainers/ryuk:0.14.0 | 8080/tcp
+--- amostras totais: 422
+publicacoes em 0.0.0.0 (IPv4) ou [::] (IPv6): 8
+publicacoes em 127.0.0.1: 8
+exit=0

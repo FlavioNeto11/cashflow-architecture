@@ -1,0 +1,17 @@
+== 2026-10-29T03:09:48Z RNF-01: parar rabbitmq e recriar transactions-api
+ Container cashflow-rabbitmq-1 Stopping 
+ Container cashflow-rabbitmq-1 Stopped 
+ Container cashflow-transactions-api-1 Starting 
+ Container cashflow-transactions-api-1 Started 
+t+1: Up Less than a second (health: starting)
+t+2: Up 4 seconds (health: starting)
+t+3: Up 7 seconds (healthy)
+ready tx com rabbitmq parado -> 200
+rabbitmq status: Exited (0) 10 seconds ago
+== down (sem -v)
+ Network cashflow_app Removing 
+ Network cashflow_data Removed 
+ Network cashflow_app Removed 
+volumes mantidos:
+cashflow_postgres-data
+cashflow_rabbitmq-data

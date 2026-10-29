@@ -1,0 +1,54 @@
+{
+  "label": "post-baseline",
+  "run": "120604",
+  "k6": "v2.3.0 (imagem fixada por digest no roteiro)",
+  "params": {
+    "GW": "https://gateway:8080",
+    "DATE": "2026-02-10",
+    "TOKENS": "A",
+    "GET_RATE": 0,
+    "POST_RATE": 10,
+    "WARMUP_S": 10,
+    "DURATION_S": 120,
+    "INCLUDE_CLOSING": false,
+    "MAX_VUS": 200
+  },
+  "get": {
+    "measure_requests": 0,
+    "ok_2xx_correct": 0,
+    "wrong_body_2xx": 0,
+    "r429": 0,
+    "r5xx": 0,
+    "timeout_or_conn_error": 0,
+    "other_4xx_anomaly": 0,
+    "loss_rate_adr0009": null,
+    "latency_ms": null,
+    "dropped_iterations_measure": 0,
+    "http_reqs_measure_window_incl_token": 0,
+    "achieved_rps": null
+  },
+  "post": {
+    "measure_requests": 1201,
+    "r201": 1201,
+    "r201_all_phases": 1302,
+    "r429": 0,
+    "r5xx": 0,
+    "timeout_or_conn_error": 0,
+    "other": 0,
+    "latency_ms": {
+      "avg": 16.82171592339716,
+      "min": 8.013974,
+      "med": 13.881291,
+      "p90": 21.030095,
+      "p95": 31.504053,
+      "p99": 80.841365,
+      "max": 196.003817
+    },
+    "dropped_iterations_measure": 0,
+    "achieved_rps": 10.008333333333333
+  },
+  "token_fetch_failed": 0,
+  "vus_max_configured": 40,
+  "vus_peak_used": 1,
+  "data_received_bytes": 761192
+}

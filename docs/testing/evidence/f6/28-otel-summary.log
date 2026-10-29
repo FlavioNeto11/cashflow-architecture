@@ -1,0 +1,38 @@
+# 2026-10-29T10:45:07Z python -I f6-parse-otel.py 28-otel-collector-raw.log (stack base+dev+obs pos-F5)
+spans: 171 traces: 155 traces com >1 servico: 0
+nomes de spans por servico:
+   5 ('consolidation-api', 'GET /api/v1/merchants/{merchantId:guid}/consolidations/daily')
+   5 ('consolidation-api', 'postgresql')
+   1 ('consolidation-worker', 'CONNECT consolidation_db')
+   3 ('consolidation-worker', 'postgresql')
+   1 ('transactions-api', 'CONNECT transactions_db')
+   1 ('transactions-api', 'POST /api/v1/merchants/{merchantId:guid}/transactions')
+   155 ('transactions-api', 'postgresql')
+
+# metricas (grep 'Name:' no log bruto; contagem de exportacoes por nome)
+     13 Name: outbox_pending
+     13 Name: outbox_oldest_age_seconds
+     11 Name: outbox_published_total
+      5 Name: consolidation_lag_seconds
+      5 Name: consolidation_applied_total
+      2 Name: dlq_messages_total
+--- scopes/meters
+      5 InstrumentationScope CashFlow.Consolidation.Worker
+      4 InstrumentationScope CashFlow.Consolidation.Worker.ConsolidationConsumer
+     13 InstrumentationScope CashFlow.Transactions
+      1 InstrumentationScope CashFlow.Transactions.Api.Application.TransactionService
+      2 InstrumentationScope CashFlow.Transactions.Api.Outbox.OutboxPublisher
+      4 InstrumentationScope Microsoft.AspNetCore
+     26 InstrumentationScope Microsoft.AspNetCore.Authentication
+     22 InstrumentationScope Microsoft.AspNetCore.Authorization
+      2 InstrumentationScope Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager
+      2 InstrumentationScope Microsoft.AspNetCore.DataProtection.Repositories.FileSystemXmlRepository
+     39 InstrumentationScope Microsoft.AspNetCore.Hosting
+     39 InstrumentationScope Microsoft.AspNetCore.MemoryPool
+     39 InstrumentationScope Microsoft.AspNetCore.Routing
+     39 InstrumentationScope Microsoft.AspNetCore.Server.Kestrel
+      1 InstrumentationScope Microsoft.EntityFrameworkCore.Database.Command
+      5 InstrumentationScope Microsoft.Hosting.Lifetime
+     56 InstrumentationScope Npgsql
+     39 InstrumentationScope System.Net.Http
+     39 InstrumentationScope System.Net.NameResolution

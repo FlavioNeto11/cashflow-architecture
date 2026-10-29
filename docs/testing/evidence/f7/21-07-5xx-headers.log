@@ -1,0 +1,42 @@
+# F7 21-07 - cabecalhos de seguranca em 5xx - 2026-10-29T15:03:50Z
+
+=================== [15:03:50.373] 1. 500 da API via gateway (byte E7 isolado = UTF-8 invalido, PF-17)
+--- [15:03:50.399] 500 da API
+status: HTTP/1.1 500 Internal Server Error
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.6.1","title":"An error occurred while processing your request.","status":500,"traceId":"00-19c0a6543f95c8db88c8017192ad7885-ccc8cca93b5e95cb-01"}
+  [OK]    500 da API via gateway: status (esperado 500, obtido 500)
+  [OK]    500 da API via gateway: Server ausente (esperado 0, obtido 0)
+  [OK]    500 da API via gateway: X-Content-Type-Options nosniff (esperado 1, obtido 1)
+  [OK]    500 da API via gateway: Cache-Control no-store (esperado 1, obtido 1)
+  [OK]    500 da API via gateway: Referrer-Policy no-referrer (esperado 1, obtido 1)
+
+=================== [15:03:50.931] 2. 502 do gateway (consolidation-api parada)
+ Container cashflow-consolidation-api-1 Stopped 
+--- [15:03:52.050] 502 do gateway
+status: HTTP/1.1 502 Bad Gateway
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.6.3","title":"Serviço indisponível.","status":502,"traceId":"00-aa778de8598ebfb238b00e39b075b58b-51a95f7b742290c6-01"}
+  [OK]    502 do gateway: status (esperado 502, obtido 502)
+  [OK]    502 do gateway: Server ausente (esperado 0, obtido 0)
+  [OK]    502 do gateway: X-Content-Type-Options nosniff (esperado 1, obtido 1)
+  [OK]    502 do gateway: Cache-Control no-store (esperado 1, obtido 1)
+  [OK]    502 do gateway: Referrer-Policy no-referrer (esperado 1, obtido 1)
+ Container cashflow-consolidation-api-1 Started 
+[15:04:04.084] cashflow-consolidation-api-1 health=healthy apos 5s
+--- [15:04:04.385] controle: consolidado volta a 200
+status: HTTP/1.1 200 OK
+  hdr: Content-Type: application/json; charset=utf-8
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-03-17","currency":"BRL","credits":"6.02","debits":"0.00","dailyNet":"6.02","entriesCount":4,"asOf":"2026-10-29T14:03:08.17225Z"}
+  [OK]    controle apos religar: status (esperado 200, obtido 200)
+FALHAS=0
+exit=0

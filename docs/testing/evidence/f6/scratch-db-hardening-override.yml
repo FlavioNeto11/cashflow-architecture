@@ -1,0 +1,17 @@
+# NOTA (passada 3): infra/postgres/post-migrate/ foi REMOVIDO (P-DB-1: o least privilege agora vem das migracoes). Este override e historico do log 18.
+services:
+  db-hardening:
+    image: postgres:17
+    profiles: [tools]
+    environment:
+      PGHOST: postgres
+      PGUSER: migrator
+      PGPASSWORD: ${MIGRATOR_PASSWORD:?}
+    volumes:
+      - ../postgres/post-migrate:/post-migrate:ro
+    entrypoint: ["/bin/sh", "-c", "for f in /post-migrate/[0-9][0-9]-*.sql; do echo \"== $$f\"; psql -d transactions_db -v ON_ERROR_STOP=1 -q -f \"$$f\"; done"]
+    networks: [data]
+    depends_on:
+      migrations-tx: {condition: service_completed_successfully}
+      migrations-cons: {condition: service_completed_successfully}
+    restart: "no"

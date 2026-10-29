@@ -1,0 +1,14 @@
+**/bin/
+**/obj/
+**/.vs/
+.git/
+.config/
+artifacts/
+docs/
+tests/
+infra/
+*.md
+**/.env
+**/.env.*
+**/*.log
+**/TestResults/

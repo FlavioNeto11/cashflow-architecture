@@ -1,0 +1,347 @@
+# Topologia local do MVP (deployment.md 1). Uso (a partir da raiz do repositorio):
+#   cp infra/compose/.env.example infra/compose/.env
+#   bash infra/pki/make-certs.sh            # F5: CA local + certificados em infra/pki/out/ (ignorado pelo Git)
+#   docker compose -f infra/compose/docker-compose.yml --env-file infra/compose/.env up -d --build
+#
+# F5 (ADR-0011, security.md): a UNICA entrada publicada para as APIs e o gateway (https://127.0.0.1:8443, TLS da CA
+# local). As APIs so escutam na rede 'app' com mTLS (certificado de cliente do gateway obrigatorio) e validam o JWT do
+# Keycloak (realm cashflow) por conta propria: o gateway nao e confiado cegamente. Portas de saude (8081) ficam fora
+# do gateway e nao sao publicadas no base. Para chamadas diretas sem token/certificado use docker-compose.dev.yml.
+#
+# Invariante de RNF-01: transactions-api depende SOMENTE de migrations-tx (e, por ele, do postgres).
+# Nenhum depends_on de rabbitmq ou de migrations-cons pode aparecer nela.
+name: cashflow
+
+x-tx-build: &tx-build
+  context: ../..
+  dockerfile: infra/docker/Dockerfile
+  target: aspnet
+  args:
+    PROJECT: CashFlow.Transactions.Api
+
+x-cons-api-build: &cons-api-build
+  context: ../..
+  dockerfile: infra/docker/Dockerfile
+  target: aspnet
+  args:
+    PROJECT: CashFlow.Consolidation.Api
+
+# Validacao de JWT (F5, security.md 3.3): issuer EXATO (G1-14), aud=cashflow-api, assinatura via JWKS do Keycloak em
+# cache, RS256/ES256 apenas. AllowHttpMetadata=true: o Keycloak local roda em HTTP dentro da rede 'app' (GAP declarado,
+# security.md 11; o processo registra aviso na partida). Em qualquer outro ambiente o IdP e https e esta chave sai.
+x-jwt-env: &jwt-env
+  Authentication__Mode: JwtBearer
+  Authentication__JwtBearer__MetadataAddress: http://keycloak:8080/realms/cashflow/.well-known/openid-configuration
+  Authentication__JwtBearer__ValidIssuer: http://keycloak:8080/realms/cashflow
+  Authentication__JwtBearer__ValidAudience: cashflow-api
+  Authentication__JwtBearer__AllowHttpMetadata: "true"
+
+# mTLS do listener de negocio das APIs (security.md 6): certificado de servidor proprio; cliente obrigatorio, emitido pela
+# CA local, EKU clientAuth e SAN gateway.internal; blocklist de thumbprints relida a quente. Arquivos montados :ro de
+# infra/pki/out (gerados por make-certs.sh; nunca versionados).
+x-mtls-server-env: &mtls-server-env
+  Hosting__Tls__ClientCa: /certs/ca.crt
+  Hosting__Tls__AllowedClientNames: gateway.internal
+  Hosting__Tls__BlockedThumbprintsFile: /certs/blocked-thumbprints.txt
+
+# P1-1 (auditoria F5): montam-se ARQUIVOS individuais, nunca o diretorio infra/pki/out: ca.key, foreign-ca.key e as chaves
+# neg-* nao entram em nenhum container. Cada servico recebe so o proprio par cert/chave + a CA publica. Os arquivos precisam
+# existir ANTES do 'up' (make-certs.sh e pre-requisito; sem eles o Docker cria diretorios no lugar e o servico falha).
+# blocked-thumbprints.txt: edite EM LUGAR (echo >> ...); substituir o arquivo por outro (novo inode) deixa o container vendo o antigo.
+
+# Soma dos pools de cada papel x instancias <= CONNECTION LIMIT do papel (target.md 7.2a): tx 30 + 2 (publisher), cons-api 12 x 2 instancias,
+# worker 6, recon-tool 2 (recon_ro) + 2 (recon_writer), jobs migrator 1 cada. Guardado por tests/CashFlow.Persistence.Tests/ConnectionBudgetTests.
+# A chave do Npgsql e "Maximum Pool Size" (a forma curta "Max Pool Size" e rejeitada em runtime).
+# Conexao AMQP dos servicos (F4). O usuario e o mesmo RABBITMQ_DEFAULT_USER do broker (valores so no .env local).
+x-rabbitmq-env: &rabbitmq-env
+  RabbitMq__Host: rabbitmq
+  RabbitMq__User: ${RABBITMQ_DEFAULT_USER:?}
+  RabbitMq__Password: ${RABBITMQ_DEFAULT_PASS:?}
+
+x-healthcheck: &healthcheck-defaults
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start_period: 15s
+
+services:
+  postgres:
+    image: postgres:17@sha256:31ba9c94a03ada9988f2bb493a22a75eef3a185884533e5cdbcd498ea835b08f
+    restart: unless-stopped # A2: reinicia apos queda do processo/host; NAO reinicia container unhealthy (limite do Compose)
+    # 100 conexoes: soma dos CONNECTION LIMIT (40+25+8+3+3+2 = 81) + 3 reservadas ao superusuario (target.md 7.2a).
+    command: ["postgres", "-c", "max_connections=100", "-c", "superuser_reserved_connections=3"]
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina em infra/compose/.env}
+      # Consumidas por infra/postgres/init/01-roles.sql (\getenv); nunca literais em arquivos versionados.
+      MIGRATOR_PASSWORD: ${MIGRATOR_PASSWORD:?}
+      TX_APP_PASSWORD: ${TX_APP_PASSWORD:?}
+      CONS_RO_PASSWORD: ${CONS_RO_PASSWORD:?}
+      CONS_WORKER_PASSWORD: ${CONS_WORKER_PASSWORD:?}
+      RECON_RO_PASSWORD: ${RECON_RO_PASSWORD:?}
+      RECON_WRITER_PASSWORD: ${RECON_WRITER_PASSWORD:?}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ../postgres/init:/docker-entrypoint-initdb.d:ro
+    networks: [data]
+    healthcheck:
+      # -h 127.0.0.1 (TCP): o servidor temporario do initdb so escuta em socket Unix, entao o check
+      # so passa depois que os scripts de papeis/bancos terminaram.
+      test: ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  rabbitmq:
+    image: rabbitmq:4-management@sha256:af6f50d38098d8bd52fef7f3fa85015dd8b2bf6def58e995bf584ae9ba0f6407
+    restart: unless-stopped # A2: reinicia apos queda do processo/host; NAO reinicia container unhealthy (limite do Compose)
+    # Topologia declarativa (F4, ADR-0002): infra/rabbitmq. O entrypoint gera, so dentro do container, as definicoes do
+    # usuario da aplicacao a partir do env (com load_definitions o broker nao cria RABBITMQ_DEFAULT_USER).
+    entrypoint: ["bash", "/opt/cashflow/entrypoint.sh"]
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:?}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:?}
+      # A1: usuario de OPERACAO (administrator; UI 15672 e rabbitmqctl). Opcional: sem ele o broker sobe so com o usuario da
+      # aplicacao (sem tag) e a UI nao tem login possivel. Ver infra/rabbitmq/entrypoint.sh.
+      RABBITMQ_OPS_USER: ${RABBITMQ_OPS_USER:-}
+      RABBITMQ_OPS_PASS: ${RABBITMQ_OPS_PASS:-}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+      - ../rabbitmq/entrypoint.sh:/opt/cashflow/entrypoint.sh:ro
+      - ../rabbitmq/rabbitmq.conf:/etc/rabbitmq/conf.d/20-cashflow.conf:ro
+      - ../rabbitmq/definitions.json:/etc/rabbitmq/definitions.d/10-topology.json:ro
+    ports:
+      - "127.0.0.1:15672:15672" # UI de gerenciamento, somente loopback
+    networks: [data]
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 20s
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.8.1@sha256:a78d6b79572168cb25886b80a8b5b8d4ed4390743e3eecb810538683e209dd6b
+    restart: unless-stopped # A2: reinicia apos queda do processo/host; NAO reinicia container unhealthy (limite do Compose)
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:?}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?}
+      KC_HEALTH_ENABLED: "true"
+      # Issuer fixo (G1-14): os tokens carregam iss=http://keycloak:8080/realms/cashflow, igual para quem valida dentro da rede.
+      KC_HOSTNAME: http://keycloak:8080
+      KC_HOSTNAME_STRICT: "true"
+    volumes:
+      # Realm cashflow (F5): clientes, escopos, mappers e usuarios demo, SEM segredos (ver keycloak-init).
+      - ../keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+    ports:
+      - "127.0.0.1:8080:8080" # IdP de demonstracao, somente loopback (token endpoint para roteiros/k6 no host)
+    networks: [app]
+    healthcheck:
+      # A imagem nao tem curl: GET em /health/ready (porta de gerenciamento 9000) via /dev/tcp do bash.
+      test:
+        - "CMD-SHELL"
+        - "exec 3<>/dev/tcp/127.0.0.1/9000 && printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q '200 OK' <&3"
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  keycloak-init:
+    # One-shot (F5): o import do realm NAO substitui ${env.*} (evidencia: docs/testing/evidence/f5/keycloak-realm-placeholder-
+    # spike.log), entao os secrets dos clientes confidenciais e as senhas dos usuarios demo entram aqui, via kcadm.sh,
+    # a partir do .env local. Os ids dos clientes sao fixos no realm JSON. Idempotente: pode rodar a cada 'up'.
+    image: quay.io/keycloak/keycloak:26.8.1@sha256:a78d6b79572168cb25886b80a8b5b8d4ed4390743e3eecb810538683e209dd6b
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - |
+        set -eu
+        K=/opt/keycloak/bin/kcadm.sh
+        # P2-9: nenhuma senha/secret em argv (visivel em ps/proc). A senha do admin e as novas senhas vao por
+        # KC_CLI_PASSWORD (variavel lida pelo kcadm; prefixo do comando, fora do argv) e os secrets por stdin (-f -).
+        # Secrets com aspas, barra ou controle quebrariam o JSON: recusados (a definicao e do .env local).
+        for v in "$$MERCHANT_A_SECRET" "$$MERCHANT_B_SECRET"; do
+          case "$$v" in *[\"\]*|*[[:cntrl:]]*) echo "keycloak-init: secret com aspas, barra ou controle nao suportado" >&2; exit 1;; esac
+        done
+        for i in $(seq 1 30); do
+          KC_CLI_PASSWORD="$$KC_BOOTSTRAP_ADMIN_PASSWORD" $$K config credentials --server http://keycloak:8080 --realm master --user "$$KC_BOOTSTRAP_ADMIN_USERNAME" >/dev/null 2>&1 && break
+          sleep 2
+        done
+        printf '{"secret":"%s"}' "$$MERCHANT_A_SECRET" | $$K update clients/a1a1a1a1-0000-4000-8000-00000000000a -r cashflow -f - --merge
+        printf '{"secret":"%s"}' "$$MERCHANT_B_SECRET" | $$K update clients/b2b2b2b2-0000-4000-8000-00000000000b -r cashflow -f - --merge
+        KC_CLI_PASSWORD="$$DEMO_USER_PASSWORD" $$K set-password -r cashflow --username demo-a
+        KC_CLI_PASSWORD="$$DEMO_USER_PASSWORD" $$K set-password -r cashflow --username demo-b
+        echo "keycloak-init: secrets de merchant-a-system/merchant-b-system e senhas de demo-a/demo-b aplicados"
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:?}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?}
+      MERCHANT_A_SECRET: ${KEYCLOAK_MERCHANT_A_SYSTEM_SECRET:?defina em infra/compose/.env}
+      MERCHANT_B_SECRET: ${KEYCLOAK_MERCHANT_B_SYSTEM_SECRET:?defina em infra/compose/.env}
+      DEMO_USER_PASSWORD: ${KEYCLOAK_DEMO_USER_PASSWORD:?defina em infra/compose/.env}
+    networks: [app]
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    restart: "no"
+
+  gateway:
+    # F5 (security.md 5): unica porta publicada das APIs. JWT (401), escopo por rota (403), rate limiting por merchant,
+    # corpo <= 16 KB (413), 5 s GET / 10 s POST, sem retentativa, allowlist de cabecalhos (X-Dev-* nunca passam),
+    # mTLS de cliente para as APIs. TLS de borda com certificado da CA local: curl --cacert infra/pki/out/ca.crt.
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile
+      target: aspnet
+      args:
+        PROJECT: CashFlow.Gateway
+    image: cashflow/gateway:dev
+    restart: unless-stopped # A2: reinicia apos queda do processo/host; NAO reinicia container unhealthy (limite do Compose)
+    environment:
+      <<: *jwt-env
+      Hosting__Tls__ServerCertificate: /certs/gateway-edge.crt
+      Hosting__Tls__ServerKey: /certs/gateway-edge.key
+      Hosting__Tls__RequireClientCertificate: "false" # borda: quem autentica o chamador e o JWT
+      Gateway__Upstream__TransactionsApi: https://transactions-api:8080
+      Gateway__Upstream__ConsolidationApi: https://consolidation-api:8080
+      Gateway__Upstream__ClientCertificate: /certs/gateway-client.crt
+      Gateway__Upstream__ClientKey: /certs/gateway-client.key
+      Gateway__Upstream__ServerCa: /certs/ca.crt
+    volumes:
+      - ../pki/out/gateway-client.crt:/certs/gateway-client.crt:ro
+      - ../pki/out/gateway-client.key:/certs/gateway-client.key:ro
+      - ../pki/out/gateway-edge.crt:/certs/gateway-edge.crt:ro
+      - ../pki/out/gateway-edge.key:/certs/gateway-edge.key:ro
+      - ../pki/out/ca.crt:/certs/ca.crt:ro
+    ports:
+      - "127.0.0.1:8443:8080" # unica entrada das APIs, somente loopback
+    networks: [edge, app]
+    # Sem depends_on das APIs: o gateway responde 502 enquanto elas sobem; a readiness dele depende so dos metadados OIDC.
+    healthcheck:
+      <<: *healthcheck-defaults
+      retries: 12 # readiness espera o JWKS do Keycloak (G1-15), que leva ~30 s para subir
+      test: ["CMD", "/app/entrypoint", "--healthcheck", "http://127.0.0.1:8081/health/ready"]
+
+  migrations-tx:
+    # Mesma imagem da transactions-api (construida la): so um servico faz build por imagem.
+    image: cashflow/transactions-api:dev
+    command: ["--migrate"]
+    environment:
+      ConnectionStrings__Migrator: "Host=postgres;Database=transactions_db;Username=migrator;Password=${MIGRATOR_PASSWORD};Maximum Pool Size=1"
+    networks: [app, data]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  migrations-cons:
+    # Mesma imagem da consolidation-api (construida la).
+    image: cashflow/consolidation-api:dev
+    command: ["--migrate"]
+    environment:
+      ConnectionStrings__Migrator: "Host=postgres;Database=consolidation_db;Username=migrator;Password=${MIGRATOR_PASSWORD};Maximum Pool Size=1"
+    networks: [app, data]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  transactions-api:
+    build: *tx-build
+    image: cashflow/transactions-api:dev
+    restart: unless-stopped # A2: reinicia apos queda do processo/host; NAO reinicia container unhealthy (limite do Compose)
+    environment:
+      ConnectionStrings__Default: "Host=postgres;Database=transactions_db;Username=tx_app;Password=${TX_APP_PASSWORD};Maximum Pool Size=30"
+      # Pool do publisher do outbox (F4, ADR-0002): 30 + 2 = 32 <= CONNECTION LIMIT 40 de tx_app.
+      ConnectionStrings__Publisher: "Host=postgres;Database=transactions_db;Username=tx_app;Password=${TX_APP_PASSWORD};Maximum Pool Size=2"
+      <<: [*rabbitmq-env, *jwt-env, *mtls-server-env]
+      Hosting__Tls__ServerCertificate: /certs/transactions-api.crt
+      Hosting__Tls__ServerKey: /certs/transactions-api.key
+    volumes:
+      - ../pki/out/transactions-api.crt:/certs/transactions-api.crt:ro
+      - ../pki/out/transactions-api.key:/certs/transactions-api.key:ro
+      - ../pki/out/ca.crt:/certs/ca.crt:ro
+      - ../pki/out/blocked-thumbprints.txt:/certs/blocked-thumbprints.txt:ro
+    networks: [app, data]
+    # RNF-01: o broker NAO e dependencia (nem service_started). O publisher reconecta com backoff e o readiness
+    # da API nao consulta o RabbitMQ. O Keycloak tambem nao e depends_on: a readiness fica 503 ate o JWKS (G1-15).
+    depends_on:
+      migrations-tx:
+        condition: service_completed_successfully
+    healthcheck:
+      <<: *healthcheck-defaults
+      retries: 12
+      test: ["CMD", "/app/entrypoint", "--healthcheck", "http://127.0.0.1:8081/health/ready"]
+
+  consolidation-api:
+    build: *cons-api-build
+    image: cashflow/consolidation-api:dev
+    restart: unless-stopped # A2: reinicia apos queda do processo/host; NAO reinicia container unhealthy (limite do Compose)
+    environment:
+      ConnectionStrings__Default: "Host=postgres;Database=consolidation_db;Username=cons_ro;Password=${CONS_RO_PASSWORD};Maximum Pool Size=12"
+      <<: [*jwt-env, *mtls-server-env]
+      Hosting__Tls__ServerCertificate: /certs/consolidation-api.crt
+      Hosting__Tls__ServerKey: /certs/consolidation-api.key
+    volumes:
+      - ../pki/out/consolidation-api.crt:/certs/consolidation-api.crt:ro
+      - ../pki/out/consolidation-api.key:/certs/consolidation-api.key:ro
+      - ../pki/out/ca.crt:/certs/ca.crt:ro
+      - ../pki/out/blocked-thumbprints.txt:/certs/blocked-thumbprints.txt:ro
+    networks: [app, data]
+    depends_on:
+      migrations-cons:
+        condition: service_completed_successfully
+    healthcheck:
+      <<: *healthcheck-defaults
+      retries: 12
+      test: ["CMD", "/app/entrypoint", "--healthcheck", "http://127.0.0.1:8081/health/ready"]
+
+  consolidation-worker:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile
+      target: aspnet # aspnet (nao runtime): o worker hospeda o Kestrel do listener de saude
+      args:
+        PROJECT: CashFlow.Consolidation.Worker
+    image: cashflow/consolidation-worker:dev
+    restart: unless-stopped # A2: reinicia apos queda do processo/host; NAO reinicia container unhealthy (limite do Compose)
+    environment:
+      ConnectionStrings__Default: "Host=postgres;Database=consolidation_db;Username=cons_worker;Password=${CONS_WORKER_PASSWORD};Maximum Pool Size=6"
+      <<: *rabbitmq-env
+    networks: [app, data]
+    depends_on:
+      migrations-cons:
+        condition: service_completed_successfully
+      rabbitmq:
+        condition: service_started # o worker reconecta com backoff; o broker nunca e pre-condicao dura
+    healthcheck:
+      <<: *healthcheck-defaults
+      test: ["CMD", "/app/entrypoint", "--healthcheck", "http://127.0.0.1:8081/health/ready"] # C-21: ready reflete consumidor registrado (503 apos Consolidation:Worker:NotConsumingUnhealthySeconds, padrao 60 s); live continua sem dependencias
+
+  recon-tool:
+    # Sob demanda: docker compose --profile tools run --rm recon-tool reconcile
+    profiles: [tools]
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile
+      target: runtime
+      args:
+        PROJECT: CashFlow.ReconTool
+    image: cashflow/recon-tool:dev
+    environment:
+      # Fonte (transactions_db) somente leitura; escrita so na projecao/Inbox/trilha (ADR-0002 item 7).
+      ConnectionStrings__Source: "Host=postgres;Database=transactions_db;Username=recon_ro;Password=${RECON_RO_PASSWORD};Maximum Pool Size=2"
+      ConnectionStrings__Default: "Host=postgres;Database=consolidation_db;Username=recon_writer;Password=${RECON_WRITER_PASSWORD};Maximum Pool Size=2"
+      <<: *rabbitmq-env
+    networks: [app, data]
+    restart: "no"
+
+# 'edge': so o gateway (unica porta de negocio publicada). As redes segmentam, mas nao sao 'internal'
+# porque rabbitmq/keycloak/gateway publicam portas em 127.0.0.1 (limitacao conhecida do Docker; ver infra/README.md).
+networks:
+  edge: {}
+  app: {}
+  data: {}
+
+volumes:
+  postgres-data: {}
+  rabbitmq-data: {}

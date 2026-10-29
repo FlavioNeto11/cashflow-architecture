@@ -1,0 +1,255 @@
+ Image cashflow/transactions-api:dev Building 
+ Image cashflow/consolidation-api:dev Building 
+ Image cashflow/gateway:dev Building 
+ Image cashflow/consolidation-worker:dev Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.41kB done
+#1 DONE 0.0s
+
+#2 [consolidation-api internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.77kB done
+#2 DONE 0.1s
+
+#3 [gateway internal] load metadata for mcr.microsoft.com/dotnet/sdk:10.0@sha256:de4fe90a98845d75910b9769662465c84de1a934665c431279d1382b2bddc02b
+#3 DONE 0.1s
+
+#4 [gateway internal] load metadata for mcr.microsoft.com/dotnet/aspnet:10.0@sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee
+#4 DONE 0.1s
+
+#5 [consolidation-api internal] load .dockerignore
+#5 transferring context: 174B done
+#5 DONE 0.1s
+
+#6 [consolidation-worker internal] load build context
+#6 DONE 0.0s
+
+#7 [transactions-api build 1/5] FROM mcr.microsoft.com/dotnet/sdk:10.0@sha256:de4fe90a98845d75910b9769662465c84de1a934665c431279d1382b2bddc02b
+#7 resolve mcr.microsoft.com/dotnet/sdk:10.0@sha256:de4fe90a98845d75910b9769662465c84de1a934665c431279d1382b2bddc02b 0.1s done
+#7 resolve mcr.microsoft.com/dotnet/sdk:10.0@sha256:de4fe90a98845d75910b9769662465c84de1a934665c431279d1382b2bddc02b 0.1s done
+#7 DONE 0.1s
+
+#8 [gateway aspnet 1/4] FROM mcr.microsoft.com/dotnet/aspnet:10.0@sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee
+#8 resolve mcr.microsoft.com/dotnet/aspnet:10.0@sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee 0.1s done
+#8 DONE 0.1s
+
+#6 [consolidation-api internal] load build context
+#6 transferring context: 410.06kB 0.0s done
+#6 transferring context: 410.06kB 0.0s done
+#6 DONE 0.1s
+
+#9 [consolidation-worker build 2/5] WORKDIR /src
+#9 CACHED
+
+#10 [consolidation-worker build 3/5] COPY global.json Directory.Build.props Directory.Packages.props ./
+#10 DONE 0.1s
+
+#11 [consolidation-worker build 4/5] COPY src/ src/
+#11 DONE 0.1s
+
+#12 [consolidation-worker build 5/5] RUN dotnet publish "src/CashFlow.Consolidation.Worker/CashFlow.Consolidation.Worker.csproj" -c Release -o /out /p:UseAppHost=true
+#12 2.921   Determining projects to restore...
+#12 ...
+
+#13 [consolidation-api build 5/5] RUN dotnet publish "src/CashFlow.Consolidation.Api/CashFlow.Consolidation.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#13 4.048   Determining projects to restore...
+#13 ...
+
+#14 [transactions-api build 5/5] RUN dotnet publish "src/CashFlow.Transactions.Api/CashFlow.Transactions.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#14 5.310   Determining projects to restore...
+#14 ...
+
+#15 [gateway build 5/5] RUN dotnet publish "src/CashFlow.Gateway/CashFlow.Gateway.csproj" -c Release -o /out /p:UseAppHost=true
+#15 3.114   Determining projects to restore...
+#15 11.00   Restored /src/src/CashFlow.Gateway/CashFlow.Gateway.csproj (in 5.51 sec).
+#15 11.01   Restored /src/src/CashFlow.Hosting/CashFlow.Hosting.csproj (in 5.51 sec).
+#15 ...
+
+#12 [consolidation-worker build 5/5] RUN dotnet publish "src/CashFlow.Consolidation.Worker/CashFlow.Consolidation.Worker.csproj" -c Release -o /out /p:UseAppHost=true
+#12 17.88   Restored /src/src/CashFlow.Messaging/CashFlow.Messaging.csproj (in 8.27 sec).
+#12 17.88   Restored /src/src/CashFlow.Hosting/CashFlow.Hosting.csproj (in 8.39 sec).
+#12 17.90   Restored /src/src/CashFlow.Consolidation.Worker/CashFlow.Consolidation.Worker.csproj (in 8.33 sec).
+#12 22.15   Restored /src/src/CashFlow.Consolidation.Persistence/CashFlow.Consolidation.Persistence.csproj (in 13.36 sec).
+#12 ...
+
+#13 [consolidation-api build 5/5] RUN dotnet publish "src/CashFlow.Consolidation.Api/CashFlow.Consolidation.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#13 22.07   Restored /src/src/CashFlow.Consolidation.Api/CashFlow.Consolidation.Api.csproj (in 12.98 sec).
+#13 22.08   Restored /src/src/CashFlow.Hosting/CashFlow.Hosting.csproj (in 12.98 sec).
+#13 22.25   Restored /src/src/CashFlow.Consolidation.Persistence/CashFlow.Consolidation.Persistence.csproj (in 13.19 sec).
+#13 ...
+
+#14 [transactions-api build 5/5] RUN dotnet publish "src/CashFlow.Transactions.Api/CashFlow.Transactions.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#14 18.76   Restored /src/src/CashFlow.Hosting/CashFlow.Hosting.csproj (in 8.37 sec).
+#14 18.76   Restored /src/src/CashFlow.Messaging/CashFlow.Messaging.csproj (in 8.36 sec).
+#14 22.35   Restored /src/src/CashFlow.Transactions.Api/CashFlow.Transactions.Api.csproj (in 12.01 sec).
+#14 ...
+
+#15 [gateway build 5/5] RUN dotnet publish "src/CashFlow.Gateway/CashFlow.Gateway.csproj" -c Release -o /out /p:UseAppHost=true
+#15 29.21   CashFlow.Hosting -> /src/src/CashFlow.Hosting/bin/Release/net10.0/CashFlow.Hosting.dll
+#15 34.48   CashFlow.Gateway -> /src/src/CashFlow.Gateway/bin/Release/net10.0/CashFlow.Gateway.dll
+#15 34.77   CashFlow.Gateway -> /out/
+#15 DONE 35.7s
+
+#14 [transactions-api build 5/5] RUN dotnet publish "src/CashFlow.Transactions.Api/CashFlow.Transactions.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#14 ...
+
+#16 [gateway aspnet 2/4] WORKDIR /app
+#16 CACHED
+
+#17 [gateway aspnet 3/4] COPY --from=build /out .
+#17 DONE 0.2s
+
+#13 [consolidation-api build 5/5] RUN dotnet publish "src/CashFlow.Consolidation.Api/CashFlow.Consolidation.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#13 ...
+
+#18 [gateway aspnet 4/4] RUN ln -s "/app/CashFlow.Gateway" /app/entrypoint
+#18 DONE 1.3s
+
+#14 [transactions-api build 5/5] RUN dotnet publish "src/CashFlow.Transactions.Api/CashFlow.Transactions.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#14 ...
+
+#19 [gateway] exporting to image
+#19 exporting layers
+#19 exporting layers 1.0s done
+#19 exporting manifest sha256:f232ef92813a0da6c1992e206db7f502f983039c1c6b283e97e4ff4e33678448 0.0s done
+#19 exporting config sha256:9a090e3cc33dbd3c2fe36ca9c872a57d9e15e0ad425f8eca6942eeb91797f57d 0.0s done
+#19 exporting attestation manifest sha256:6ba26991130ef37d7e1337da8e5157ea348c82194ac328c3a880b994e200cb49
+#19 exporting attestation manifest sha256:6ba26991130ef37d7e1337da8e5157ea348c82194ac328c3a880b994e200cb49 0.0s done
+#19 exporting manifest list sha256:4cd36dafafe88f7a6130aa232a18ba6e40add1568db2b8f3634b43bb8e3e1138 0.0s done
+#19 naming to docker.io/cashflow/gateway:dev done
+#19 unpacking to docker.io/cashflow/gateway:dev
+#19 unpacking to docker.io/cashflow/gateway:dev 0.3s done
+#19 DONE 1.6s
+
+#14 [transactions-api build 5/5] RUN dotnet publish "src/CashFlow.Transactions.Api/CashFlow.Transactions.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#14 ...
+
+#13 [consolidation-api build 5/5] RUN dotnet publish "src/CashFlow.Consolidation.Api/CashFlow.Consolidation.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#13 40.09   CashFlow.Consolidation.Persistence -> /src/src/CashFlow.Consolidation.Persistence/bin/Release/net10.0/CashFlow.Consolidation.Persistence.dll
+#13 40.65   CashFlow.Hosting -> /src/src/CashFlow.Hosting/bin/Release/net10.0/CashFlow.Hosting.dll
+#13 ...
+
+#20 [gateway] resolving provenance for metadata file
+#20 DONE 0.0s
+
+#13 [consolidation-api build 5/5] RUN dotnet publish "src/CashFlow.Consolidation.Api/CashFlow.Consolidation.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#13 ...
+
+#12 [consolidation-worker build 5/5] RUN dotnet publish "src/CashFlow.Consolidation.Worker/CashFlow.Consolidation.Worker.csproj" -c Release -o /out /p:UseAppHost=true
+#12 42.73   CashFlow.Messaging -> /src/src/CashFlow.Messaging/bin/Release/net10.0/CashFlow.Messaging.dll
+#12 43.52   CashFlow.Hosting -> /src/src/CashFlow.Hosting/bin/Release/net10.0/CashFlow.Hosting.dll
+#12 44.12   CashFlow.Consolidation.Persistence -> /src/src/CashFlow.Consolidation.Persistence/bin/Release/net10.0/CashFlow.Consolidation.Persistence.dll
+#12 ...
+
+#13 [consolidation-api build 5/5] RUN dotnet publish "src/CashFlow.Consolidation.Api/CashFlow.Consolidation.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#13 45.55   CashFlow.Consolidation.Api -> /src/src/CashFlow.Consolidation.Api/bin/Release/net10.0/CashFlow.Consolidation.Api.dll
+#13 45.79   CashFlow.Consolidation.Api -> /out/
+#13 DONE 46.2s
+
+#14 [transactions-api build 5/5] RUN dotnet publish "src/CashFlow.Transactions.Api/CashFlow.Transactions.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#14 41.65   CashFlow.Messaging -> /src/src/CashFlow.Messaging/bin/Release/net10.0/CashFlow.Messaging.dll
+#14 41.84   CashFlow.Hosting -> /src/src/CashFlow.Hosting/bin/Release/net10.0/CashFlow.Hosting.dll
+#14 ...
+
+#21 [consolidation-api aspnet 3/4] COPY --from=build /out .
+#21 DONE 0.2s
+
+#22 [consolidation-api aspnet 4/4] RUN ln -s "/app/CashFlow.Consolidation.Api" /app/entrypoint
+#22 DONE 0.5s
+
+#14 [transactions-api build 5/5] RUN dotnet publish "src/CashFlow.Transactions.Api/CashFlow.Transactions.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#14 ...
+
+#23 [consolidation-api] exporting to image
+#23 exporting layers
+#23 exporting layers 0.8s done
+#23 exporting manifest sha256:6841ba0b1979149682d9d195a8d10572fa3f56b575793d5d8ef2af4c7336c560 0.0s done
+#23 exporting config sha256:7327d0f7355f7925e8c5693aa602175047273973b413e61a4ef8ad668e1fd23b 0.0s done
+#23 exporting attestation manifest sha256:514c977efe34bcc4d7bc24bdba51a72d799a9c383c43657018f28b706b861483
+#23 exporting attestation manifest sha256:514c977efe34bcc4d7bc24bdba51a72d799a9c383c43657018f28b706b861483 0.1s done
+#23 exporting manifest list sha256:dc0f7d5f6da15f04779fa4d09d6a17a4ddd421518f7c30f6d635dd0d11e8bf17 0.1s done
+#23 naming to docker.io/cashflow/consolidation-api:dev
+#23 naming to docker.io/cashflow/consolidation-api:dev done
+#23 unpacking to docker.io/cashflow/consolidation-api:dev
+#23 unpacking to docker.io/cashflow/consolidation-api:dev 0.2s done
+#23 DONE 1.3s
+
+#14 [transactions-api build 5/5] RUN dotnet publish "src/CashFlow.Transactions.Api/CashFlow.Transactions.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#14 ...
+
+#12 [consolidation-worker build 5/5] RUN dotnet publish "src/CashFlow.Consolidation.Worker/CashFlow.Consolidation.Worker.csproj" -c Release -o /out /p:UseAppHost=true
+#12 49.26   CashFlow.Consolidation.Worker -> /src/src/CashFlow.Consolidation.Worker/bin/Release/net10.0/CashFlow.Consolidation.Worker.dll
+#12 ...
+
+#24 [consolidation-api] resolving provenance for metadata file
+#24 DONE 0.0s
+
+#12 [consolidation-worker build 5/5] RUN dotnet publish "src/CashFlow.Consolidation.Worker/CashFlow.Consolidation.Worker.csproj" -c Release -o /out /p:UseAppHost=true
+#12 49.47   CashFlow.Consolidation.Worker -> /out/
+#12 DONE 50.0s
+
+#14 [transactions-api build 5/5] RUN dotnet publish "src/CashFlow.Transactions.Api/CashFlow.Transactions.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#14 ...
+
+#25 [consolidation-worker aspnet 3/4] COPY --from=build /out .
+#25 DONE 0.1s
+
+#26 [consolidation-worker aspnet 4/4] RUN ln -s "/app/CashFlow.Consolidation.Worker" /app/entrypoint
+#26 DONE 0.6s
+
+#14 [transactions-api build 5/5] RUN dotnet publish "src/CashFlow.Transactions.Api/CashFlow.Transactions.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#14 ...
+
+#27 [consolidation-worker] exporting to image
+#27 ...
+
+#14 [transactions-api build 5/5] RUN dotnet publish "src/CashFlow.Transactions.Api/CashFlow.Transactions.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#14 51.41   CashFlow.Transactions.Api -> /src/src/CashFlow.Transactions.Api/bin/Release/net10.0/CashFlow.Transactions.Api.dll
+#14 51.65   CashFlow.Transactions.Api -> /out/
+#14 DONE 52.0s
+
+#27 [consolidation-worker] exporting to image
+#27 exporting layers 1.2s done
+#27 exporting manifest sha256:c9cde4cce79ad39ace235b0d7b5c969df678497a98b5e91aafe0774ab618503a 0.0s done
+#27 exporting config sha256:21c8eb975209188c9b1407db471fef1b77de6807262c655214bfea15bc5fb842 0.0s done
+#27 exporting attestation manifest sha256:d8ff844c1bd396ab3059560b9d1687a478737cf01505763eac03fd64d543b4f8
+#27 exporting attestation manifest sha256:d8ff844c1bd396ab3059560b9d1687a478737cf01505763eac03fd64d543b4f8 0.0s done
+#27 exporting manifest list sha256:1d9b8f99aec300fdbefaa94e82493e3da847f460f489ff226af3efb856955d70 0.0s done
+#27 naming to docker.io/cashflow/consolidation-worker:dev done
+#27 unpacking to docker.io/cashflow/consolidation-worker:dev
+#27 ...
+
+#28 [transactions-api aspnet 3/4] COPY --from=build /out .
+#28 DONE 0.3s
+
+#27 [consolidation-worker] exporting to image
+#27 unpacking to docker.io/cashflow/consolidation-worker:dev 0.3s done
+#27 DONE 1.9s
+
+#29 [transactions-api aspnet 4/4] RUN ln -s "/app/CashFlow.Transactions.Api" /app/entrypoint
+#29 DONE 0.5s
+
+#30 [transactions-api] exporting to image
+#30 ...
+
+#31 [consolidation-worker] resolving provenance for metadata file
+#31 DONE 0.0s
+
+#30 [transactions-api] exporting to image
+#30 exporting layers 1.3s done
+#30 exporting manifest sha256:271be57d55cc2a86966796e68b001c48513a0bfc6b4533c60b8d1ae45cb35b19
+#30 exporting manifest sha256:271be57d55cc2a86966796e68b001c48513a0bfc6b4533c60b8d1ae45cb35b19 0.1s done
+#30 exporting config sha256:67860e4f286956c390efc7a03d7668a38633064e647c6e176bbb209b937f85e9 0.1s done
+#30 exporting attestation manifest sha256:2186c5a08b279c516f310f97bcf981cfbb424e9f0499bc58ba97c13110e8e1e8 0.0s done
+#30 exporting manifest list sha256:118696155bd7ed5398da5c8857e0d4d67669773b7adfce2be51b0befcba6ba32 0.0s done
+#30 naming to docker.io/cashflow/transactions-api:dev
+#30 naming to docker.io/cashflow/transactions-api:dev done
+#30 unpacking to docker.io/cashflow/transactions-api:dev
+#30 unpacking to docker.io/cashflow/transactions-api:dev 0.3s done
+#30 DONE 2.0s
+
+#32 [transactions-api] resolving provenance for metadata file
+#32 DONE 0.0s
+ Image cashflow/consolidation-worker:dev Built 
+ Image cashflow/gateway:dev Built 
+ Image cashflow/transactions-api:dev Built 
+ Image cashflow/consolidation-api:dev Built 

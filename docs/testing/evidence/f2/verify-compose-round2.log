@@ -1,0 +1,76 @@
+== 2026-10-29T03:37:45Z rodada 2 compose (volume novo)
+config exit=0
+tx depends_on: ['migrations-tx']
+tx env keys: ['ConnectionStrings__Default', 'ConnectionStrings__Publisher']
+kc env: {'KC_HOSTNAME': 'http://keycloak:8080', 'KC_HOSTNAME_STRICT': 'true'}
+pg command: ['postgres', '-c', 'max_connections=100', '-c', 'superuser_reserved_connections=3']
+build services: ['consolidation-api', 'consolidation-worker', 'transactions-api']
+ Image cashflow/transactions-api:dev Built 
+ Image cashflow/consolidation-api:dev Built 
+ Image cashflow/consolidation-worker:dev Built 
+up exit=0
+t+5s healthy=2
+t+10s healthy=5
+t+15s healthy=5
+t+20s healthy=5
+t+25s healthy=5
+t+30s healthy=5
+t+35s healthy=5
+t+40s healthy=5
+t+45s healthy=6
+NAME                              STATUS
+cashflow-consolidation-api-1      Up 46 seconds (healthy)
+cashflow-consolidation-worker-1   Up 46 seconds (healthy)
+cashflow-keycloak-1               Up 55 seconds (healthy)
+cashflow-migrations-cons-1        Exited (0) 47 seconds ago
+cashflow-migrations-tx-1          Exited (0) 47 seconds ago
+cashflow-postgres-1               Up 55 seconds (healthy)
+cashflow-rabbitmq-1               Up 55 seconds (healthy)
+cashflow-transactions-api-1       Up 47 seconds (healthy)
+== curls
+http://127.0.0.1:18081/health/live 200
+http://127.0.0.1:18081/health/ready 200
+http://127.0.0.1:18080/health/live 404
+http://127.0.0.1:18080/api/v1 200
+http://127.0.0.1:18083/health/live 200
+http://127.0.0.1:18083/health/ready 200
+http://127.0.0.1:18082/health/live 404
+http://127.0.0.1:18084/health/live 200
+http://127.0.0.1:18084/health/ready 200
+keycloak /realms/cashflow -> 200
+issuer: http://keycloak:8080/realms/cashflow
+== psql
+100
+3
+consolidation_db|{migrator=CTc/migrator,cons_ro=c/migrator,cons_worker=c/migrator,recon_writer=c/migrator}
+postgres|{=T/postgres,postgres=CTc/postgres}
+transactions_db|{migrator=CTc/migrator,tx_app=c/migrator,recon_ro=c/migrator}
+-- transactions_db
+public|pg_database_owner|{pg_database_owner=UC/pg_database_owner,=U/pg_database_owner}
+ef|migrator|
+ef.__EFMigrationsHistory
+cons_ro|f
+cons_worker|f
+recon_ro|f
+recon_writer|f
+tx_app|f
+-- consolidation_db
+public|pg_database_owner|{pg_database_owner=UC/pg_database_owner,=U/pg_database_owner}
+ef|migrator|
+ef.__EFMigrationsHistory
+cons_ro|f
+cons_worker|f
+recon_ro|f
+recon_writer|f
+tx_app|f
+-- tx_app tenta UPDATE no historico e CREATE TABLE
+ERROR:  permission denied for schema ef
+LINE 1: update ef."__EFMigrationsHistory" set "ProductVersion"='x';
+               ^
+ERROR:  permission denied for schema public
+LINE 1: create table t(x int);
+                     ^
+== down (sem -v)
+ Network cashflow_app Removed 
+cashflow_postgres-data
+cashflow_rabbitmq-data

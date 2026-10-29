@@ -1,0 +1,89 @@
+# F7 08 - redelivery / DLQ / redrive / purge - 2026-10-29T13:03:59Z
+estado inicial: DLQ(rabbitmqctl)=0 fila principal=0 consumidores: consolidation.transaction-registered 1
+
+=================== [13:04:04.710] D1. mensagem nao-JSON -> DLQ
+{"error":"bad_request","reason":"[{key_missing,routing_key},\n {key_missing,properties},\n {key_missing,payload},\n {key_missing,payload_encoding}]"}
+  FALHA: DLQ aumentou em 1 (rabbitmqctl imediato) esperado='1' obtido='0'
+
+=================== [13:04:41.220] D2. redelivery do MESMO evento (5x) -> sem dupla contabilizacao
+POST A 12.34 em 2026-03-08 -> 201
+[13:04:41.872] converge(2026-03-08): fonte='12.34 0.00 1' consolidado='12.34 0.00 1' apos 1s -> IGUAL
+eventId=01a187c3-3b46-7e28-babd-2a64d211c3f6; outbox rows para a data: 1
+  OK: projecao (credits debits count) apos 5 redeliveries = 12.34 0.00 1
+  OK: Inbox: linhas da data (esperado 1) = 1
+  FALHA: DLQ nao cresceu (duplicata e ACK, nao DLQ) esperado='1' obtido='0'
+  OK: fila principal vazia = 0
+
+=================== [13:04:50.728] D3. redrive ponta a ponta: evento valido nunca aplicado -> DLQ -> recon dlq redrive -> aplicado 1x
+worker parado; POST A 100.00 em 2026-03-08
+ Container cashflow-consolidation-worker-1 Stopped 
+POST -> 201
+fila principal=1 (esperado 1: publicada pela outbox, sem consumidor)
+rejeito a mensagem SEM requeue (vai para a DLX/DLQ, como se o worker a tivesse recusado)
+  mensagem rejeitada: ['01a187c3-6403-71e5-a1ff-b09bd53bc284']
+DLQ=1 (esperado 2)
+  DLQ: message_id=01a187c3-6403-71e5-a1ff-b09bd53bc284 x-reason=None x-reason-detail=None x-original-routing-key=None x-death=sim
+ Container cashflow-consolidation-worker-1 Started 
+[13:05:09.415] cashflow-consolidation-worker-1 health=healthy apos 5s
+antes do redrive: fonte=112.34 0.00 2 projecao=12.34 0.00 1 (esperado projecao SEM os 100.00)
+ Container cashflow-recon-tool-run-341209ee4dbc Creating 
+ Container cashflow-recon-tool-run-341209ee4dbc Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+01a187c3-6403-71e5-a1ff-b09bd53bc284 republicada em cashflow.transactions (transaction.registered.v1) e removida da DLQ
+redrive: republicadas=1 recusadas=0 ignoradas=0 devolvidas_nesta_execucao=0
+redrive exit=0
+[13:05:16.544] converge(2026-03-08): fonte='112.34 0.00 2' consolidado='112.34 0.00 2' apos 1s -> IGUAL
+  OK: projecao apos o redrive (credits debits count) = 112.34 0.00 2
+  OK: Inbox da data (1 por lancamento) = 2
+--- DLQ apos o redrive (a mensagem malformada do D1 e republicada e deve voltar a DLQ ou ser recusada; ver D4)
+DLQ=0
+--- reconcile da data (esperado 0 divergencias)
+ Container cashflow-recon-tool-run-49e0392ae7b7 Creating 
+ Container cashflow-recon-tool-run-49e0392ae7b7 Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+2026-03-08 clean divergencias=0  posse_lock_ms=36
+total: modo=reconcile linhas=1 divergencias=0 abortadas=0 posse_lock_max_ms=36
+reconcile exit=0
+
+=================== [13:05:23.508] D4. redrive de mensagens invalidas: comportamento observado
+DLQ antes=0
+ Container cashflow-recon-tool-run-609750855637 Creating 
+ Container cashflow-recon-tool-run-609750855637 Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+redrive: republicadas=0 recusadas=0 ignoradas=0 devolvidas_nesta_execucao=0
+redrive exit=0
+DLQ depois=0
+
+=================== [13:05:31.031] D5. purge da DLQ e lacuna de custodia (repete log 27:23-25 x 30 com rabbitmqctl imediato)
+{"error":"bad_request","reason":"[{key_missing,routing_key},\n {key_missing,properties},\n {key_missing,payload},\n {key_missing,payload_encoding}]"}
+{"error":"bad_request","reason":"[{key_missing,routing_key},\n {key_missing,properties},\n {key_missing,payload},\n {key_missing,payload_encoding}]"}
+DLQ antes do purge (rabbitmqctl)=0 | API de gestao=0 (as estatisticas da API podem atrasar)
+--- registro em disco do que sera descartado (peek sem consumir), para a analise de custodia:
+[13:05:35.445] DELETE /queues/%2F/consolidation.dlq/contents
+  http=204
+[13:05:35.515] rabbitmqctl imediato: DLQ=0
+[13:05:36.744] API de gestao logo apos: DLQ=0
+[13:05:41.876] API de gestao +5 s: DLQ=0
+  OK: DLQ vazia apos o purge (rabbitmqctl) = 0
+LACUNA: o purge e irreversivel e nao deixa registro no broker/aplicacao (nenhum 'dlq discard' auditado); mensagens eram de teste.
+
+=================== [13:05:43.252] estado final
+  rabbitmqctl: name messages_ready messages_unacknowledged consumers
+  rabbitmqctl: consolidation.dlq 0 0 0
+  rabbitmqctl: consolidation.transaction-registered 0 0 1
+NAME                              STATUS
+cashflow-consolidation-api-1      Up 2 minutes (healthy)
+cashflow-consolidation-worker-1   Up 41 seconds (healthy)
+cashflow-gateway-1                Up 2 minutes (healthy)
+cashflow-keycloak-1               Up 2 hours (healthy)
+cashflow-postgres-1               Up 2 hours (healthy)
+cashflow-rabbitmq-1               Up 4 minutes (healthy)
+cashflow-transactions-api-1       Up 3 minutes (healthy)
+FALHAS=2
+exit=1
+
+NOTA DO EXECUTOR (F7): run 1. D1/D5 falharam por defeito do roteiro (publish enviava o corpo por stdin, ja ocupado pelas credenciais do mq): resposta bad_request do broker, nada publicado.
+D2 e D3 (redelivery 5x e redrive ponta a ponta, na data 2026-03-08) sao validos. Roteiro corrigido e reexecutado em 08-dlq-redelivery.log (data 2026-03-09).

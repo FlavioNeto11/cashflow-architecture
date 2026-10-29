@@ -1,0 +1,113 @@
+# F7 08 - redelivery / DLQ / redrive / purge - 2026-10-29T17:55:56Z
+estado inicial: DLQ(rabbitmqctl)=0 fila principal=0 consumidores: consolidation.transaction-registered 1
+
+=================== [17:56:01.732] D1. mensagem nao-JSON -> DLQ
+{"routed":true}
+  OK: DLQ aumentou em 1 (rabbitmqctl imediato) = 1
+  DLQ: message_id=f7-d1-malformed x-reason=malformed_json x-reason-detail=None x-original-routing-key=transaction.registered.v1 x-death=nao
+
+=================== [17:56:04.823] D2. redelivery do MESMO evento (5x) -> sem dupla contabilizacao (COM prova de consumo: routed:true 5x e 5 linhas 'Reentrega ... sem efeito' no worker)
+POST A 12.34 em 2026-08-10 -> 201
+[17:56:06.491] converge(2026-08-10): fonte='12.34 0.00 1' consolidado='12.34 0.00 1' apos 1s -> IGUAL
+eventId=01a188ce-069b-7bfc-b96a-12b203cf0adb transactionId=01a188ce-069b-780a-a6df-ebb96a3091e0; linhas de outbox com este eventId: 1
+  OK: a transacao deste POST e a que acabou de ser aplicada (credito 12.34 na fonte para a chave f7-d2-1793296556) = 12.34
+baseline apos o 1o processamento: projecao='12.34 0.00 1' Inbox=1
+  publish #1 -> {"routed":true}
+  publish #2 -> {"routed":true}
+  publish #3 -> {"routed":true}
+  publish #4 -> {"routed":true}
+  publish #5 -> {"routed":true}
+  OK: publicacoes com routed:true = 5
+linhas 'Reentrega' do worker para a transactionId 01a188ce-069b-780a-a6df-ebb96a3091e0 (UUID novo: so podem ser deste teste): 5 (apos 1s)
+  OK: linhas 'Reentrega do lancamento 01a188ce-069b-780a-a6df-ebb96a3091e0 ... sem efeito' no log do worker = 5
+  OK: projecao (credits debits count) inalterada apos 5 redeliveries = 12.34 0.00 1
+  OK: Inbox: linhas da data inalteradas = 1
+  OK: DLQ nao cresceu (duplicata e ACK, nao DLQ) = 1
+  OK: fila principal vazia = 0
+
+=================== [17:56:15.851] D3. redrive ponta a ponta: evento valido nunca aplicado -> DLQ -> recon dlq redrive -> aplicado 1x
+worker parado; POST A 100.00 em 2026-08-10
+ Container cashflow-consolidation-worker-1 Stopped 
+POST -> 201
+fila principal=1 (esperado 1: publicada pela outbox, sem consumidor)
+rejeito a mensagem SEM requeue (vai para a DLX/DLQ, como se o worker a tivesse recusado)
+  mensagem rejeitada: ['01a188ce-3167-77a9-8cad-24b54c151741']
+DLQ=2 (esperado 2)
+  DLQ: message_id=f7-d1-malformed x-reason=malformed_json x-reason-detail=None x-original-routing-key=transaction.registered.v1 x-death=nao
+  DLQ: message_id=01a188ce-3167-77a9-8cad-24b54c151741 x-reason=None x-reason-detail=None x-original-routing-key=None x-death=sim
+ Container cashflow-consolidation-worker-1 Started 
+[17:56:35.496] cashflow-consolidation-worker-1 health=healthy apos 5s
+antes do redrive: fonte=112.34 0.00 2 projecao=12.34 0.00 1 (esperado projecao SEM os 100.00)
+ Container cashflow-recon-tool-run-a8935f91f71b Creating 
+ Container cashflow-recon-tool-run-a8935f91f71b Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+f7-d1-malformed recusada anomaly: occurredAt ilegível: retenção não verificável
+01a188ce-3167-77a9-8cad-24b54c151741 republicada em cashflow.transactions (transaction.registered.v1) e removida da DLQ
+redrive: republicadas=1 recusadas=1 ignoradas=0 devolvidas_nesta_execucao=0
+
+redrive exit=2
+[17:56:42.996] converge(2026-08-10): fonte='112.34 0.00 2' consolidado='112.34 0.00 2' apos 1s -> IGUAL
+  OK: projecao apos o redrive (credits debits count) = 112.34 0.00 2
+  OK: Inbox da data (1 por lancamento) = 2
+--- DLQ apos o redrive (a mensagem malformada do D1 e republicada e deve voltar a DLQ ou ser recusada; ver D4)
+DLQ=1
+  DLQ: message_id=f7-d1-malformed x-reason=malformed_json x-reason-detail=None x-original-routing-key=transaction.registered.v1 x-death=nao
+--- reconcile da data (esperado 0 divergencias)
+ Container cashflow-recon-tool-run-67a32b67d407 Creating 
+ Container cashflow-recon-tool-run-67a32b67d407 Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+2026-08-10 clean divergencias=0  posse_lock_ms=69
+total: modo=reconcile linhas=1 divergencias=0 abortadas=0 posse_lock_max_ms=69
+reconcile exit=0
+
+=================== [17:56:49.798] D4. redrive de mensagens invalidas: comportamento observado
+DLQ antes=1
+ Container cashflow-recon-tool-run-92b6e141eaff Creating 
+ Container cashflow-recon-tool-run-92b6e141eaff Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+f7-d1-malformed recusada anomaly: occurredAt ilegível: retenção não verificável
+redrive: republicadas=0 recusadas=1 ignoradas=0 devolvidas_nesta_execucao=0
+
+redrive exit=2
+DLQ depois=1
+  DLQ: message_id=f7-d1-malformed x-reason=malformed_json x-reason-detail=None x-original-routing-key=transaction.registered.v1 x-death=nao
+
+=================== [17:56:57.731] D5. purge da DLQ com trilha (recon-tool dlq purge; o DELETE /contents da API de gestao nao e mais usado: nao deixava registro)
+{"routed":true}
+{"routed":true}
+DLQ antes do purge (rabbitmqctl)=3 | trilhas dlq_purge antes=0
+--- purge de UMA mensagem por id (as demais ficam)
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+f7-d5-a-1793296556 descartada da consolidation.dlq (trilha gravada; corrigir com reconcile)
+purge: descartadas=1 ignoradas=2
+purge --id exit=0
+  OK: DLQ apos purge por id (rabbitmqctl) = 2
+--- purge do restante
+f7-d1-malformed descartada da consolidation.dlq (trilha gravada; corrigir com reconcile)
+f7-d5-b-1793296556 descartada da consolidation.dlq (trilha gravada; corrigir com reconcile)
+purge: descartadas=2 ignoradas=0
+purge --all exit=0
+  OK: DLQ vazia apos o purge (rabbitmqctl) = 0
+  OK: uma trilha dlq_purge por mensagem descartada = 3
+--- trilhas gravadas nesta execucao (sem corpo da mensagem; so o SHA-256)
+  f7-d5-b-1793296556|malformed_json|9c6508b5603e9500|f7-08 D5: limpeza das mensagens de teste
+  f7-d1-malformed|malformed_json|f6734501323fe854|f7-08 D5: limpeza das mensagens de teste
+  f7-d5-a-1793296556|malformed_json|58cb2b9889e60998|f7-08 D5: mensagem de teste nao-JSON
+
+=================== [17:57:10.378] estado final
+  rabbitmqctl: name messages_ready messages_unacknowledged consumers
+  rabbitmqctl: consolidation.dlq 0 0 0
+  rabbitmqctl: consolidation.transaction-registered 0 0 1
+NAME                              STATUS
+cashflow-consolidation-api-1      Up About a minute (healthy)
+cashflow-consolidation-worker-1   Up 42 seconds (healthy)
+cashflow-gateway-1                Up 2 minutes (healthy)
+cashflow-keycloak-1               Up 11 minutes (healthy)
+cashflow-postgres-1               Up 11 minutes (healthy)
+cashflow-rabbitmq-1               Up 3 minutes (healthy)
+cashflow-transactions-api-1       Up 2 minutes (healthy)
+FALHAS=0
+exit=0

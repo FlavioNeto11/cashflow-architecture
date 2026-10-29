@@ -1,0 +1,15 @@
+# baseline antes das mudancas de F6 - 2026-10-29T08:06:24Z
+NAME                              STATUS
+cashflow-consolidation-api-1      Up 20 minutes (healthy)
+cashflow-consolidation-worker-1   Up 19 minutes (healthy)
+cashflow-keycloak-1               Up 22 minutes (healthy)
+cashflow-postgres-1               Up 22 minutes (healthy)
+cashflow-rabbitmq-1               Up 17 minutes (healthy)
+cashflow-transactions-api-1       Up 22 minutes (healthy)
+
+Listing users ...
+user	tags
+dev_rabbit	[administrator]
+Listing permissions for vhost "/" ...
+user	configure	write	read
+dev_rabbit	.*	.*	.*

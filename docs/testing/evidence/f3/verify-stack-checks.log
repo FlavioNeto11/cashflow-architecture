@@ -1,0 +1,71 @@
+### 2026-10-29T04:18:36Z docker compose ps
+NAME                              STATUS
+cashflow-consolidation-api-1      Up 27 seconds (healthy)
+cashflow-consolidation-worker-1   Up 27 seconds (healthy)
+cashflow-keycloak-1               Up 36 seconds (health: starting)
+cashflow-postgres-1               Up 36 seconds (healthy)
+cashflow-rabbitmq-1               Up 36 seconds (healthy)
+cashflow-transactions-api-1       Up 26 seconds (healthy)
+
+### migrations-tx logs (tail)
+migrations-tx-1  | Cannot load library libgssapi_krb5.so.2 
+migrations-tx-1  | Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+migrations-tx-1  | {"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de TransactionsDbContext aplicadas.","State":{"Context":"TransactionsDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+
+### /health/ready transactions-api
+Healthy http=200
+
+### \dt como migrator
+              List of relations
+ Schema |       Name       | Type  |  Owner   
+--------+------------------+-------+----------
+ public | idempotency_keys | table | migrator
+ public | outbox_messages  | table | migrator
+ public | transactions     | table | migrator
+(3 rows)
+
+                 List of relations
+ Schema |         Name          | Type  |  Owner   
+--------+-----------------------+-------+----------
+ ef     | __EFMigrationsHistory | table | migrator
+(1 row)
+
+
+### privilegios em transactions (relacl) e indices
+     relname      |                                relacl                                 
+------------------+-----------------------------------------------------------------------
+ idempotency_keys | {migrator=arwdDxtm/migrator,tx_app=arwd/migrator,recon_ro=r/migrator}
+ outbox_messages  | {migrator=arwdDxtm/migrator,tx_app=arwd/migrator,recon_ro=r/migrator}
+ transactions     | {migrator=arwdDxtm/migrator,tx_app=ar/migrator,recon_ro=r/migrator}
+(3 rows)
+
+                   indexname                    |                                                                   indexdef                                                                    
+------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------
+ ix_outbox_messages_pending                     | CREATE INDEX ix_outbox_messages_pending ON public.outbox_messages USING btree (next_attempt_at) WHERE (published_at IS NULL)
+ ix_transactions_merchant_effective_occurred_id | CREATE INDEX ix_transactions_merchant_effective_occurred_id ON public.transactions USING btree (merchant_id, effective_date, occurred_at, id)
+ pk_idempotency_keys                            | CREATE UNIQUE INDEX pk_idempotency_keys ON public.idempotency_keys USING btree (merchant_id, idempotency_key)
+ pk_outbox_messages                             | CREATE UNIQUE INDEX pk_outbox_messages ON public.outbox_messages USING btree (id)
+ pk_transactions                                | CREATE UNIQUE INDEX pk_transactions ON public.transactions USING btree (id)
+ ux_outbox_messages_aggregate_type_version      | CREATE UNIQUE INDEX ux_outbox_messages_aggregate_type_version ON public.outbox_messages USING btree (aggregate_id, type, version)
+ ux_transactions_reversal_of                    | CREATE UNIQUE INDEX ux_transactions_reversal_of ON public.transactions USING btree (reversal_of) WHERE (reversal_of IS NOT NULL)
+(7 rows)
+
+             conname             |                 pg_get_constraintdef                  
+---------------------------------+-------------------------------------------------------
+ ck_transactions_amount_positive | CHECK ((amount > (0)::numeric))
+ ck_transactions_currency_brl    | CHECK ((currency = 'BRL'::bpchar))
+ ck_transactions_entry_type      | CHECK ((entry_type = ANY (ARRAY[1, 2])))
+ fk_transactions_reversal_of     | FOREIGN KEY (reversal_of) REFERENCES transactions(id)
+ pk_transactions                 | PRIMARY KEY (id)
+(5 rows)
+
+
+### tx_app: UPDATE/DELETE em transactions devem falhar (42501)
+ERROR:  permission denied for table transactions
+ERROR:  permission denied for table transactions
+UPDATE 0
+ count 
+-------
+     0
+(1 row)
+

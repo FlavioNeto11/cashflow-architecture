@@ -1,0 +1,63 @@
+# F7 23 - IdP (Keycloak) indisponivel - 2026-10-29T14:23:06Z
+
+=================== [14:23:06.747] 0. baseline com o Keycloak no ar
+tokens obtidos (nao impressos); TAW expira em 299s
+  OK: POST baseline = 201
+  OK: GET consolidado baseline = 200
+    gateway: ready_rc=0 docker_health=healthy
+    transactions-api: ready_rc=0 docker_health=healthy
+    consolidation-api: ready_rc=0 docker_health=healthy
+    consolidation-worker: ready_rc=0 docker_health=healthy
+
+=================== [14:23:10.760] 1. docker compose stop keycloak
+   Container cashflow-keycloak-1 Stopping 
+   Container cashflow-keycloak-1 Stopped 
+keycloak: exited exit=143
+
+=================== [14:23:15.231] 2.3  +3s com o IdP parado (token em cache: expira em 291s)
+  OK: POST com token ja emitido = 201
+  OK: GET consolidado com token ja emitido = 200
+  OK: token NOVO nao foi obtido (Keycloak indisponivel)
+  token novo: http=000 (000 = conexao recusada)
+  OK: request sem token continua 401 (gateway nao depende do IdP para recusar) = 401
+  prontidao:
+    gateway: ready_rc=0 docker_health=healthy
+    transactions-api: ready_rc=0 docker_health=healthy
+    consolidation-api: ready_rc=0 docker_health=healthy
+    consolidation-worker: ready_rc=0 docker_health=healthy
+
+=================== [14:23:47.750] 2.35  +35s com o IdP parado (token em cache: expira em 259s)
+  OK: POST com token ja emitido = 201
+  OK: GET consolidado com token ja emitido = 200
+  OK: token NOVO nao foi obtido (Keycloak indisponivel)
+  token novo: http=000 (000 = conexao recusada)
+  OK: request sem token continua 401 (gateway nao depende do IdP para recusar) = 401
+  prontidao:
+    gateway: ready_rc=0 docker_health=healthy
+    transactions-api: ready_rc=0 docker_health=healthy
+    consolidation-api: ready_rc=0 docker_health=healthy
+    consolidation-worker: ready_rc=0 docker_health=healthy
+
+=================== [14:23:55.507] 3. docker compose start keycloak e recuperacao
+   Container cashflow-keycloak-1 Starting 
+   Container cashflow-keycloak-1 Started 
+[14:24:12.605] cashflow-keycloak-1 health=healthy apos 13s
+  OK: token novo apos o retorno do IdP = yes
+  OK: POST com token novo = 201
+[14:24:14.566] converge(2026-03-11): fonte='8.00 0.00 8' consolidado='8.00 0.00 8' apos 1s -> IGUAL
+  prontidao final:
+    gateway: ready_rc=0 docker_health=healthy
+    transactions-api: ready_rc=0 docker_health=healthy
+    consolidation-api: ready_rc=0 docker_health=healthy
+    consolidation-worker: ready_rc=0 docker_health=healthy
+estado da stack:
+  NAME                              STATUS
+  cashflow-consolidation-api-1      Up About an hour (healthy)
+  cashflow-consolidation-worker-1   Up About an hour (healthy)
+  cashflow-gateway-1                Up About an hour (healthy)
+  cashflow-keycloak-1               Up 22 seconds (healthy)
+  cashflow-postgres-1               Up 3 hours (healthy)
+  cashflow-rabbitmq-1               Up About an hour (healthy)
+  cashflow-transactions-api-1       Up About an hour (healthy)
+FALHAS=0
+exit=0

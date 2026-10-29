@@ -1,0 +1,9 @@
+antes: dailyNet "dailyNet":"33.25"
+containers recriados: 3
+consumidor registrado apos ~9s
+authenticate_user ops: antiga=recusada nova=ok
+authenticate_user app: antiga=recusada nova=ok
+gestao HTTP: ops antiga=401 ops nova=200
+POST -> 201
+depois: dailyNet "dailyNet":"33.26"
+worker: recusas de acesso nos logs = 0

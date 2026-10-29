@@ -1,0 +1,12 @@
+# Spike: Keycloak 26.8.1 'start-dev --import-realm' e placeholders ${env.VAR} no realm JSON — 2026-10-29T08:10:45Z
+# Realm de teste (fora do repositório) com client.secret, mapper hardcoded e senha de usuário como ${env.*}; env vars definidas no 'docker run'.
+## 1. client_credentials com o VALOR da env var (esperado se houvesse substituição):
+{"error":"unauthorized_client","error_description":"Invalid client or Invalid client credentials"}
+## 2. client_credentials com o PLACEHOLDER LITERAL como secret:
+access_token emitido: True
+claims: {"iss": "http://127.0.0.1:18090/realms/spike", "azp": "spike-client", "merchant_id": "${env.SPIKE_MERCHANT}", "typ": "Bearer"}
+## 3. senha de usuário com o valor da env var:
+{"error":"invalid_grant","error_description":"Invalid user credentials"}
+## 4. senha de usuário com o placeholder literal:
+{"error":"invalid_grant","error_description":"Account is not
+## Conclusão: NÃO há substituição de ${env.VAR} no import do realm (secret, mapper e senha ficam com o texto literal). Segredos precisam ser aplicados após o import (kcadm/Admin REST).

@@ -1,0 +1,44 @@
+{
+  "label": "get-single-10min",
+  "run": "122140",
+  "k6": "v2.3.0 (imagem fixada por digest no roteiro)",
+  "params": {
+    "GW": "https://gateway:8080",
+    "DATE": "2026-02-10",
+    "TOKENS": "A",
+    "GET_RATE": 50,
+    "POST_RATE": 0,
+    "WARMUP_S": 20,
+    "DURATION_S": 600,
+    "INCLUDE_CLOSING": false,
+    "MAX_VUS": 200
+  },
+  "get": {
+    "measure_requests": 30001,
+    "ok_2xx_correct": 30001,
+    "wrong_body_2xx": 0,
+    "r429": 0,
+    "r5xx": 0,
+    "timeout_or_conn_error": 0,
+    "other_4xx_anomaly": 0,
+    "loss_rate_adr0009": 0,
+    "latency_ms": {
+      "avg": 4.148726000666665,
+      "min": 1.571439,
+      "med": 3.972352,
+      "p90": 5.307142,
+      "p95": 6.054933,
+      "p99": 8.411619,
+      "max": 158.144914
+    },
+    "dropped_iterations_measure": 0,
+    "http_reqs_measure_window_incl_token": 30301,
+    "achieved_rps": 50.001666666666665
+  },
+  "post": null,
+  "token_fetch_failed": 0,
+  "token_fetches_all_phases": 400,
+  "vus_max_configured": 200,
+  "vus_peak_used": 1,
+  "data_received_bytes": 10137259
+}

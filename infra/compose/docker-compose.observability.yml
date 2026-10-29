@@ -1,0 +1,36 @@
+# Override de OBSERVABILIDADE do MVP (F6). Acrescenta um receptor OTLP e liga o exportador OTLP das aplicacoes .NET
+# (TelemetryExtensions.cs liga o exportador somente quando OTEL_EXPORTER_OTLP_ENDPOINT existe). Acrescenta o servico otel-collector e variaveis de ambiente aos 3 servicos .NET; nao redefine nada do base
+# (sem depends_on do coletor: o exportador OTLP e assincrono e uma aplicacao nao deve esperar a telemetria para subir).
+# Uso:
+#   docker compose -f infra/compose/docker-compose.yml -f infra/compose/docker-compose.dev.yml \
+#     -f infra/compose/docker-compose.observability.yml --env-file infra/compose/.env up -d
+#   docker compose ... logs otel-collector     # logs, metricas e traces recebidos (exporter debug)
+# O coletor NAO publica porta no host: so as aplicacoes, pela rede "app", o alcancam.
+x-otel-env: &otel-env
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+  OTEL_EXPORTER_OTLP_PROTOCOL: grpc # fixado: o padrao do SDK depende da versao
+  OTEL_METRIC_EXPORT_INTERVAL: "5000" # ms; padrao do SDK e 60000. Curto para a demonstracao, nao para producao
+
+services:
+  otel-collector:
+    # Tag + digest do indice multi-arquitetura, obtido em 2026-10-29 com "docker pull" (ver docs/testing/evidence/f6).
+    image: otel/opentelemetry-collector-contrib:0.116.1@sha256:d0ebf65280da2e1b1491d1b93648281afd353d4b9ea19160090303cec9a233bd
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ../observability/otel-collector.yaml:/etc/otelcol/config.yaml:ro
+    networks: [app]
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  transactions-api:
+    environment: *otel-env
+
+  consolidation-api:
+    environment: *otel-env
+
+  consolidation-worker:
+    environment: *otel-env

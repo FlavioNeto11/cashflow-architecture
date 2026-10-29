@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CashFlow.Consolidation.Api/CashFlow.Consolidation.Api.csproj" />
+    <Project Path="src/CashFlow.Consolidation.Persistence/CashFlow.Consolidation.Persistence.csproj" />
+    <Project Path="src/CashFlow.Consolidation.Worker/CashFlow.Consolidation.Worker.csproj" />
+    <Project Path="src/CashFlow.Gateway/CashFlow.Gateway.csproj" />
+    <Project Path="src/CashFlow.Hosting/CashFlow.Hosting.csproj" />
+    <Project Path="src/CashFlow.Messaging/CashFlow.Messaging.csproj" />
+    <Project Path="src/CashFlow.ReconTool/CashFlow.ReconTool.csproj" />
+    <Project Path="src/CashFlow.Transactions.Api/CashFlow.Transactions.Api.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CashFlow.Consolidation.Tests/CashFlow.Consolidation.Tests.csproj" />
+    <Project Path="tests/CashFlow.Persistence.Tests/CashFlow.Persistence.Tests.csproj" />
+    <Project Path="tests/CashFlow.Security.Tests/CashFlow.Security.Tests.csproj" />
+    <Project Path="tests/CashFlow.Transactions.Api.Tests/CashFlow.Transactions.Api.Tests.csproj" />
+  </Folder>
+</Solution>

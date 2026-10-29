@@ -1,0 +1,103 @@
+# Rodada 2 — stack do zero (volumes removidos) com imagem reconstruida do codigo final de F3 — 2026-10-29T04:39:15Z
+$ docker compose -f infra/compose/docker-compose.yml -f infra/compose/docker-compose.dev.yml --env-file infra/compose/.env down -v --remove-orphans
+ Container cashflow-keycloak-1 Stopping 
+ Container cashflow-consolidation-api-1 Stopping 
+ Container cashflow-transactions-api-1 Stopping 
+ Container cashflow-consolidation-worker-1 Stopping 
+ Container cashflow-consolidation-api-1 Stopped 
+ Container cashflow-consolidation-api-1 Removing 
+ Container cashflow-consolidation-api-1 Removed 
+ Container cashflow-transactions-api-1 Stopped 
+ Container cashflow-transactions-api-1 Removing 
+ Container cashflow-consolidation-worker-1 Stopped 
+ Container cashflow-consolidation-worker-1 Removing 
+ Container cashflow-transactions-api-1 Removed 
+ Container cashflow-migrations-tx-1 Stopping 
+ Container cashflow-migrations-tx-1 Stopped 
+ Container cashflow-migrations-tx-1 Removing 
+ Container cashflow-consolidation-worker-1 Removed 
+ Container cashflow-migrations-cons-1 Stopping 
+ Container cashflow-rabbitmq-1 Stopping 
+ Container cashflow-migrations-cons-1 Stopped 
+ Container cashflow-migrations-cons-1 Removing 
+ Container cashflow-migrations-tx-1 Removed 
+ Container cashflow-migrations-cons-1 Removed 
+ Container cashflow-postgres-1 Stopping 
+ Container cashflow-rabbitmq-1 Stopped 
+ Container cashflow-rabbitmq-1 Removing 
+ Container cashflow-rabbitmq-1 Removed 
+ Container cashflow-postgres-1 Stopped 
+ Container cashflow-postgres-1 Removing 
+ Container cashflow-keycloak-1 Stopped 
+ Container cashflow-keycloak-1 Removing 
+ Container cashflow-postgres-1 Removed 
+ Container cashflow-keycloak-1 Removed 
+ Volume cashflow_postgres-data Removing 
+ Network cashflow_data Removing 
+ Network cashflow_app Removing 
+ Volume cashflow_rabbitmq-data Removing 
+ Volume cashflow_postgres-data Removed 
+ Volume cashflow_rabbitmq-data Removed 
+ Network cashflow_data Removed 
+ Network cashflow_app Removed 
+exit=0
+
+$ docker compose -f infra/compose/docker-compose.yml -f infra/compose/docker-compose.dev.yml --env-file infra/compose/.env up -d --build
+ Container cashflow-rabbitmq-1 Creating 
+ Container cashflow-keycloak-1 Created 
+ Container cashflow-rabbitmq-1 Created 
+ Container cashflow-postgres-1 Created 
+ Container cashflow-migrations-tx-1 Creating 
+ Container cashflow-migrations-cons-1 Creating 
+ Container cashflow-migrations-tx-1 Created 
+ Container cashflow-transactions-api-1 Creating 
+ Container cashflow-migrations-cons-1 Created 
+ Container cashflow-consolidation-api-1 Creating 
+ Container cashflow-consolidation-worker-1 Creating 
+ Container cashflow-consolidation-worker-1 Created 
+ Container cashflow-consolidation-api-1 Created 
+ Container cashflow-transactions-api-1 Created 
+ Container cashflow-postgres-1 Starting 
+ Container cashflow-keycloak-1 Starting 
+ Container cashflow-rabbitmq-1 Starting 
+ Container cashflow-keycloak-1 Started 
+ Container cashflow-postgres-1 Started 
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-rabbitmq-1 Started 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-migrations-tx-1 Starting 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-migrations-cons-1 Starting 
+ Container cashflow-migrations-cons-1 Started 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-tx-1 Started 
+ Container cashflow-migrations-tx-1 Waiting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-worker-1 Starting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-api-1 Starting 
+ Container cashflow-migrations-tx-1 Exited 
+ Container cashflow-transactions-api-1 Starting 
+ Container cashflow-consolidation-api-1 Started 
+ Container cashflow-consolidation-worker-1 Started 
+ Container cashflow-transactions-api-1 Started 
+exit=0
+
+$ docker compose -f infra/compose/docker-compose.yml -f infra/compose/docker-compose.dev.yml --env-file infra/compose/.env ps
+NAME                              IMAGE                               COMMAND                  SERVICE                CREATED          STATUS                             PORTS
+cashflow-consolidation-api-1      cashflow/consolidation-api:dev      "/app/entrypoint"        consolidation-api      41 seconds ago   Up 31 seconds (healthy)            127.0.0.1:18082->8080/tcp, 127.0.0.1:18083->8081/tcp
+cashflow-consolidation-worker-1   cashflow/consolidation-worker:dev   "/app/entrypoint"        consolidation-worker   41 seconds ago   Up 31 seconds (healthy)            127.0.0.1:18084->8081/tcp
+cashflow-keycloak-1               quay.io/keycloak/keycloak:26.8.1    "/opt/keycloak/bin/k…"   keycloak               42 seconds ago   Up 40 seconds (health: starting)   127.0.0.1:8080->8080/tcp
+cashflow-postgres-1               postgres:17                         "docker-entrypoint.s…"   postgres               41 seconds ago   Up 40 seconds (healthy)            127.0.0.1:15432->5432/tcp
+cashflow-rabbitmq-1               rabbitmq:4-management               "docker-entrypoint.s…"   rabbitmq               42 seconds ago   Up 40 seconds (healthy)            127.0.0.1:15672->15672/tcp
+cashflow-transactions-api-1       cashflow/transactions-api:dev       "/app/entrypoint"        transactions-api       41 seconds ago   Up 31 seconds (healthy)            127.0.0.1:18080->8080/tcp, 127.0.0.1:18081->8081/tcp
+
+$ docker logs cashflow-migrations-tx-1 | tail -3
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de TransactionsDbContext aplicadas.","State":{"Context":"TransactionsDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+
+$ curl /health/ready
+Healthy http=200

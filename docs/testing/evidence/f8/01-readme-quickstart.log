@@ -1,0 +1,375 @@
+# F8 01 - quickstart do README - inicio 2026-10-29T16:09:46Z
+# host: MINGW64_NT-10.0-26100 | docker 29.7.2 | Docker Compose version v5.5.0
+# .env: ja existia (credenciais rotacionadas em F7, C-30); o primeiro bloco nao o sobrescreve
+# certificados: infra/pki/out/ca.crt ja existia; make-certs.sh nao regenera sem --force
+
+## 0. estado zerado: down -v (remove containers e volumes do projeto cashflow)
+ Container cashflow-consolidation-api-1 Stopping 
+ Container cashflow-gateway-1 Stopping 
+ Container cashflow-keycloak-init-1 Stopping 
+ Container cashflow-transactions-api-1 Stopping 
+ Container cashflow-consolidation-worker-1 Stopping 
+ Container cashflow-keycloak-init-1 Stopped 
+ Container cashflow-keycloak-init-1 Removing 
+ Container cashflow-keycloak-init-1 Removed 
+ Container cashflow-keycloak-1 Stopping 
+ Container cashflow-transactions-api-1 Stopped 
+ Container cashflow-transactions-api-1 Removing 
+ Container cashflow-gateway-1 Stopped 
+ Container cashflow-gateway-1 Removing 
+ Container cashflow-transactions-api-1 Removed 
+ Container cashflow-migrations-tx-1 Stopping 
+ Container cashflow-migrations-tx-1 Stopped 
+ Container cashflow-migrations-tx-1 Removing 
+ Container cashflow-consolidation-api-1 Stopped 
+ Container cashflow-consolidation-api-1 Removing 
+ Container cashflow-consolidation-worker-1 Stopped 
+ Container cashflow-consolidation-worker-1 Removing 
+ Container cashflow-gateway-1 Removed 
+ Container cashflow-consolidation-api-1 Removed 
+ Container cashflow-consolidation-worker-1 Removed 
+ Container cashflow-rabbitmq-1 Stopping 
+ Container cashflow-migrations-cons-1 Stopping 
+ Container cashflow-migrations-tx-1 Removed 
+ Container cashflow-migrations-cons-1 Stopped 
+ Container cashflow-migrations-cons-1 Removing 
+ Container cashflow-migrations-cons-1 Removed 
+ Container cashflow-postgres-1 Stopping 
+ Container cashflow-postgres-1 Stopped 
+ Container cashflow-postgres-1 Removing 
+ Container cashflow-postgres-1 Removed 
+ Container cashflow-rabbitmq-1 Stopped 
+ Container cashflow-rabbitmq-1 Removing 
+ Container cashflow-keycloak-1 Stopped 
+ Container cashflow-keycloak-1 Removing 
+ Container cashflow-rabbitmq-1 Removed 
+ Container cashflow-keycloak-1 Removed 
+ Network cashflow_app Removing 
+ Network cashflow_data Removing 
+ Volume cashflow_rabbitmq-data Removing 
+ Network cashflow_edge Removing 
+ Volume cashflow_rabbitmq-data Removed 
+ Volume cashflow_postgres-data Removing 
+ Volume cashflow_postgres-data Removed 
+ Network cashflow_data Removed 
+ Network cashflow_app Removed 
+ Network cashflow_edge Removed 
+volumes restantes do projeto: 0
+
+## bloco 1 do README
+  $ [ -f infra/compose/.env ] || cp infra/compose/.env.example infra/compose/.env
+-> saida 0 em 0 s
+
+## bloco 2 do README
+  $ bash infra/pki/make-certs.sh
+ja existe: C:/git/cashflow-architecture/infra/pki/out (use --force para regenerar; os servicos precisam reiniciar)
+-> saida 0 em 0 s
+
+## bloco 3 do README
+  $ docker compose -f infra/compose/docker-compose.yml --env-file infra/compose/.env up -d --build --wait
+ Image cashflow/transactions-api:dev Building 
+ Image cashflow/consolidation-worker:dev Building 
+ Image cashflow/gateway:dev Building 
+ Image cashflow/consolidation-api:dev Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.54kB done
+#1 DONE 0.0s
+
+#2 [consolidation-worker internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.74kB done
+#2 DONE 0.0s
+
+#3 [gateway internal] load metadata for mcr.microsoft.com/dotnet/aspnet:10.0@sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee
+#3 DONE 0.1s
+
+#4 [consolidation-worker internal] load metadata for mcr.microsoft.com/dotnet/sdk:10.0@sha256:de4fe90a98845d75910b9769662465c84de1a934665c431279d1382b2bddc02b
+#4 DONE 0.1s
+
+#5 [transactions-api internal] load .dockerignore
+#5 transferring context: 233B done
+#5 DONE 0.0s
+
+#6 [consolidation-api internal] load build context
+#6 DONE 0.0s
+
+#7 [consolidation-api build 1/5] FROM mcr.microsoft.com/dotnet/sdk:10.0@sha256:de4fe90a98845d75910b9769662465c84de1a934665c431279d1382b2bddc02b
+#7 resolve mcr.microsoft.com/dotnet/sdk:10.0@sha256:de4fe90a98845d75910b9769662465c84de1a934665c431279d1382b2bddc02b 0.1s done
+#7 resolve mcr.microsoft.com/dotnet/sdk:10.0@sha256:de4fe90a98845d75910b9769662465c84de1a934665c431279d1382b2bddc02b 0.1s done
+#7 DONE 0.1s
+
+#8 [gateway aspnet 1/4] FROM mcr.microsoft.com/dotnet/aspnet:10.0@sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee
+#8 resolve mcr.microsoft.com/dotnet/aspnet:10.0@sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee 0.1s done
+#8 DONE 0.1s
+
+#6 [consolidation-api internal] load build context
+#6 transferring context: 9.07kB 0.0s done
+#6 DONE 0.0s
+
+#9 [gateway build 3/5] COPY global.json Directory.Build.props Directory.Packages.props ./
+#9 CACHED
+
+#10 [gateway aspnet 3/4] COPY --from=build /out .
+#10 CACHED
+
+#11 [gateway build 2/5] WORKDIR /src
+#11 CACHED
+
+#12 [gateway build 4/5] COPY src/ src/
+#12 CACHED
+
+#13 [gateway build 5/5] RUN dotnet publish "src/CashFlow.Gateway/CashFlow.Gateway.csproj" -c Release -o /out /p:UseAppHost=true
+#13 CACHED
+
+#14 [gateway aspnet 2/4] WORKDIR /app
+#14 CACHED
+
+#15 [gateway aspnet 4/4] RUN ln -s "/app/CashFlow.Gateway" /app/entrypoint
+#15 CACHED
+
+#16 [transactions-api aspnet 3/4] COPY --from=build /out .
+#16 CACHED
+
+#17 [transactions-api build 5/5] RUN dotnet publish "src/CashFlow.Transactions.Api/CashFlow.Transactions.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#17 CACHED
+
+#18 [consolidation-api aspnet 3/4] COPY --from=build /out .
+#18 CACHED
+
+#19 [consolidation-api build 5/5] RUN dotnet publish "src/CashFlow.Consolidation.Api/CashFlow.Consolidation.Api.csproj" -c Release -o /out /p:UseAppHost=true
+#19 CACHED
+
+#9 [consolidation-api build 3/5] COPY global.json Directory.Build.props Directory.Packages.props ./
+#9 CACHED
+
+#14 [consolidation-api aspnet 2/4] WORKDIR /app
+#14 CACHED
+
+#20 [consolidation-worker aspnet 3/4] COPY --from=build /out .
+#20 CACHED
+
+#11 [consolidation-api build 2/5] WORKDIR /src
+#11 CACHED
+
+#12 [consolidation-api build 4/5] COPY src/ src/
+#12 CACHED
+
+#21 [consolidation-worker build 5/5] RUN dotnet publish "src/CashFlow.Consolidation.Worker/CashFlow.Consolidation.Worker.csproj" -c Release -o /out /p:UseAppHost=true
+#21 CACHED
+
+#22 [transactions-api aspnet 4/4] RUN ln -s "/app/CashFlow.Transactions.Api" /app/entrypoint
+#22 CACHED
+
+#23 [consolidation-api aspnet 4/4] RUN ln -s "/app/CashFlow.Consolidation.Api" /app/entrypoint
+#23 CACHED
+
+#24 [consolidation-worker aspnet 4/4] RUN ln -s "/app/CashFlow.Consolidation.Worker" /app/entrypoint
+#24 CACHED
+
+#25 [consolidation-api] exporting to image
+#25 exporting layers 0.0s done
+#25 exporting manifest sha256:fa36e3d8c908f19f1ef2f880c2a8ad4b8e4db243250e400e4796d9e71214726c 0.0s done
+#25 exporting config sha256:854b1d8e47074b2a169ede0fc42ddc81da412e9c3875a3d0b3eb4b3053adffe2 0.0s done
+#25 exporting attestation manifest sha256:ad9135d9442edaeafc6ecaa8cbfeaaf45df1b52701b077cd7bd7a6b72df5891a
+#25 exporting attestation manifest sha256:ad9135d9442edaeafc6ecaa8cbfeaaf45df1b52701b077cd7bd7a6b72df5891a 0.1s done
+#25 exporting manifest list sha256:d7b001ea74b8e17bbcb4cce52c88e6519b527b7e75d39962a7902c55beb52c3d
+#25 exporting manifest list sha256:d7b001ea74b8e17bbcb4cce52c88e6519b527b7e75d39962a7902c55beb52c3d 0.1s done
+#25 naming to docker.io/cashflow/consolidation-api:dev 0.0s done
+#25 unpacking to docker.io/cashflow/consolidation-api:dev 0.0s done
+#25 DONE 0.5s
+
+#26 [transactions-api] exporting to image
+#26 exporting layers 0.0s done
+#26 exporting manifest sha256:4f45734577a518945235b2d9aea926b996ab1324f45ab2047974a6ecd22cfb00 done
+#26 exporting config sha256:1141423cce5dd29ee1934d9d7ff70ceaecde830e5f8b44ed67689d83d2b66869 0.0s done
+#26 exporting attestation manifest sha256:ea927d7bb80045b8ddffdf4bb35a7802e3fb7f79765e4b0ebc628708f6ff4f88 0.1s done
+#26 exporting manifest list sha256:452be7b3698dfb809eb14c2998d8ac72446894f0234b54eb32f0326000f43736 0.1s done
+#26 naming to docker.io/cashflow/transactions-api:dev 0.0s done
+#26 unpacking to docker.io/cashflow/transactions-api:dev 0.1s done
+#26 DONE 0.5s
+
+#27 [gateway] exporting to image
+#27 exporting layers 0.0s done
+#27 exporting manifest sha256:8e37c10e8c606a059eb2ee4fc154f0b21892c0d1c51108302160056d8be0f30e done
+#27 exporting config sha256:4b17ab8e61430f55b6700448bb587da29e2e7cc828f156015e90c6f45113a245 0.0s done
+#27 exporting attestation manifest sha256:7b4b6d89e78bafe67c8d88843c4b4f581d5b88eb091960307b5ddf6acddf4753 0.1s done
+#27 exporting manifest list sha256:b530e01f04a4b2eff4d1369bc50467a43a93ea6c73006ac50efc4f1662c12727 0.1s done
+#27 naming to docker.io/cashflow/gateway:dev 0.0s done
+#27 unpacking to docker.io/cashflow/gateway:dev 0.1s done
+#27 DONE 0.5s
+
+#28 [consolidation-worker] exporting to image
+#28 exporting layers 0.0s done
+#28 exporting manifest sha256:aae11703c459805fda4467e45f38d002ddd1d44c175c695632949126776b26ff 0.0s done
+#28 exporting config sha256:42c8d377639eafa866b580542142a0a87cdd22c05e72801ac7c880efd62daebd 0.0s done
+#28 exporting attestation manifest sha256:5cf901e1965548474bfadee77bf023af49047c4d057f4303800d3e6e477cf2e3 0.1s done
+#28 exporting manifest list sha256:f29d9fe423bef8954836f42e0186393354a2a6895ef5d53902de43d9283fd68b 0.0s done
+#28 naming to docker.io/cashflow/consolidation-worker:dev 0.0s done
+#28 unpacking to docker.io/cashflow/consolidation-worker:dev 0.0s done
+#28 DONE 0.5s
+
+#29 [transactions-api] resolving provenance for metadata file
+#29 DONE 0.2s
+
+#30 [gateway] resolving provenance for metadata file
+#30 DONE 0.2s
+
+#31 [consolidation-api] resolving provenance for metadata file
+#31 DONE 0.1s
+
+#32 [consolidation-worker] resolving provenance for metadata file
+#32 DONE 0.0s
+ Image cashflow/consolidation-worker:dev Built 
+ Image cashflow/gateway:dev Built 
+ Image cashflow/transactions-api:dev Built 
+ Image cashflow/consolidation-api:dev Built 
+ Volume cashflow_postgres-data Creating 
+ Network cashflow_edge Creating 
+ Network cashflow_app Creating 
+ Network cashflow_data Creating 
+ Volume cashflow_rabbitmq-data Creating 
+ Volume cashflow_postgres-data Creating 
+ Network cashflow_app Creating 
+ Network cashflow_edge Creating 
+ Network cashflow_data Creating 
+ Volume cashflow_rabbitmq-data Creating 
+ Volume cashflow_postgres-data Created 
+ Volume cashflow_postgres-data Created 
+ Volume cashflow_rabbitmq-data Created 
+ Volume cashflow_rabbitmq-data Created 
+ Network cashflow_edge Created 
+ Network cashflow_edge Created 
+ Network cashflow_data Created 
+ Network cashflow_data Created 
+ Container cashflow-rabbitmq-1 Creating 
+ Container cashflow-postgres-1 Creating 
+ Network cashflow_app Created 
+ Network cashflow_app Created 
+ Container cashflow-gateway-1 Creating 
+ Container cashflow-keycloak-1 Creating 
+ Container cashflow-gateway-1 Created 
+ Container cashflow-rabbitmq-1 Created 
+ Container cashflow-postgres-1 Created 
+ Container cashflow-migrations-cons-1 Creating 
+ Container cashflow-keycloak-1 Created 
+ Container cashflow-keycloak-init-1 Creating 
+ Container cashflow-migrations-tx-1 Creating 
+ Container cashflow-keycloak-init-1 Created 
+ Container cashflow-migrations-cons-1 Created 
+ Container cashflow-consolidation-worker-1 Creating 
+ Container cashflow-consolidation-api-1 Creating 
+ Container cashflow-migrations-tx-1 Created 
+ Container cashflow-transactions-api-1 Creating 
+ Container cashflow-transactions-api-1 Created 
+ Container cashflow-consolidation-worker-1 Created 
+ Container cashflow-consolidation-api-1 Created 
+ Container cashflow-rabbitmq-1 Starting 
+ Container cashflow-gateway-1 Starting 
+ Container cashflow-keycloak-1 Starting 
+ Container cashflow-postgres-1 Starting 
+ Container cashflow-postgres-1 Started 
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-keycloak-1 Started 
+ Container cashflow-keycloak-1 Waiting 
+ Container cashflow-rabbitmq-1 Started 
+ Container cashflow-gateway-1 Started 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-migrations-cons-1 Starting 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-migrations-tx-1 Starting 
+ Container cashflow-migrations-tx-1 Started 
+ Container cashflow-migrations-tx-1 Waiting 
+ Container cashflow-migrations-cons-1 Started 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-tx-1 Exited 
+ Container cashflow-transactions-api-1 Starting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-worker-1 Starting 
+ Container cashflow-consolidation-api-1 Starting 
+ Container cashflow-consolidation-worker-1 Started 
+ Container cashflow-transactions-api-1 Started 
+ Container cashflow-consolidation-api-1 Started 
+ Container cashflow-keycloak-1 Healthy 
+ Container cashflow-keycloak-init-1 Starting 
+ Container cashflow-keycloak-init-1 Started 
+ Container cashflow-rabbitmq-1 Waiting 
+ Container cashflow-consolidation-worker-1 Waiting 
+ Container cashflow-keycloak-1 Waiting 
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-migrations-tx-1 Waiting 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-keycloak-init-1 Waiting 
+ Container cashflow-gateway-1 Waiting 
+ Container cashflow-consolidation-api-1 Waiting 
+ Container cashflow-transactions-api-1 Waiting 
+ Container cashflow-consolidation-worker-1 Healthy 
+ Container cashflow-gateway-1 Healthy 
+ Container cashflow-transactions-api-1 Healthy 
+ Container cashflow-keycloak-init-1 Healthy 
+ Container cashflow-migrations-tx-1 Exited 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-api-1 Healthy 
+ Container cashflow-rabbitmq-1 Healthy 
+ Container cashflow-keycloak-1 Healthy 
+-> saida 0 em 59 s
+
+## bloco 4 do README
+  $ docker wait cashflow-keycloak-init-1
+0
+-> saida 0 em 10 s
+
+## bloco 5 do README
+  $ docker compose -f infra/compose/docker-compose.yml --env-file infra/compose/.env ps
+NAME                              IMAGE                                                                                                      COMMAND                  SERVICE                CREATED              STATUS                        PORTS
+cashflow-consolidation-api-1      cashflow/consolidation-api:dev                                                                             "/app/entrypoint"        consolidation-api      About a minute ago   Up 53 seconds (healthy)       
+cashflow-consolidation-worker-1   cashflow/consolidation-worker:dev                                                                          "/app/entrypoint"        consolidation-worker   About a minute ago   Up 53 seconds (healthy)       
+cashflow-gateway-1                cashflow/gateway:dev                                                                                       "/app/entrypoint"        gateway                About a minute ago   Up About a minute (healthy)   127.0.0.1:8443->8080/tcp
+cashflow-keycloak-1               quay.io/keycloak/keycloak:26.8.1@sha256:a78d6b79572168cb25886b80a8b5b8d4ed4390743e3eecb810538683e209dd6b   "/opt/keycloak/bin/k…"   keycloak               About a minute ago   Up About a minute (healthy)   127.0.0.1:8080->8080/tcp
+cashflow-postgres-1               postgres:17@sha256:31ba9c94a03ada9988f2bb493a22a75eef3a185884533e5cdbcd498ea835b08f                        "docker-entrypoint.s…"   postgres               About a minute ago   Up About a minute (healthy)   5432/tcp
+cashflow-rabbitmq-1               rabbitmq:4-management@sha256:af6f50d38098d8bd52fef7f3fa85015dd8b2bf6def58e995bf584ae9ba0f6407              "bash /opt/cashflow/…"   rabbitmq               About a minute ago   Up About a minute (healthy)   127.0.0.1:15672->15672/tcp
+cashflow-transactions-api-1       cashflow/transactions-api:dev                                                                              "/app/entrypoint"        transactions-api       About a minute ago   Up 53 seconds (healthy)       
+-> saida 0 em 0 s
+
+## bloco 6 do README
+  $ (
+  $   set -euo pipefail
+  $   set -a; . <(tr -d '\r' < infra/compose/.env); set +a
+  $   CA=infra/pki/out/ca.crt; REVOKE=; curl --version | grep -q Schannel && REVOKE=--ssl-revoke-best-effort
+  $   GW=https://127.0.0.1:8443/api/v1; M=33333333-3333-4333-8333-333333333333; D=$(date -u -d '-3 hours' +%F)  # data de negócio em America/Sao_Paulo (UTC-3)
+  $   TOKEN=$(printf 'client_secret=%s' "$KEYCLOAK_MERCHANT_A_SYSTEM_SECRET" | curl -sS -f -d @- \
+  $       -d grant_type=client_credentials -d client_id=merchant-a-system \
+  $       -d 'scope=transactions.write transactions.read consolidation.read' \
+  $       http://127.0.0.1:8080/realms/cashflow/protocol/openid-connect/token \
+  $     | python -I -c 'import json,sys; print(json.load(sys.stdin)["access_token"])')
+  $   curl -sS --fail-with-body $REVOKE --cacert "$CA" -w '\nHTTP %{http_code}\n' -X POST "$GW/merchants/$M/transactions" \
+  $     -H "Authorization: Bearer $TOKEN" -H "Idempotency-Key: readme-$(date +%s)" -H 'Content-Type: application/json' \
+  $     -d "{\"type\":\"CREDIT\",\"amount\":\"100.00\",\"effectiveDate\":\"$D\",\"description\":\"exemplo do README\"}"
+  $   sleep 2
+  $   curl -sS --fail-with-body $REVOKE --cacert "$CA" -w '\nHTTP %{http_code}\n' "$GW/merchants/$M/consolidations/daily?date=$D" \
+  $     -H "Authorization: Bearer $TOKEN"
+  $ )
+{"id":"01a1886d-deff-7bfb-8b9d-8ae757e443c8","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"100.00","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T16:11:04.313644Z","reversalOf":null,"createdAt":"2026-10-29T16:11:04.313644Z"}
+HTTP 201
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"100.00","debits":"0.00","dailyNet":"100.00","entriesCount":1,"asOf":"2026-10-29T16:11:04.313644Z"}
+HTTP 200
+-> saida 0 em 7 s
+
+## conferencia: segunda consulta do consolidado (sem repetir o POST)
+{"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"100.00","debits":"0.00","dailyNet":"100.00","entriesCount":1,"asOf":"2026-10-29T16:11:04.313644Z"}
+HTTP 200
+
+## oraculo SQL (transactions_db): linhas do merchant A com a descricao do README (esperado 1, base zerada)
+linhas com a descricao do README: 1
+
+SERVICE                STATE     STATUS
+consolidation-api      running   Up About a minute (healthy)
+consolidation-worker   running   Up About a minute (healthy)
+gateway                running   Up About a minute (healthy)
+keycloak               running   Up About a minute (healthy)
+postgres               running   Up About a minute (healthy)
+rabbitmq               running   Up About a minute (healthy)
+transactions-api       running   Up About a minute (healthy)
+# fim 2026-10-29T16:11:11Z

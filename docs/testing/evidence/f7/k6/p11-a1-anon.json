@@ -1,0 +1,32 @@
+{
+  "label": "p11-a1-anon",
+  "mode": "flood",
+  "params": {
+    "GW": "https://gateway:8080",
+    "DATE": "2026-02-10",
+    "MERCHANT": "A",
+    "RATE": 200,
+    "DURATION_S": 90,
+    "BURST_N": 90,
+    "BURSTS": 3,
+    "FIRST_BURST_S": 15,
+    "GAP_S": 10
+  },
+  "total": 18000,
+  "s2xx": 0,
+  "s401": 1818,
+  "s429": 16182,
+  "s5xx": 0,
+  "timeout_or_conn_error": 0,
+  "other": 0,
+  "latency_ms": {
+    "avg": 1.1715713781666606,
+    "med": 0.959308,
+    "p90": 1.6819209,
+    "p95": 2.27765485,
+    "p99": 5.71513194999998,
+    "max": 42.730009
+  },
+  "dropped_iterations": 0,
+  "burst_send_spread_ms": {}
+}

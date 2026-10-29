@@ -1,0 +1,43 @@
+{
+  "label": "get-two-tokens",
+  "run": "121128",
+  "k6": "v2.3.0 (imagem fixada por digest no roteiro)",
+  "params": {
+    "GW": "https://gateway:8080",
+    "DATE": "2026-02-10",
+    "TOKENS": "AB",
+    "GET_RATE": 50,
+    "POST_RATE": 0,
+    "WARMUP_S": 20,
+    "DURATION_S": 120,
+    "INCLUDE_CLOSING": false,
+    "MAX_VUS": 200
+  },
+  "get": {
+    "measure_requests": 6001,
+    "ok_2xx_correct": 6001,
+    "wrong_body_2xx": 0,
+    "r429": 0,
+    "r5xx": 0,
+    "timeout_or_conn_error": 0,
+    "other_4xx_anomaly": 0,
+    "loss_rate_adr0009": 0,
+    "latency_ms": {
+      "avg": 4.1267118413597625,
+      "min": 1.799013,
+      "med": 3.954645,
+      "p90": 5.31145,
+      "p95": 6.055009,
+      "p99": 8.829005,
+      "max": 34.559949
+    },
+    "dropped_iterations_measure": 0,
+    "http_reqs_measure_window_incl_token": 6101,
+    "achieved_rps": 50.00833333333333
+  },
+  "post": null,
+  "token_fetch_failed": 0,
+  "vus_max_configured": 200,
+  "vus_peak_used": 1,
+  "data_received_bytes": 2677461
+}

@@ -1,0 +1,77 @@
+ Image cashflow/recon-tool:dev Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 642B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.77kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for mcr.microsoft.com/dotnet/sdk:10.0@sha256:de4fe90a98845d75910b9769662465c84de1a934665c431279d1382b2bddc02b
+#3 DONE 0.2s
+
+#4 [internal] load metadata for mcr.microsoft.com/dotnet/runtime:10.0@sha256:a3f9f81954b9c810af2ed18849716c8dc74a4707bd0907fdbd69be81554c0f30
+#4 DONE 0.2s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 174B done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 DONE 0.0s
+
+#7 [build 1/5] FROM mcr.microsoft.com/dotnet/sdk:10.0@sha256:de4fe90a98845d75910b9769662465c84de1a934665c431279d1382b2bddc02b
+#7 resolve mcr.microsoft.com/dotnet/sdk:10.0@sha256:de4fe90a98845d75910b9769662465c84de1a934665c431279d1382b2bddc02b 0.1s done
+#7 DONE 0.1s
+
+#8 [runtime 1/4] FROM mcr.microsoft.com/dotnet/runtime:10.0@sha256:a3f9f81954b9c810af2ed18849716c8dc74a4707bd0907fdbd69be81554c0f30
+#8 resolve mcr.microsoft.com/dotnet/runtime:10.0@sha256:a3f9f81954b9c810af2ed18849716c8dc74a4707bd0907fdbd69be81554c0f30
+#8 resolve mcr.microsoft.com/dotnet/runtime:10.0@sha256:a3f9f81954b9c810af2ed18849716c8dc74a4707bd0907fdbd69be81554c0f30 0.1s done
+#8 DONE 0.1s
+
+#6 [internal] load build context
+#6 transferring context: 9.13kB done
+#6 DONE 0.0s
+
+#9 [build 2/5] WORKDIR /src
+#9 CACHED
+
+#10 [build 3/5] COPY global.json Directory.Build.props Directory.Packages.props ./
+#10 CACHED
+
+#11 [build 4/5] COPY src/ src/
+#11 CACHED
+
+#12 [build 5/5] RUN dotnet publish "src/CashFlow.ReconTool/CashFlow.ReconTool.csproj" -c Release -o /out /p:UseAppHost=true
+#12 1.896   Determining projects to restore...
+#12 4.951   Restored /src/src/CashFlow.ReconTool/CashFlow.ReconTool.csproj (in 2.15 sec).
+#12 4.951   Restored /src/src/CashFlow.Messaging/CashFlow.Messaging.csproj (in 2.15 sec).
+#12 10.23   CashFlow.Messaging -> /src/src/CashFlow.Messaging/bin/Release/net10.0/CashFlow.Messaging.dll
+#12 11.58   CashFlow.ReconTool -> /src/src/CashFlow.ReconTool/bin/Release/net10.0/CashFlow.ReconTool.dll
+#12 11.63   CashFlow.ReconTool -> /out/
+#12 DONE 11.7s
+
+#13 [runtime 2/4] WORKDIR /app
+#13 CACHED
+
+#14 [runtime 3/4] COPY --from=build /out .
+#14 DONE 0.1s
+
+#15 [runtime 4/4] RUN ln -s "/app/CashFlow.ReconTool" /app/entrypoint
+#15 DONE 0.3s
+
+#16 exporting to image
+#16 exporting layers
+#16 exporting layers 0.3s done
+#16 exporting manifest sha256:afb67e612e3dfd1c5c7312bcef8745cde25fa930aad3685a3279b6d903027054 0.0s done
+#16 exporting config sha256:41cae943de032e11e41c89de96606a93a033187626b987508a80c78732106de1 0.0s done
+#16 exporting attestation manifest sha256:b7422ddd016a2984e249a886e137af8f730c16271b224798bcca716cabb205f0 0.0s done
+#16 exporting manifest list sha256:e0c9299d4e8880b739e21b27fd489e51d22e14e71d377d1a75d4af18baa409f0
+#16 exporting manifest list sha256:e0c9299d4e8880b739e21b27fd489e51d22e14e71d377d1a75d4af18baa409f0 0.0s done
+#16 naming to docker.io/cashflow/recon-tool:dev done
+#16 unpacking to docker.io/cashflow/recon-tool:dev 0.1s done
+#16 DONE 0.6s
+
+#17 resolving provenance for metadata file
+#17 DONE 0.0s
+ Image cashflow/recon-tool:dev Built 

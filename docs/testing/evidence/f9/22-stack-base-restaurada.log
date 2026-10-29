@@ -1,0 +1,61 @@
+ Container cashflow-transactions-api-1 Running 
+ Container cashflow-rabbitmq-1 Running 
+ Container cashflow-consolidation-worker-1 Running 
+ Container cashflow-keycloak-1 Running 
+ Container cashflow-postgres-1 Running 
+ Container cashflow-consolidation-api-1 Running 
+ Container cashflow-otelcol-1 Stopping 
+ Container cashflow-gateway-1 Recreate 
+ Container cashflow-otelcol-1 Stopped 
+ Container cashflow-otelcol-1 Removing 
+ Container cashflow-otelcol-1 Removed 
+ Container cashflow-gateway-1 Recreated 
+ Container cashflow-gateway-1 Starting 
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-keycloak-1 Waiting 
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-gateway-1 Started 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-keycloak-1 Healthy 
+ Container cashflow-migrations-cons-1 Starting 
+ Container cashflow-keycloak-init-1 Starting 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-migrations-tx-1 Starting 
+ Container cashflow-keycloak-init-1 Started 
+ Container cashflow-migrations-cons-1 Started 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-tx-1 Started 
+ Container cashflow-migrations-tx-1 Waiting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-migrations-tx-1 Exited 
+ Container cashflow-keycloak-init-1 Waiting 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-transactions-api-1 Waiting 
+ Container cashflow-consolidation-worker-1 Waiting 
+ Container cashflow-gateway-1 Waiting 
+ Container cashflow-keycloak-1 Waiting 
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-consolidation-api-1 Waiting 
+ Container cashflow-migrations-tx-1 Waiting 
+ Container cashflow-rabbitmq-1 Waiting 
+ Container cashflow-keycloak-init-1 Healthy 
+ Container cashflow-keycloak-1 Healthy 
+ Container cashflow-rabbitmq-1 Healthy 
+ Container cashflow-migrations-tx-1 Exited 
+ Container cashflow-consolidation-api-1 Healthy 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-worker-1 Healthy 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-transactions-api-1 Healthy 
+ Container cashflow-gateway-1 Healthy 
+up rc=0
+cashflow-consolidation-api-1 Up 7 minutes (healthy)
+cashflow-consolidation-worker-1 Up 7 minutes (healthy)
+cashflow-gateway-1 Up 6 seconds (healthy)
+cashflow-keycloak-1 Up 18 minutes (healthy)
+cashflow-keycloak-init-1 Up 5 seconds
+cashflow-postgres-1 Up 18 minutes (healthy)
+cashflow-rabbitmq-1 Up 10 minutes (healthy)
+cashflow-transactions-api-1 Up 9 minutes (healthy)

@@ -1,0 +1,27 @@
+## a. mensagem nao-JSON publicada pelo operador; worker deve enviar a DLQ com x-reason
+{"routed":true}
+message_id=f6-invalid-1 x-reason=malformed_json x-field=None routing_key=transaction.registered.v1
+message_id=f6-invalid-1 x-reason=malformed_json x-field=None routing_key=transaction.registered.v1
+message_id=f6-invalid-1 x-reason=malformed_json x-field=None routing_key=transaction.registered.v1
+message_id=f6-malformed-1 x-reason=malformed_json x-field=None routing_key=transaction.registered.v1
+## b. worker PARADO; mensagem rejeitada com requeue 7 vezes (x-delivery-limit=5) -> DLQ pelo broker, SEM x-reason
+worker parado; consumidores: 0
+{"routed":true}
+tentativa 1: [{"payload_bytes":2,"redelivered":false,"exchange":"cashflow
+tentativa 2: [{"payload_bytes":2,"redelivered":true,"exchange":"cashflow.
+tentativa 3: [{"payload_bytes":2,"redelivered":true,"exchange":"cashflow.
+tentativa 4: [{"payload_bytes":2,"redelivered":true,"exchange":"cashflow.
+tentativa 5: [{"payload_bytes":2,"redelivered":true,"exchange":"cashflow.
+tentativa 6: [{"payload_bytes":2,"redelivered":true,"exchange":"cashflow.
+tentativa 7: []
+message_id=f6-invalid-1 x-reason=malformed_json x-field=None routing_key=transaction.registered.v1
+message_id=f6-invalid-1 x-reason=malformed_json x-field=None routing_key=transaction.registered.v1
+message_id=f6-invalid-1 x-reason=malformed_json x-field=None routing_key=transaction.registered.v1
+message_id=f6-malformed-1 x-reason=malformed_json x-field=None routing_key=transaction.registered.v1
+message_id=f6-deliverylimit-1 x-reason=None x-field=None routing_key=transaction.registered.v1
+   x-death: reason=delivery_limit queue=consolidation.transaction-registered exchange=cashflow.transactions count=1
+worker reiniciado
+## filas
+name	messages	consumers
+consolidation.dlq	5	0
+consolidation.transaction-registered	0	0

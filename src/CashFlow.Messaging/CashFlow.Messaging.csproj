@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Contrato AMQP compartilhado (F4, ADR-0002): topologia, conexão, publicação confirmada e validação do evento.
+       Sem ASP.NET nem EF: também é usado pelo recon-tool (imagem runtime). -->
+  <ItemGroup>
+    <PackageReference Include="RabbitMQ.Client" />
+  </ItemGroup>
+
+</Project>

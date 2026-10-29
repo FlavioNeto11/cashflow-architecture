@@ -1,0 +1,16 @@
+# F7 16 - migrations-cons: StartedAt x demais servicos (verifica a observacao 're-executa em compose start')
+cashflow-postgres-1 started=2026-10-29T11:21:25.52646587Z finished=0001-01-01T00:00:00Z exit=0 status=running
+cashflow-migrations-tx-1 started=2026-10-29T11:21:31.540679805Z finished=2026-10-29T11:21:34.634957723Z exit=0 status=exited
+cashflow-migrations-cons-1 started=2026-10-29T13:09:36.156359823Z finished=2026-10-29T13:09:38.189638831Z exit=0 status=exited
+cashflow-consolidation-worker-1 started=2026-10-29T13:09:38.495515091Z finished=2026-10-29T13:09:27.994657974Z exit=0 status=running
+cashflow-consolidation-api-1 started=2026-10-29T13:03:20.313360346Z finished=2026-10-29T13:03:19.939726366Z exit=0 status=running
+cashflow-transactions-api-1 started=2026-10-29T13:02:22.164547911Z finished=2026-10-29T13:02:21.82003143Z exit=0 status=running
+cashflow-gateway-1 started=2026-10-29T13:02:56.20843241Z finished=2026-10-29T13:02:55.757939009Z exit=0 status=running
+--- ultimas linhas de log de migrations-cons
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{
+exit=0

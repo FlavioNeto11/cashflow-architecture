@@ -1,0 +1,22 @@
+# F7 18 - lock_timeout efetivo - 2026-10-29T14:08:17Z
+
+=================== [14:08:17.705] 1. SHOW como o proprio cons_worker (login real, banco consolidation_db)
+  cons_worker: cons_worker
+  cons_worker: 5s
+  cons_worker: 10s
+  cons_worker: 30s
+
+=================== [14:08:18.151] 2. configuracao por papel (pg_db_role_setting via pg_roles.rolconfig)
+  cons_ro|{statement_timeout=2s,idle_in_transaction_session_timeout=30s}
+  cons_worker|{statement_timeout=10s,lock_timeout=5s,idle_in_transaction_session_timeout=30s}
+  recon_ro|{statement_timeout=60s,idle_in_transaction_session_timeout=30s}
+  recon_writer|{statement_timeout=60s,lock_timeout=2s,idle_in_transaction_session_timeout=30s}
+  tx_app|
+
+=================== [14:08:18.558] 3. a connection string do worker no Compose nao define Options/Lock Timeout (grep no arquivo, senha omitida)
+308:      ConnectionStrings__Default: "Host=postgres;Database=consolidation_db;Username=cons_worker;Password=<omitido>;Maximum Pool Size=6"
+  ocorrencias de 'Options=' ou 'Lock Timeout' no compose: 0
+
+=================== [14:08:18.632] 4. codigo do worker: ocorrencias de SET lock_timeout no projeto do consumidor (leitura de src, nada alterado)
+  total: 0
+exit=0

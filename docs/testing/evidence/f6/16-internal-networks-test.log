@@ -1,0 +1,25 @@
+# teste: redes app/data internal:true (projeto descartavel f6net, sem portas publicadas) 2026-10-29T08:20:14Z
+ Container f6net-consolidation-worker-1 Starting 
+ Container f6net-consolidation-worker-1 Started 
+ Container f6net-transactions-api-1 Started 
+ Container f6net-consolidation-api-1 Started 
+NAME                           STATUS
+f6net-consolidation-worker-1   Up 2 minutes (healthy)
+f6net-keycloak-1               Up 2 minutes (healthy)
+f6net-postgres-1               Up 2 minutes (healthy)
+f6net-rabbitmq-1               Up 2 minutes (healthy)
+data internal=true
+app internal=true
+consumidores: 1
+egress de um app para a internet (esperado falhar):
+Error response from daemon: container 2c550f8fb499fc0afb8d35d22ac01898d1c28c6c2c71c6121c34205cd8bd48a4 is not running
+   at Program.<Main>$(String[] args) in /src/src/CashFlow.Transactions.Api/Program.cs:line 41
+   at Program.<Main>(String[] args)
+egress do worker (rede app+data internal) para 1.1.1.1:53 (esperado: falha):
+OCI runtime exec failed: exec failed: unable to start container process: exec: "C:/Program Files/Git/usr/bin/sh": stat C:/Program Files/Git/usr/bin/sh: no such file or directory
+mesmo teste num container do projeto REAL (redes nao internas):
+OCI runtime exec failed: exec failed: unable to start container process: exec: "C:/Program Files/Git/usr/bin/sh": stat C:/Program Files/Git/usr/bin/sh: no such file or directory
+--- (corrigido: MSYS_NO_PATHCONV=1)
+f6net-consolidation-worker-1 -> 1.1.1.1:53: bash: connect: Network is unreachable
+cashflow-consolidation-worker-1 -> 1.1.1.1:53: CONECTOU
+limpeza do projeto de teste f6net (down -v)

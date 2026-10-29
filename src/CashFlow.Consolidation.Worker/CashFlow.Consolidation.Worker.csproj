@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\CashFlow.Hosting\CashFlow.Hosting.csproj" />
+    <ProjectReference Include="..\CashFlow.Consolidation.Persistence\CashFlow.Consolidation.Persistence.csproj" />
+    <ProjectReference Include="..\CashFlow.Messaging\CashFlow.Messaging.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="CashFlow.Consolidation.Tests" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,19 @@
+# 2026-10-29T10:47:34Z estado final: Compose BASE (sem dev, sem obs); down sem -v antes
+SERVICE                STATUS
+consolidation-api      Up About a minute (healthy)
+consolidation-worker   Up About a minute (healthy)
+gateway                Up About a minute (healthy)
+keycloak               Up About a minute (healthy)
+keycloak-init          Exited (0) 54 seconds ago
+migrations-cons        Exited (0) About a minute ago
+migrations-tx          Exited (0) About a minute ago
+postgres               Up About a minute (healthy)
+rabbitmq               Up About a minute (healthy)
+transactions-api       Up About a minute (healthy)
+name	messages
+consolidation.dlq	0
+consolidation.transaction-registered	0
+cashflow-gateway-1 127.0.0.1:8443->8080/tcp
+cashflow-keycloak-1 127.0.0.1:8080->8080/tcp
+cashflow-postgres-1 5432/tcp
+cashflow-rabbitmq-1 127.0.0.1:15672->15672/tcp

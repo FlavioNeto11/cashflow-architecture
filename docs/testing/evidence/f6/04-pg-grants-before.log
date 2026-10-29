@@ -1,0 +1,18 @@
+# grants ANTES do post-migrate - 2026-10-29T08:08:06Z
+[consolidation_db]
+cons_ro | daily_consolidations | SELECT
+cons_ro | processed_messages | SELECT
+cons_ro | reconciliation_runs | SELECT
+cons_worker | daily_consolidations | INSERT,SELECT,UPDATE
+cons_worker | processed_messages | INSERT,SELECT
+cons_worker | reconciliation_runs | SELECT
+recon_writer | daily_consolidations | INSERT,SELECT,UPDATE
+recon_writer | processed_messages | DELETE,INSERT,SELECT
+recon_writer | reconciliation_runs | INSERT,SELECT
+[transactions_db]
+recon_ro | idempotency_keys | SELECT
+recon_ro | outbox_messages | SELECT
+recon_ro | transactions | SELECT
+tx_app | idempotency_keys | DELETE,INSERT,SELECT,UPDATE
+tx_app | outbox_messages | INSERT,SELECT
+tx_app | transactions | INSERT,SELECT

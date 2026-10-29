@@ -1,0 +1,16 @@
+# F7 Passo B item 4: override TEMPORARIO sobre o Compose BASE (-f base -f este). Acrescenta um coletor OTLP e liga o exportador
+# do GATEWAY (so ele), com amostragem de traces desligada para nao somar custo de tracing a carga medida.
+# Nao e a configuracao entregue: ao fim, o gateway e recriado so com o arquivo BASE e o coletor removido.
+services:
+  otelcol:
+    image: otel/opentelemetry-collector@sha256:6260c3c942f6abcb45f255ac67835600cfd2fc6ce8be65e0ee3af6da2dfb98fb
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ../../docs/testing/evidence/f7/21-04-otelcol.yaml:/etc/otelcol/config.yaml:ro
+    networks: [app]
+  gateway:
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otelcol:4317
+      OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+      OTEL_METRIC_EXPORT_INTERVAL: "2000"
+      OTEL_TRACES_SAMPLER: always_off

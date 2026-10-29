@@ -1,0 +1,94 @@
+21-05-stats-base-get50-120s.txt: 40 amostras de 14:57:53 a 15:00:01
+  consolidation-api        n= 40 cpu% min=  6.58 med= 12.26 max= 40.81 | mem max=  103.9 MiB
+  consolidation-worker     n= 40 cpu% min=  0.00 med=  0.04 max= 34.58 | mem max=   63.3 MiB
+  f7-k6-base-get50-120s    n= 40 cpu% min=  4.12 med=  7.81 max= 29.82 | mem max=   94.2 MiB
+  gateway                  n= 40 cpu% min= 11.42 med= 15.43 max=100.42 | mem max=  117.3 MiB
+  keycloak                 n= 40 cpu% min=  0.22 med=  0.29 max= 68.15 | mem max=  593.0 MiB
+  postgres                 n= 40 cpu% min=  1.88 med=  3.54 max= 20.69 | mem max=   89.2 MiB
+  rabbitmq                 n= 40 cpu% min=  0.16 med=  0.29 max=179.40 | mem max=  191.7 MiB
+  transactions-api         n= 40 cpu% min=  0.20 med=  0.31 max= 30.73 | mem max=  143.4 MiB
+21-05-stats-base-get50-post10-120s.txt: 40 amostras de 15:00:29 a 15:02:38
+  consolidation-api        n= 40 cpu% min=  9.61 med= 11.84 max= 39.61 | mem max=   98.6 MiB
+  consolidation-worker     n= 40 cpu% min=  1.05 med=  2.66 max= 28.81 | mem max=   66.0 MiB
+  f7-k6-base-get50-post10-120s n= 40 cpu% min=  5.99 med=  9.11 max= 67.27 | mem max=  111.6 MiB
+  gateway                  n= 40 cpu% min= 11.23 med= 18.04 max= 66.25 | mem max=  140.9 MiB
+  keycloak                 n= 40 cpu% min=  0.20 med=  0.27 max= 98.53 | mem max=  603.3 MiB
+  postgres                 n= 40 cpu% min=  6.43 med=  8.41 max= 20.73 | mem max=   93.2 MiB
+  rabbitmq                 n= 40 cpu% min=  0.97 med=  2.74 max=204.20 | mem max=  194.4 MiB
+  transactions-api         n= 40 cpu% min=  9.00 med= 11.54 max= 36.67 | mem max=  144.6 MiB
+21-05-stats-p11-a1.txt: 22 amostras de 14:45:31 a 14:46:41
+  consolidation-api        n= 22 cpu% min=  2.83 med= 11.91 max= 42.24 | mem max=   98.9 MiB
+  consolidation-worker     n= 22 cpu% min=  0.00 med=  0.03 max= 26.45 | mem max=   59.1 MiB
+  f7-gen-p11-a1-anon       n= 22 cpu% min= 15.33 med= 20.42 max= 25.22 | mem max=   80.9 MiB
+  f7-k6-p11-a1             n= 22 cpu% min=  2.42 med=  7.55 max= 65.37 | mem max=   90.7 MiB
+  gateway                  n= 22 cpu% min= 29.09 med= 41.15 max= 52.93 | mem max=  160.9 MiB
+  keycloak                 n= 22 cpu% min=  0.24 med=  0.30 max= 87.70 | mem max=  569.3 MiB
+  otelcol                  n= 22 cpu% min=  0.00 med=  0.16 max=  0.42 | mem max=   25.0 MiB
+  postgres                 n= 22 cpu% min=  1.13 med=  3.52 max= 12.02 | mem max=   88.9 MiB
+  rabbitmq                 n= 22 cpu% min=  0.17 med=  0.27 max=175.27 | mem max=  190.4 MiB
+  transactions-api         n= 22 cpu% min=  0.19 med=  0.30 max= 27.45 | mem max=  135.1 MiB
+21-05-stats-p11-a2.txt: 22 amostras de 14:47:39 a 14:48:50
+  consolidation-api        n= 22 cpu% min=  0.05 med= 11.31 max= 13.69 | mem max=   96.7 MiB
+  consolidation-worker     n= 22 cpu% min=  0.01 med=  0.04 max=  0.19 | mem max=   55.3 MiB
+  f7-gen-p11-a2-anon       n= 22 cpu% min= 37.44 med= 45.11 max= 58.17 | mem max=   90.3 MiB
+  f7-k6-p11-a2             n= 21 cpu% min=  2.00 med=  6.80 max= 23.90 | mem max=   84.3 MiB
+  gateway                  n= 22 cpu% min= 60.35 med= 72.78 max=111.13 | mem max=  196.0 MiB
+  keycloak                 n= 22 cpu% min=  0.20 med=  0.31 max= 96.43 | mem max=  607.5 MiB
+  otelcol                  n= 22 cpu% min=  0.00 med=  0.14 max=  0.50 | mem max=   25.5 MiB
+  postgres                 n= 22 cpu% min=  0.44 med=  3.52 max= 15.66 | mem max=   90.0 MiB
+  rabbitmq                 n= 22 cpu% min=  0.16 med=  0.54 max=180.68 | mem max=  190.7 MiB
+  transactions-api         n= 22 cpu% min=  0.20 med=  0.34 max= 42.91 | mem max=  142.0 MiB
+21-05-stats-p11-b1-r2.txt: 19 amostras de 14:53:56 a 14:54:55
+  consolidation-api        n= 19 cpu% min=  0.13 med=  4.96 max=  5.55 | mem max=  105.3 MiB
+  consolidation-worker     n= 19 cpu% min=  0.01 med=  0.03 max= 15.50 | mem max=   55.5 MiB
+  f7-gen-p11-b1-r2-burst   n= 13 cpu% min=  0.49 med=  0.63 max=  0.79 | mem max=   59.4 MiB
+  f7-k6-p11-b1-r2          n= 19 cpu% min=  0.66 med=  3.90 max= 13.47 | mem max=   79.2 MiB
+  gateway                  n= 19 cpu% min=  1.09 med=  8.63 max= 35.65 | mem max=  240.4 MiB
+  keycloak                 n= 19 cpu% min=  0.22 med=  0.36 max= 40.93 | mem max=  594.6 MiB
+  otelcol                  n= 19 cpu% min=  0.00 med=  0.00 max=  0.44 | mem max=   25.5 MiB
+  postgres                 n= 19 cpu% min=  0.26 med=  1.58 max= 14.51 | mem max=   92.5 MiB
+  rabbitmq                 n= 19 cpu% min=  0.17 med=  0.45 max=103.45 | mem max=  187.3 MiB
+  transactions-api         n= 19 cpu% min=  0.20 med=  0.36 max=  5.16 | mem max=  145.1 MiB
+21-05-stats-p11-b1-r3.txt: 19 amostras de 14:55:39 a 14:56:39
+  consolidation-api        n= 19 cpu% min=  4.00 med=  4.78 max= 46.52 | mem max=  115.0 MiB
+  consolidation-worker     n= 19 cpu% min=  0.00 med=  0.02 max= 20.38 | mem max=   57.0 MiB
+  f7-gen-p11-b1-r3-burst   n= 13 cpu% min=  0.51 med=  0.67 max=  0.77 | mem max=   62.5 MiB
+  f7-k6-p11-b1-r3          n= 19 cpu% min=  0.58 med=  4.17 max= 20.79 | mem max=   79.7 MiB
+  gateway                  n= 19 cpu% min=  1.44 med=  8.33 max= 34.64 | mem max=  236.5 MiB
+  keycloak                 n= 19 cpu% min=  0.18 med=  0.33 max= 65.98 | mem max=  599.6 MiB
+  otelcol                  n= 19 cpu% min=  0.00 med=  0.19 max=  0.39 | mem max=   26.2 MiB
+  postgres                 n= 19 cpu% min=  0.62 med=  1.63 max= 14.05 | mem max=   88.9 MiB
+  rabbitmq                 n= 19 cpu% min=  0.19 med=  0.45 max=187.24 | mem max=  195.7 MiB
+  transactions-api         n= 19 cpu% min=  0.21 med=  0.29 max= 31.61 | mem max=  149.3 MiB
+21-05-stats-p11-b1.txt: 19 amostras de 14:49:44 a 14:50:44
+  consolidation-api        n= 19 cpu% min=  0.06 med=  4.87 max= 34.33 | mem max=  103.9 MiB
+  consolidation-worker     n= 19 cpu% min=  0.01 med=  0.02 max= 29.67 | mem max=   65.1 MiB
+  f7-gen-p11-b1-burst      n= 13 cpu% min=  0.39 med=  0.59 max=  0.69 | mem max=   61.8 MiB
+  f7-k6-p11-b1             n= 19 cpu% min=  0.60 med=  3.11 max= 18.55 | mem max=   77.8 MiB
+  gateway                  n= 19 cpu% min=  1.58 med=  7.85 max= 13.30 | mem max=  208.0 MiB
+  keycloak                 n= 19 cpu% min=  0.21 med=  0.38 max= 42.19 | mem max=  583.9 MiB
+  otelcol                  n= 19 cpu% min=  0.00 med=  0.18 max=  0.37 | mem max=   25.9 MiB
+  postgres                 n= 19 cpu% min=  1.29 med=  1.66 max= 13.56 | mem max=   88.7 MiB
+  rabbitmq                 n= 19 cpu% min=  0.17 med=  0.30 max=156.98 | mem max=  192.7 MiB
+  transactions-api         n= 19 cpu% min=  0.21 med=  0.29 max= 29.57 | mem max=  135.4 MiB
+21-05-stats-p11-b2.txt: 19 amostras de 14:51:27 a 14:52:28
+  consolidation-api        n= 19 cpu% min=  0.12 med=  4.99 max= 25.61 | mem max=  104.8 MiB
+  consolidation-worker     n= 19 cpu% min=  0.01 med=  0.06 max= 23.47 | mem max=   55.4 MiB
+  f7-gen-p11-b2-burst      n= 13 cpu% min=  0.47 med=  0.68 max=  0.81 | mem max=  112.2 MiB
+  f7-k6-p11-b2             n= 19 cpu% min=  0.65 med=  3.16 max= 16.34 | mem max=   78.1 MiB
+  gateway                  n= 19 cpu% min=  7.40 med=  8.78 max= 29.40 | mem max=  226.9 MiB
+  keycloak                 n= 19 cpu% min=  0.22 med=  0.38 max= 36.96 | mem max=  593.3 MiB
+  otelcol                  n= 19 cpu% min=  0.00 med=  0.00 max=  0.35 | mem max=   25.8 MiB
+  postgres                 n= 19 cpu% min=  0.24 med=  1.63 max= 14.40 | mem max=   88.9 MiB
+  rabbitmq                 n= 19 cpu% min=  0.17 med=  0.28 max=144.32 | mem max=  185.5 MiB
+  transactions-api         n= 19 cpu% min=  0.24 med=  0.29 max=  0.43 | mem max=  135.9 MiB
+21-05-stats-p11-c.txt: 22 amostras de 14:43:53 a 14:45:03
+  consolidation-api        n= 22 cpu% min=  0.12 med= 11.78 max= 67.47 | mem max=  100.6 MiB
+  consolidation-worker     n= 22 cpu% min=  0.01 med=  0.06 max= 17.19 | mem max=   55.4 MiB
+  f7-k6-p11-c              n= 22 cpu% min=  0.73 med=  7.91 max= 45.74 | mem max=   85.8 MiB
+  gateway                  n= 22 cpu% min=  1.57 med= 17.85 max=111.45 | mem max=  111.8 MiB
+  keycloak                 n= 22 cpu% min=  0.19 med=  0.29 max=181.90 | mem max=  557.4 MiB
+  otelcol                  n= 22 cpu% min=  0.00 med=  0.06 max=  0.30 | mem max=   23.9 MiB
+  postgres                 n= 22 cpu% min=  0.24 med=  3.75 max= 15.30 | mem max=   90.6 MiB
+  rabbitmq                 n= 22 cpu% min=  0.15 med=  0.45 max=190.61 | mem max=  191.0 MiB
+  transactions-api         n= 22 cpu% min=  0.15 med=  0.32 max= 44.05 | mem max=  136.1 MiB

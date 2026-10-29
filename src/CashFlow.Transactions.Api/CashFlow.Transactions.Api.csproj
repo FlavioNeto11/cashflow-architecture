@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\CashFlow.Hosting\CashFlow.Hosting.csproj" />
+    <ProjectReference Include="..\CashFlow.Messaging\CashFlow.Messaging.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="CashFlow.Consolidation.Tests" />
+    <InternalsVisibleTo Include="CashFlow.Transactions.Api.Tests" />
+  </ItemGroup>
+
+</Project>

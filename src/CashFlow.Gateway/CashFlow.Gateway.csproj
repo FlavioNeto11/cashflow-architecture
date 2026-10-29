@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!-- Gateway de API (F5, ADR-0011, security.md 5): unica entrada publicada; JWT, rate limiting, limites de corpo e
+       tempo, allowlist de cabecalhos e mTLS (cliente) para as APIs via YARP. -->
+  <ItemGroup>
+    <ProjectReference Include="..\CashFlow.Hosting\CashFlow.Hosting.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Yarp.ReverseProxy" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="CashFlow.Security.Tests" />
+  </ItemGroup>
+
+</Project>

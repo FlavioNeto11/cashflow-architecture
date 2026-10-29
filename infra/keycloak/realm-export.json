@@ -1,0 +1,313 @@
+{
+  "id": "cashflow",
+  "realm": "cashflow",
+  "displayName": "CashFlow (desafio)",
+  "enabled": true,
+  "sslRequired": "external",
+  "accessTokenLifespan": 300,
+  "accessTokenLifespanForImplicitFlow": 300,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 36000,
+  "bruteForceProtected": true,
+  "permanentLockout": false,
+  "failureFactor": 10,
+  "waitIncrementSeconds": 60,
+  "maxFailureWaitSeconds": 900,
+  "maxDeltaTimeSeconds": 43200,
+  "registrationAllowed": false,
+  "resetPasswordAllowed": false,
+  "rememberMe": false,
+  "loginWithEmailAllowed": false,
+  "duplicateEmailsAllowed": false,
+  "defaultSignatureAlgorithm": "RS256",
+  "revokeRefreshToken": true,
+  "refreshTokenMaxReuse": 0,
+  "attributes": {
+    "frontendUrl": "",
+    "acr.loa.map": "{}",
+    "cashflow.notes": "Realm 'cashflow' (F5, ADR-0011, security.md 3/4). O Keycloak 26 rejeita campos desconhecidos no import (ex.: _comment), por isso esta nota vive em attributes. SEM SEGREDOS: o Keycloak 26 NAO substitui ${env.VAR} no import (evidencia em docs/testing/evidence/f5/keycloak-realm-placeholder-spike.log); os secrets dos clientes confidenciais e as senhas dos usuarios demo sao aplicados APOS o import pelo servico one-shot 'keycloak-init' (kcadm.sh, valores de infra/compose/.env). Os 'id' dos clientes sao fixos para que o init nao precise consulta-los. Issuer fixo no Compose: http://keycloak:8080/realms/cashflow (KC_HOSTNAME; G1-14)."
+  },
+  "clientScopes": [
+    {
+      "id": "5c0be000-0000-4000-8000-000000000000",
+      "name": "basic",
+      "description": "Escopo embutido do Keycloak 25+ que emite 'sub'. Declarado aqui porque o import NAO cria os embutidos quando clientScopes e explicito; sem 'sub' as APIs recusam o token (Caller.TryFrom -> 403).",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "false",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "id": "6a0be000-0000-4000-8000-000000000001",
+          "name": "sub",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-sub-mapper",
+          "consentRequired": false,
+          "config": {
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "id": "6a0be000-0000-4000-8000-000000000002",
+          "name": "auth_time",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "AUTH_TIME",
+            "claim.name": "auth_time",
+            "jsonType.label": "long",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "5c0be001-0000-4000-8000-000000000001",
+      "name": "cashflow-api",
+      "description": "Audiencia obrigatoria dos tokens aceitos pelas APIs e pelo gateway (aud=cashflow-api).",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "false",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "id": "6a0be001-0000-4000-8000-000000000001",
+          "name": "audience cashflow-api",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.custom.audience": "cashflow-api",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "introspection.token.claim": "true",
+            "lightweight.claim": "false"
+          }
+        }
+      ]
+    },
+    {
+      "id": "5c0be001-0000-4000-8000-000000000002",
+      "name": "transactions.write",
+      "description": "Registrar e estornar lancamentos do proprio merchant.",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true",
+        "consent.screen.text": "Registrar lancamentos"
+      }
+    },
+    {
+      "id": "5c0be001-0000-4000-8000-000000000003",
+      "name": "transactions.read",
+      "description": "Consultar lancamentos do proprio merchant.",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true",
+        "consent.screen.text": "Consultar lancamentos"
+      }
+    },
+    {
+      "id": "5c0be001-0000-4000-8000-000000000004",
+      "name": "consolidation.read",
+      "description": "Consultar o consolidado diario do proprio merchant.",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true",
+        "consent.screen.text": "Consultar consolidado diario"
+      }
+    }
+  ],
+  "clients": [
+    {
+      "id": "a1a1a1a1-0000-4000-8000-00000000000a",
+      "clientId": "merchant-a-system",
+      "name": "Sistema do Merchant A (machine-to-machine)",
+      "description": "Client Credentials. merchant_id fixo por mapper (claim nao controlada pelo chamador). Secret definido pelo keycloak-init a partir de KEYCLOAK_MERCHANT_A_SYSTEM_SECRET.",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "bearerOnly": false,
+      "clientAuthenticatorType": "client-secret",
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "consentRequired": false,
+      "fullScopeAllowed": false,
+      "redirectUris": [],
+      "webOrigins": [],
+      "attributes": {
+        "access.token.lifespan": "300",
+        "use.refresh.tokens": "false",
+        "client_credentials.use_refresh_token": "false",
+        "token.endpoint.auth.signing.alg": "RS256"
+      },
+      "protocolMappers": [
+        {
+          "id": "6a0be00a-0000-4000-8000-00000000000a",
+          "name": "merchant_id (fixo: merchant A)",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-hardcoded-claim-mapper",
+          "consentRequired": false,
+          "config": {
+            "claim.name": "merchant_id",
+            "claim.value": "33333333-3333-4333-8333-333333333333",
+            "jsonType.label": "String",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true",
+            "lightweight.claim": "false"
+          }
+        }
+      ],
+      "defaultClientScopes": ["basic", "cashflow-api"],
+      "optionalClientScopes": ["transactions.write", "transactions.read", "consolidation.read"]
+    },
+    {
+      "id": "b2b2b2b2-0000-4000-8000-00000000000b",
+      "clientId": "merchant-b-system",
+      "name": "Sistema do Merchant B (machine-to-machine)",
+      "description": "Client Credentials. merchant_id fixo por mapper. Secret definido pelo keycloak-init a partir de KEYCLOAK_MERCHANT_B_SYSTEM_SECRET.",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "bearerOnly": false,
+      "clientAuthenticatorType": "client-secret",
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "consentRequired": false,
+      "fullScopeAllowed": false,
+      "redirectUris": [],
+      "webOrigins": [],
+      "attributes": {
+        "access.token.lifespan": "300",
+        "use.refresh.tokens": "false",
+        "client_credentials.use_refresh_token": "false",
+        "token.endpoint.auth.signing.alg": "RS256"
+      },
+      "protocolMappers": [
+        {
+          "id": "6a0be00b-0000-4000-8000-00000000000b",
+          "name": "merchant_id (fixo: merchant B)",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-hardcoded-claim-mapper",
+          "consentRequired": false,
+          "config": {
+            "claim.name": "merchant_id",
+            "claim.value": "44444444-4444-4444-8444-444444444444",
+            "jsonType.label": "String",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true",
+            "lightweight.claim": "false"
+          }
+        }
+      ],
+      "defaultClientScopes": ["basic", "cashflow-api"],
+      "optionalClientScopes": ["transactions.write", "transactions.read", "consolidation.read"]
+    },
+    {
+      "id": "c3c3c3c3-0000-4000-8000-00000000000c",
+      "clientId": "cashflow-web",
+      "name": "Aplicacao web (usuarios humanos)",
+      "description": "Cliente publico: Authorization Code + PKCE (S256) obrigatorio; sem password grant, sem implicit. merchant_id vem do atributo do usuario (editavel so por admin). Redirect URIs de desenvolvimento local (HIPOTESE; nao existe front-end neste desafio).",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "bearerOnly": false,
+      "serviceAccountsEnabled": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "consentRequired": false,
+      "fullScopeAllowed": false,
+      "rootUrl": "http://localhost:3000",
+      "baseUrl": "/",
+      "redirectUris": ["http://localhost:3000/*", "http://127.0.0.1:3000/*"],
+      "webOrigins": ["+"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "+",
+        "access.token.lifespan": "300",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "oidc.ciba.grant.enabled": "false"
+      },
+      "protocolMappers": [
+        {
+          "id": "6a0be00c-0000-4000-8000-00000000000c",
+          "name": "merchant_id (atributo do usuario)",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "merchant_id",
+            "claim.name": "merchant_id",
+            "jsonType.label": "String",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "introspection.token.claim": "true",
+            "multivalued": "false",
+            "aggregate.attrs": "false",
+            "lightweight.claim": "false"
+          }
+        }
+      ],
+      "defaultClientScopes": ["basic", "cashflow-api"],
+      "optionalClientScopes": ["transactions.write", "transactions.read", "consolidation.read"]
+    }
+  ],
+  "components": {
+    "org.keycloak.userprofile.UserProfileProvider": [
+      {
+        "id": "7d0be001-0000-4000-8000-000000000001",
+        "providerId": "declarative-user-profile",
+        "subComponents": {},
+        "config": {
+          "kc.user.profile.config": [
+            "{\"attributes\":[{\"name\":\"username\",\"displayName\":\"${username}\",\"validations\":{\"length\":{\"min\":3,\"max\":255},\"username-prohibited-characters\":{},\"up-username-not-idn-homograph\":{}},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"email\",\"displayName\":\"${email}\",\"validations\":{\"email\":{},\"length\":{\"max\":255}},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"firstName\",\"displayName\":\"${firstName}\",\"validations\":{\"length\":{\"max\":255},\"person-name-prohibited-characters\":{}},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"lastName\",\"displayName\":\"${lastName}\",\"validations\":{\"length\":{\"max\":255},\"person-name-prohibited-characters\":{}},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"merchant_id\",\"displayName\":\"Merchant (tenant)\",\"validations\":{\"pattern\":{\"pattern\":\"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$\",\"error-message\":\"merchant_id deve ser um UUID\"}},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\"]},\"multivalued\":false}],\"groups\":[]}"
+          ]
+        }
+      }
+    ]
+  },
+  "users": [
+    {
+      "id": "8e0be00a-0000-4000-8000-00000000000a",
+      "username": "demo-a",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "demo-a@example.invalid",
+      "firstName": "Demo",
+      "lastName": "Merchant A",
+      "attributes": { "merchant_id": ["33333333-3333-4333-8333-333333333333"] },
+      "requiredActions": [],
+      "realmRoles": ["default-roles-cashflow"]
+    },
+    {
+      "id": "8e0be00b-0000-4000-8000-00000000000b",
+      "username": "demo-b",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "demo-b@example.invalid",
+      "firstName": "Demo",
+      "lastName": "Merchant B",
+      "attributes": { "merchant_id": ["44444444-4444-4444-8444-444444444444"] },
+      "requiredActions": [],
+      "realmRoles": ["default-roles-cashflow"]
+    }
+  ]
+}

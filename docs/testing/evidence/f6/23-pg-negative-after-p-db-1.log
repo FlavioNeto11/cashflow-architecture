@@ -1,0 +1,35 @@
+# 2026-10-29T10:42:57Z apos down -v + up BASE (roteiro F5, log 29b) com migracoes P-DB-1, SEM post-migrate
+## consolidation_db
+cons_ro@consolidation_db> SELECT count(*) FROM daily_consolidations
+   2 
+cons_ro@consolidation_db> SELECT count(*) FROM processed_messages
+   ERROR:  permission denied for table processed_messages 
+cons_ro@consolidation_db> SELECT count(*) FROM reconciliation_runs
+   ERROR:  permission denied for table reconciliation_runs 
+cons_ro@consolidation_db> UPDATE daily_consolidations SET credits=credits
+   ERROR:  permission denied for table daily_consolidations 
+cons_worker@consolidation_db> SELECT count(*) FROM daily_consolidations
+   2 
+cons_worker@consolidation_db> SELECT count(*) FROM processed_messages
+   2 
+cons_worker@consolidation_db> SELECT count(*) FROM reconciliation_runs
+   ERROR:  permission denied for table reconciliation_runs 
+cons_worker@consolidation_db> DELETE FROM processed_messages
+   ERROR:  permission denied for table processed_messages 
+recon_writer@consolidation_db> SELECT count(*) FROM reconciliation_runs
+   0 
+recon_writer@consolidation_db> UPDATE reconciliation_runs SET divergences=0
+   ERROR:  permission denied for table reconciliation_runs 
+## transactions_db
+recon_ro@transactions_db> SELECT count(*) FROM transactions
+   2 
+recon_ro@transactions_db> SELECT count(*) FROM outbox_messages
+   ERROR:  permission denied for table outbox_messages 
+recon_ro@transactions_db> SELECT count(*) FROM idempotency_keys
+   ERROR:  permission denied for table idempotency_keys 
+recon_ro@transactions_db> DELETE FROM transactions
+   ERROR:  permission denied for table transactions 
+tx_app@transactions_db> UPDATE transactions SET amount=amount
+   ERROR:  permission denied for table transactions 
+tx_app@transactions_db> SELECT count(*) FROM transactions
+   2 

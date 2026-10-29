@@ -1,0 +1,176 @@
+--- 1. sem principal -> 401
+status: HTTP/1.1 401 Unauthorized
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.2","title":"Não autenticado.","status":401,"traceId":"00-ddc048613805006382b442a90516d7e5-44f82de449357c2c-01"}
+
+--- 2. so escopo read tentando POST -> 403
+status: HTTP/1.1 403 Forbidden
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.4","title":"Acesso negado.","status":403,"traceId":"00-91366b15c294419568518661059185f6-b233243c5f056d51-01"}
+
+--- 3. credito 100.00 (k1) -> 201
+status: HTTP/1.1 201 Created
+  Location: /api/v1/merchants/33333333-3333-4333-8333-333333333333/transactions/01a185e6-c803-7d73-8b79-6c9c73b96f03
+  body: {"id":"01a185e6-c803-7d73-8b79-6c9c73b96f03","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"100.00","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T04:24:16.643166Z","reversalOf":null,"createdAt":"2026-10-29T04:24:16.643166Z"}
+
+  CREDIT_ID=01a185e6-c803-7d73-8b79-6c9c73b96f03
+
+--- 4. replay k1 mesmo payload -> 201 + Idempotency-Replayed: true, mesmo id
+status: HTTP/1.1 201 Created
+  Location: /api/v1/merchants/33333333-3333-4333-8333-333333333333/transactions/01a185e6-c803-7d73-8b79-6c9c73b96f03
+  Idempotency-Replayed: true
+  body: {"id": "01a185e6-c803-7d73-8b79-6c9c73b96f03", "type": "CREDIT", "amount": "100.00", "currency": "BRL", "createdAt": "2026-10-29T04:24:16.643166Z", "merchantId": "33333333-3333-4333-8333-333333333333", "occurredAt": "2026-10-29T04:24:16.643166Z", "reversalOf": null, "effectiveDate": "2026-10-29"}
+
+--- 5. k1 payload diferente -> 422
+status: HTTP/1.1 422 Unprocessable Entity
+  body: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Requisição não processável.","status":422,"detail":"A Idempotency-Key já foi usada com um payload diferente.","traceId":"00-805a61e8387aee0375bb96f76ef79bc3-fe2b3815730951f0-01"}
+
+--- 6. debito 35.20 (k2) -> 201
+status: HTTP/1.1 201 Created
+  Location: /api/v1/merchants/33333333-3333-4333-8333-333333333333/transactions/01a185e6-ca40-70ae-808f-971904671b67
+  body: {"id":"01a185e6-ca40-70ae-808f-971904671b67","merchantId":"33333333-3333-4333-8333-333333333333","type":"DEBIT","amount":"35.20","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T04:24:17.215983Z","reversalOf":null,"createdAt":"2026-10-29T04:24:17.215983Z"}
+
+  DEBIT_ID=01a185e6-ca40-70ae-808f-971904671b67
+
+--- 7. retroativo 5.00 em 2026-10-01 (k3) -> 201
+status: HTTP/1.1 201 Created
+  Location: /api/v1/merchants/33333333-3333-4333-8333-333333333333/transactions/01a185e6-cb21-7473-9db5-ecb0d5204993
+  body: {"id":"01a185e6-cb21-7473-9db5-ecb0d5204993","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"5.00","currency":"BRL","effectiveDate":"2026-10-01","occurredAt":"2026-10-29T04:24:17.441338Z","reversalOf":null,"createdAt":"2026-10-29T04:24:17.441338Z"}
+
+--- 8. competencia futura -> 422
+status: HTTP/1.1 422 Unprocessable Entity
+  body: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Dados inválidos.","status":422,"errors":{"effectiveDate":["A data de competência não pode ser futura."]},"traceId":"00-98878fa57f17d928041c9ec8e848aba6-0c3d8bc4f4157df3-01"}
+
+--- 9. amount 100.001 -> 422
+status: HTTP/1.1 422 Unprocessable Entity
+  body: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Dados inválidos.","status":422,"errors":{"amount":["O valor aceita no máximo 2 casas decimais."]},"traceId":"00-8b055f2cf88881c7a96e900e86e18a43-0e44d20cac2b5770-01"}
+
+--- 10. amount 0 -> 422
+status: HTTP/1.1 422 Unprocessable Entity
+  body: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Dados inválidos.","status":422,"errors":{"amount":["O valor deve ser maior que zero."]},"traceId":"00-feabe71ccb1764e1e2656e53103b46ff-0b7985b4a0fa4809-01"}
+
+--- 11. amount negativo -> 422
+status: HTTP/1.1 422 Unprocessable Entity
+  body: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Dados inválidos.","status":422,"errors":{"amount":["O valor deve ser maior que zero."]},"traceId":"00-c928e159f34f2580a6901ed7e8403923-20d47362121ba1f9-01"}
+
+--- 12. amount numero JSON -> 422
+status: HTTP/1.1 422 Unprocessable Entity
+  body: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Dados inválidos.","status":422,"errors":{"amount":["O valor deve ser uma string decimal (ex.: \"100.00\"), não um número JSON."]},"traceId":"00-49183faa279f36299890898e07b743ae-3511e4823b7d7830-01"}
+
+--- 13. membro desconhecido merchantId no corpo -> 400
+status: HTTP/1.1 400 Bad Request
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.1","title":"Requisição inválida.","status":400,"detail":"JSON malformado, com membro desconhecido ou duplicado.","traceId":"00-59f9c8f44df8d2d93d3f0fd583d907a5-34afae5b3d27ea59-01"}
+
+--- 14. sem Idempotency-Key -> 400
+status: HTTP/1.1 400 Bad Request
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.1","title":"Requisição inválida.","status":400,"detail":"O cabeçalho Idempotency-Key é obrigatório (um único valor não vazio).","traceId":"00-fa1fb01e3096864e9ee9a3b568e6376f-2dc88a8347807bb3-01"}
+
+--- 15. moeda USD -> 422
+status: HTTP/1.1 422 Unprocessable Entity
+  body: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Dados inválidos.","status":422,"errors":{"currency":["Somente BRL é aceito."]},"traceId":"00-410f09c04baf05f1ae9dac8b6375a451-4d9a65431ef133df-01"}
+
+--- 16. GET lista A -> 200 (liquido esperado 69.80; D=64.80, 2026-10-01=5.00)
+status: HTTP/1.1 200 OK
+  body: {"items":[{"id":"01a185e6-cb21-7473-9db5-ecb0d5204993","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"5.00","currency":"BRL","effectiveDate":"2026-10-01","occurredAt":"2026-10-29T04:24:17.441338Z","reversalOf":null,"createdAt":"2026-10-29T04:24:17.441338Z","description":null,"reversedBy":null},{"id":"01a185e6-c803-7d73-8b79-6c9c73b96f03","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"100.00","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T04:24:16.643166Z","reversalOf":null,"createdAt":"2026-10-29T04:24:16.643166Z","description":"venda","reversedBy":null},{"id":"01a185e6-ca40-70ae-808f-971904671b67","merchan
+
+  resumo: total=3 itens=3 liquido_total=69.80 liquido_por_data={'2026-10-01': '5.00', '2026-10-29': '64.80'}
+  ordem: ['2026-10-01 CREDIT 5.00', '2026-10-29 CREDIT 100.00', '2026-10-29 DEBIT 35.20']
+
+--- 17. GET lista A filtrada from=to=2026-10-01 -> 1 item
+status: HTTP/1.1 200 OK
+  body: {"items":[{"id":"01a185e6-cb21-7473-9db5-ecb0d5204993","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"5.00","currency":"BRL","effectiveDate":"2026-10-01","occurredAt":"2026-10-29T04:24:17.441338Z","reversalOf":null,"createdAt":"2026-10-29T04:24:17.441338Z","description":null,"reversedBy":null}],"page":1,"pageSize":50,"total":1}
+
+  resumo: total=1 itens=1 liquido_total=5.00 liquido_por_data={'2026-10-01': '5.00'}
+  ordem: ['2026-10-01 CREDIT 5.00']
+
+--- 18. GET lista pageSize=201 -> 400
+status: HTTP/1.1 422 Unprocessable Entity
+  body: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Dados inválidos.","status":422,"errors":{"pageSize":["Deve ser um inteiro entre 1 e 200."]},"traceId":"00-2634c6347e46e2d72a4bab8ea2d6c2f2-26b0beed0fadaa0b-01"}
+
+--- 19. estorno do debito (k4) -> 201 CREDIT 35.20 reversalOf=DEBIT_ID, mesma effectiveDate
+status: HTTP/1.1 201 Created
+  Location: /api/v1/merchants/33333333-3333-4333-8333-333333333333/transactions/01a185e6-d3e5-7b0f-89be-f30544020e44
+  body: {"id":"01a185e6-d3e5-7b0f-89be-f30544020e44","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"35.20","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T04:24:19.684752Z","reversalOf":"01a185e6-ca40-70ae-808f-971904671b67","createdAt":"2026-10-29T04:24:19.684752Z"}
+
+  REV_ID=01a185e6-d3e5-7b0f-89be-f30544020e44
+
+--- 20. replay do estorno (k4) -> 201 Replayed, mesmo id
+status: HTTP/1.1 201 Created
+  Location: /api/v1/merchants/33333333-3333-4333-8333-333333333333/transactions/01a185e6-d3e5-7b0f-89be-f30544020e44
+  Idempotency-Replayed: true
+  body: {"id": "01a185e6-d3e5-7b0f-89be-f30544020e44", "type": "CREDIT", "amount": "35.20", "currency": "BRL", "createdAt": "2026-10-29T04:24:19.684752Z", "merchantId": "33333333-3333-4333-8333-333333333333", "occurredAt": "2026-10-29T04:24:19.684752Z", "reversalOf": "01a185e6-ca40-70ae-808f-971904671b67", "effectiveDate": "2026-10-29"}
+
+--- 21. segundo estorno do mesmo debito, outra chave (k5) -> 409
+status: HTTP/1.1 409 Conflict
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.10","title":"Conflito.","status":409,"detail":"O lançamento já foi estornado.","traceId":"00-5debbf1d1bd02e13bc560c805a7bf74b-dacc4ce4f01e0c2d-01"}
+
+--- 22. estorno do estorno (k6) -> 422
+status: HTTP/1.1 422 Unprocessable Entity
+  body: {"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Dados inválidos.","status":422,"errors":{"id":["Um estorno não pode ser estornado."]},"traceId":"00-514e767a603758dd2e0fe6bba5fbe4fa-1f662abf78b8d76c-01"}
+
+--- 23. GET lista A apos estorno (liquido esperado D=100.00; total 105.00)
+status: HTTP/1.1 200 OK
+  body: {"items":[{"id":"01a185e6-cb21-7473-9db5-ecb0d5204993","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"5.00","currency":"BRL","effectiveDate":"2026-10-01","occurredAt":"2026-10-29T04:24:17.441338Z","reversalOf":null,"createdAt":"2026-10-29T04:24:17.441338Z","description":null,"reversedBy":null},{"id":"01a185e6-c803-7d73-8b79-6c9c73b96f03","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"100.00","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T04:24:16.643166Z","reversalOf":null,"createdAt":"2026-10-29T04:24:16.643166Z","description":"venda","reversedBy":null},{"id":"01a185e6-ca40-70ae-808f-971904671b67","merchan
+
+  resumo: total=4 itens=4 liquido_total=105.00 liquido_por_data={'2026-10-01': '5.00', '2026-10-29': '100.00'}
+  ordem: ['2026-10-01 CREDIT 5.00', '2026-10-29 CREDIT 100.00', '2026-10-29 DEBIT 35.20 reversedBy=..0e44', '2026-10-29 CREDIT 35.20 reversalOf=..1b67']
+
+--- 24. GET original estornado -> 200 com reversedBy
+status: HTTP/1.1 200 OK
+  body: {"id":"01a185e6-ca40-70ae-808f-971904671b67","merchantId":"33333333-3333-4333-8333-333333333333","type":"DEBIT","amount":"35.20","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T04:24:17.215983Z","reversalOf":null,"createdAt":"2026-10-29T04:24:17.215983Z","description":null,"reversedBy":"01a185e6-d3e5-7b0f-89be-f30544020e44"}
+
+--- 25. claim B na rota de A -> 404
+status: HTTP/1.1 404 Not Found
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Recurso não encontrado.","status":404,"traceId":"00-5314fa97bc5e7cb2b58c81414e66a96a-effbd5d938c87ed2-01"}
+
+--- 26. B consulta id de A pela propria rota -> 404
+status: HTTP/1.1 404 Not Found
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Recurso não encontrado.","status":404,"traceId":"00-343cfcb74403e4db70dc0103f8caef68-2302b07ad9720368-01"}
+
+--- 27. B estorna id de A pela propria rota (k7) -> 404
+status: HTTP/1.1 404 Not Found
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Recurso não encontrado.","status":404,"traceId":"00-81ceaca1f5182f6973fc3eb5464cdbef-ee87e51608b9a7b9-01"}
+
+--- 28. B usa a mesma chave k1 -> 201 (chave por merchant, RF-06)
+status: HTTP/1.1 201 Created
+  Location: /api/v1/merchants/44444444-4444-4444-8444-444444444444/transactions/01a185e6-dabd-751e-b421-d013bf1333f2
+  body: {"id":"01a185e6-dabd-751e-b421-d013bf1333f2","merchantId":"44444444-4444-4444-8444-444444444444","type":"CREDIT","amount":"10.00","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T04:24:21.437142Z","reversalOf":null,"createdAt":"2026-10-29T04:24:21.437142Z"}
+
+--- 29. GET lista B -> 200 so o proprio (RF-05: B=10.00)
+status: HTTP/1.1 200 OK
+  body: {"items":[{"id":"01a185e6-dabd-751e-b421-d013bf1333f2","merchantId":"44444444-4444-4444-8444-444444444444","type":"CREDIT","amount":"10.00","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T04:24:21.437142Z","reversalOf":null,"createdAt":"2026-10-29T04:24:21.437142Z","description":null,"reversedBy":null}],"page":1,"pageSize":50,"total":1}
+
+  resumo: total=1 itens=1 liquido_total=10.00 liquido_por_data={'2026-10-29': '10.00'}
+  ordem: ['2026-10-29 CREDIT 10.00']
+
+--- 30. merchantId invalido na rota -> 404/400
+status: HTTP/1.1 404 Not Found
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Not Found","status":404,"traceId":"00-c5c93e27b3fc97f30723105fd9df708a-6ee685842bc086bf-01"}
+
+--- 31. corrida: 20 POST paralelos mesma chave k-par (A); esperado: 1 lancamento; status 201 (Replayed) e/ou 409 Retry-After
+201 replayed= retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+201 replayed=true retry-after=
+
+--- 32. GET lista A final (esperado total 5: 100, 35.20, 5, estorno 35.20, 7.00 e nada mais)
+status: HTTP/1.1 200 OK
+  body: {"items":[{"id":"01a185e6-cb21-7473-9db5-ecb0d5204993","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"5.00","currency":"BRL","effectiveDate":"2026-10-01","occurredAt":"2026-10-29T04:24:17.441338Z","reversalOf":null,"createdAt":"2026-10-29T04:24:17.441338Z","description":null,"reversedBy":null},{"id":"01a185e6-c803-7d73-8b79-6c9c73b96f03","merchantId":"33333333-3333-4333-8333-333333333333","type":"CREDIT","amount":"100.00","currency":"BRL","effectiveDate":"2026-10-29","occurredAt":"2026-10-29T04:24:16.643166Z","reversalOf":null,"createdAt":"2026-10-29T04:24:16.643166Z","description":"venda","reversedBy":null},{"id":"01a185e6-ca40-70ae-808f-971904671b67","merchan
+
+  resumo: total=5 itens=5 liquido_total=112.00 liquido_por_data={'2026-10-01': '5.00', '2026-10-29': '107.00'}
+  ordem: ['2026-10-01 CREDIT 5.00', '2026-10-29 CREDIT 100.00', '2026-10-29 DEBIT 35.20 reversedBy=..0e44', '2026-10-29 CREDIT 35.20 reversalOf=..1b67', '2026-10-29 CREDIT 7.00']
+

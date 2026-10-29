@@ -1,0 +1,9 @@
+1. so o .env mudou: login com senha nova no servidor = psql: error: connection to server at "postgres" (172.25.0.2)  (esperado: falha de autenticacao)
+   login com senha antiga = 1
+ALTER ROLE
+2. apos ALTER ROLE: senha nova = 1 | antiga = psql: error: connection to server at "postgres" (172.25.0.2)
+3. containers recriados: 1
+   worker healthy + consumidor registrado apos ~9s
+antes: "dailyNet":"33.28"
+POST -> 201
+depois: "dailyNet":"33.30"

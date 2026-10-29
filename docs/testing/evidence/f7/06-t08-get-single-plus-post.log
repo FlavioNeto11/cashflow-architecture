@@ -1,0 +1,26 @@
+# F7 05 - k6 'get-single-plus-post' - 2026-10-29T12:14:14Z
+oraculo (fonte PostgreSQL, data 2026-02-10): {"A":{"credits": "145.20", "debits": "25.00", "net": "120.20", "count": 5, "closing": "494.60"},"B":{"credits": "50.00", "debits": "12.34", "net": "37.66", "count": 2, "closing": "40.66"}}
+imagem: grafana/k6@sha256:3e4186aea62e11a45560bfc51e19eeafe82fc07ce069c78aff44b7ff893d9a5e | rede: cashflow_app | alvo: https://gateway:8080 (TLS de borda, CA local via SSL_CERT_FILE)
+estado antes: cashflow-consolidation-api-1=healthy cashflow-consolidation-worker-1=healthy cashflow-gateway-1=healthy cashflow-keycloak-1=healthy cashflow-postgres-1=healthy cashflow-rabbitmq-1=healthy cashflow-transactions-api-1=healthy 
+===== F7 get-single-plus-post (run 121414) =====
+params: {"GW":"https://gateway:8080","DATE":"2026-02-10","TOKENS":"A","GET_RATE":50,"POST_RATE":10,"WARMUP_S":20,"DURATION_S":120,"INCLUDE_CLOSING":false,"MAX_VUS":200}
+GET janela de medicao: 6000 req (taxa alcancada 50.00/s) | 2xx corretos=6000 2xx-corpo-errado=0 429=0 5xx=0 timeout/conexao=0 4xx-anomalia=0
+GET perda (ADR-0009: 5xx+429+timeout+conexao)/req = 0.00% | dropped_iterations(medicao)=0
+GET latencia ms: avg=4.14 min=1.67 p50=3.95 p90=5.31 p95=6.22 p99=8.93 max=28.01
+POST janela de medicao: 1201 req (taxa 10.01/s) | 201=1201 429=0 5xx=0 timeout/conexao=0 outros=0 dropped=0
+POST latencia ms: avg=13.66 min=7.16 p50=13.11 p90=17.87 p95=19.72 p99=23.98 max=60.08
+token_fetch_failed=0 vus_max_configurado=240 vus_pico_usado=3
+--- amostras docker stats durante a rodada
+[stats 12:14:30] gateway cpu=18.85% mem=170.2MiB / 7.756GiB;consolidation-api cpu=13.17% mem=79.43MiB / 7.756GiB;transactions-api cpu=12.29% mem=159.6MiB / 7.756GiB;postgres cpu=7.56% mem=74MiB / 7.756GiB;keycloak cpu=0.29% mem=839.7MiB / 7.756GiB;
+[stats 12:14:47] gateway cpu=17.47% mem=169.8MiB / 7.756GiB;consolidation-api cpu=22.46% mem=83.77MiB / 7.756GiB;transactions-api cpu=12.21% mem=159.6MiB / 7.756GiB;postgres cpu=7.70% mem=74.38MiB / 7.756GiB;keycloak cpu=6.02% mem=840.5MiB / 7.756GiB;
+[stats 12:15:04] gateway cpu=17.85% mem=177.8MiB / 7.756GiB;consolidation-api cpu=11.59% mem=79.62MiB / 7.756GiB;transactions-api cpu=12.24% mem=154.8MiB / 7.756GiB;postgres cpu=19.09% mem=74.75MiB / 7.756GiB;keycloak cpu=0.29% mem=840.5MiB / 7.756GiB;
+[stats 12:15:22] gateway cpu=16.54% mem=177.2MiB / 7.756GiB;consolidation-api cpu=12.35% mem=79.66MiB / 7.756GiB;transactions-api cpu=11.08% mem=155MiB / 7.756GiB;postgres cpu=8.69% mem=74.86MiB / 7.756GiB;keycloak cpu=0.37% mem=840.4MiB / 7.756GiB;
+[stats 12:15:39] gateway cpu=16.31% mem=177.6MiB / 7.756GiB;consolidation-api cpu=35.31% mem=79.95MiB / 7.756GiB;transactions-api cpu=11.94% mem=155MiB / 7.756GiB;postgres cpu=7.89% mem=75.37MiB / 7.756GiB;keycloak cpu=0.30% mem=840.3MiB / 7.756GiB;
+[stats 12:15:56] gateway cpu=17.28% mem=177.8MiB / 7.756GiB;consolidation-api cpu=11.37% mem=79.23MiB / 7.756GiB;transactions-api cpu=11.58% mem=154MiB / 7.756GiB;postgres cpu=8.70% mem=75.57MiB / 7.756GiB;keycloak cpu=0.32% mem=840.3MiB / 7.756GiB;
+[stats 12:16:13] gateway cpu=19.36% mem=177.7MiB / 7.756GiB;consolidation-api cpu=11.90% mem=79.2MiB / 7.756GiB;transactions-api cpu=12.23% mem=155MiB / 7.756GiB;postgres cpu=8.44% mem=76.07MiB / 7.756GiB;keycloak cpu=0.35% mem=840.5MiB / 7.756GiB;
+[stats 12:16:31] gateway cpu=17.82% mem=178.6MiB / 7.756GiB;consolidation-api cpu=36.05% mem=79.72MiB / 7.756GiB;transactions-api cpu=12.82% mem=158.5MiB / 7.756GiB;postgres cpu=16.48% mem=76.27MiB / 7.756GiB;keycloak cpu=0.40% mem=840.6MiB / 7.756GiB;
+estado depois: cashflow-consolidation-api-1=healthy cashflow-consolidation-worker-1=healthy cashflow-gateway-1=healthy cashflow-keycloak-1=healthy cashflow-postgres-1=healthy cashflow-rabbitmq-1=healthy cashflow-transactions-api-1=healthy 
+oraculo POST: 201 contados pelo k6 (todas as fases)=1402 | linhas na fonte com description f7-k6-121414=1402 -> IGUAL
+[12:16:40.168] converge(2026-02-11): fonte='2704.00 0.00 2704' consolidado='2704.00 0.00 2704' apos 1s -> IGUAL
+k6 rc=0
+exit=0

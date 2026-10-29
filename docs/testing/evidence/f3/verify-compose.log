@@ -1,0 +1,31 @@
+### 2026-10-29T04:17:21Z down -v (volumes de desenvolvimento apenas)
+ Volume cashflow_postgres-data Removing 
+ Volume cashflow_rabbitmq-data Removed 
+ Volume cashflow_postgres-data Removed 
+### 2026-10-29T04:17:22Z up -d --build
+ Container cashflow-rabbitmq-1 Starting 
+ Container cashflow-postgres-1 Starting 
+ Container cashflow-rabbitmq-1 Started 
+ Container cashflow-keycloak-1 Started 
+ Container cashflow-postgres-1 Started 
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-migrations-tx-1 Starting 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-migrations-cons-1 Starting 
+ Container cashflow-migrations-cons-1 Started 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-tx-1 Started 
+ Container cashflow-migrations-tx-1 Waiting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-worker-1 Starting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-api-1 Starting 
+ Container cashflow-consolidation-worker-1 Started 
+ Container cashflow-consolidation-api-1 Started 
+ Container cashflow-migrations-tx-1 Exited 
+ Container cashflow-transactions-api-1 Starting 
+ Container cashflow-transactions-api-1 Started 
+exit=0

@@ -1,0 +1,9 @@
+[08:14:26] estado inicial: consumidores=1 ready_worker=200 outbox: pendentes=0 idade_max_s=0 "dailyNet":"32.13"
+[08:14:28] broker PARADO
+[08:14:28] POST com broker parado -> 201
+[08:14:28] tx-api ready=200 (esperado 200: RNF-01)
+[08:14:39] +10s: ready_worker=200 outbox: pendentes=1 idade_max_s=10
+[08:15:39] +70s: ready_worker=503 outbox: pendentes=1 idade_max_s=71
+[08:15:40] broker INICIADO
+[08:15:57] consumidores=1 ready_worker=200 apos ~12s
+[08:16:39] outbox: pendentes=0 idade_max_s=0 "dailyNet":"33.24"

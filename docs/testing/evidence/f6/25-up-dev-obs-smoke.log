@@ -1,0 +1,38 @@
+# 2026-10-29T10:44:07Z up base+dev+obs (--build) e smoke direto (override dev, X-Dev-*; gateway nao funcional em dev)
+ Container cashflow-keycloak-init-1 Starting 
+ Container cashflow-otel-collector-1 Started 
+ Container cashflow-postgres-1 Started 
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-gateway-1 Started 
+ Container cashflow-keycloak-init-1 Started 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-migrations-cons-1 Starting 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-migrations-tx-1 Starting 
+ Container cashflow-migrations-cons-1 Started 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-tx-1 Started 
+ Container cashflow-migrations-tx-1 Waiting 
+ Container cashflow-migrations-tx-1 Exited 
+ Container cashflow-transactions-api-1 Starting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-worker-1 Starting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-api-1 Starting 
+ Container cashflow-transactions-api-1 Started 
+ Container cashflow-consolidation-api-1 Started 
+ Container cashflow-consolidation-worker-1 Started 
+SERVICE                STATUS
+consolidation-api      Up 11 seconds (healthy)
+consolidation-worker   Up 11 seconds (healthy)
+gateway                Up 21 seconds (healthy)
+keycloak               Up 3 minutes (healthy)
+otel-collector         Up 21 seconds
+postgres               Up 21 seconds (healthy)
+rabbitmq               Up 3 minutes (healthy)
+transactions-api       Up 11 seconds (healthy)
+dailyNet antes: {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"64.80","debits":"0.00","dailyNet":"64.80","entriesCount":1,"asOf":"2026-10-29T10:41:43.050129Z"}
+POST CREDIT 1.25: 201
+dailyNet depois: {"merchantId":"33333333-3333-4333-8333-333333333333","date":"2026-10-29","currency":"BRL","credits":"66.05","debits":"0.00","dailyNet":"66.05","entriesCount":2,"asOf":"2026-10-29T10:44:11.685524Z"}

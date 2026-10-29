@@ -1,0 +1,49 @@
+06-t08-get-closing.log: amostras de 12:17:17 a 12:19:18
+  gateway            n= 8 cpu%= 13.86 a  18.27 | mem max=  188.4 MiB
+  consolidation-api  n= 8 cpu%= 11.34 a  18.91 | mem max=   88.1 MiB
+  transactions-api   n= 8 cpu%=  0.25 a   0.52 | mem max=  157.7 MiB
+  postgres           n= 8 cpu%=  3.63 a  11.31 | mem max=   76.6 MiB
+  keycloak           n= 8 cpu%=  0.21 a   4.75 | mem max=  840.9 MiB
+06-t08-get-single-10min.log: amostras de 12:21:56 a 12:32:01
+  gateway            n=36 cpu%= 13.40 a  38.16 | mem max=  213.6 MiB
+  consolidation-api  n=36 cpu%= 10.41 a  36.33 | mem max=   90.1 MiB
+  transactions-api   n=36 cpu%=  0.19 a  22.97 | mem max=  166.3 MiB
+  postgres           n=36 cpu%=  2.95 a  17.54 | mem max=   81.0 MiB
+  keycloak           n=36 cpu%=  0.21 a  73.75 | mem max=  842.5 MiB
+06-t08-get-single-plus-post.log: amostras de 12:14:30 a 12:16:31
+  gateway            n= 8 cpu%= 16.31 a  19.36 | mem max=  178.6 MiB
+  consolidation-api  n= 8 cpu%= 11.37 a  36.05 | mem max=   83.8 MiB
+  transactions-api   n= 8 cpu%= 11.08 a  12.82 | mem max=  159.6 MiB
+  postgres           n= 8 cpu%=  7.56 a  19.09 | mem max=   76.3 MiB
+  keycloak           n= 8 cpu%=  0.29 a   6.02 | mem max=  840.6 MiB
+06-t08-get-single.log: amostras de 12:08:57 a 12:10:58
+  gateway            n= 8 cpu%= 14.54 a  22.31 | mem max=  158.8 MiB
+  consolidation-api  n= 8 cpu%= 10.54 a  39.38 | mem max=   89.1 MiB
+  transactions-api   n= 8 cpu%=  0.21 a   1.62 | mem max=  149.3 MiB
+  postgres           n= 8 cpu%=  3.06 a  14.52 | mem max=   68.5 MiB
+  keycloak           n= 8 cpu%=  0.30 a   3.03 | mem max=  839.1 MiB
+06-t08-get-two-tokens.log: amostras de 12:11:43 a 12:13:44
+  gateway            n= 8 cpu%= 14.78 a  49.66 | mem max=  170.4 MiB
+  consolidation-api  n= 8 cpu%= 10.30 a  13.40 | mem max=   79.1 MiB
+  transactions-api   n= 8 cpu%=  0.21 a  40.96 | mem max=  149.4 MiB
+  postgres           n= 8 cpu%=  3.08 a  14.82 | mem max=   68.1 MiB
+  keycloak           n= 8 cpu%=  0.25 a   7.99 | mem max=  839.1 MiB
+06-t08-post-baseline.log: amostras de 12:06:20 a 12:08:03
+  gateway            n= 7 cpu%=  3.77 a   4.84 | mem max=  134.2 MiB
+  consolidation-api  n= 7 cpu%=  0.02 a  12.57 | mem max=   96.7 MiB
+  transactions-api   n= 7 cpu%= 11.09 a  14.26 | mem max=  181.8 MiB
+  postgres           n= 7 cpu%=  4.55 a  13.32 | mem max=  121.1 MiB
+  keycloak           n= 7 cpu%=  0.25 a  21.73 | mem max=  832.9 MiB
+06-t08-probe-single-80.log: amostras de 12:20:03 a 12:20:03
+  gateway            n= 1 cpu%= 21.41 a  21.41 | mem max=  187.7 MiB
+  consolidation-api  n= 1 cpu%= 12.13 a  12.13 | mem max=   83.0 MiB
+  transactions-api   n= 1 cpu%= 21.71 a  21.71 | mem max=  157.3 MiB
+  postgres           n= 1 cpu%=  3.74 a   3.74 | mem max=   67.9 MiB
+  keycloak           n= 1 cpu%=  0.28 a   0.28 | mem max=  840.6 MiB
+06-t08-probe-two-130.log: amostras de 12:21:00 a 12:21:00
+  gateway            n= 1 cpu%= 31.34 a  31.34 | mem max=  188.1 MiB
+  consolidation-api  n= 1 cpu%= 25.28 a  25.28 | mem max=   88.1 MiB
+  transactions-api   n= 1 cpu%=  0.28 a   0.28 | mem max=  157.2 MiB
+  postgres           n= 1 cpu%=  7.20 a   7.20 | mem max=   80.5 MiB
+  keycloak           n= 1 cpu%=  2.78 a   2.78 | mem max=  841.0 MiB
+exit=0

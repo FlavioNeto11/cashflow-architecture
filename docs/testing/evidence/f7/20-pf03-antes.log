@@ -1,0 +1,128 @@
+# PF-03 ANTES da correcao - 2026-10-29T11:15:52-03:00
+$ dotnet test tests/CashFlow.Transactions.Api.Tests -c Release --filter "FullyQualifiedName~ControlCharacter"
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  CashFlow.Hosting -> C:\git\cashflow-architecture\src\CashFlow.Hosting\bin\Release\net10.0\CashFlow.Hosting.dll
+  CashFlow.Messaging -> C:\git\cashflow-architecture\src\CashFlow.Messaging\bin\Release\net10.0\CashFlow.Messaging.dll
+  CashFlow.Transactions.Api -> C:\git\cashflow-architecture\src\CashFlow.Transactions.Api\bin\Release\net10.0\CashFlow.Transactions.Api.dll
+  CashFlow.Transactions.Api.Tests -> C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\bin\Release\net10.0\CashFlow.Transactions.Api.Tests.dll
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\bin\Release\net10.0\CashFlow.Transactions.Api.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.38]     CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(codePoint: 31) [FAIL]
+[xUnit.net 00:00:00.40]     CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(codePoint: 7) [FAIL]
+[xUnit.net 00:00:00.40]     CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(codePoint: 128) [FAIL]
+[xUnit.net 00:00:00.40]     CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(codePoint: 159) [FAIL]
+[xUnit.net 00:00:00.40]     CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(codePoint: 127) [FAIL]
+[xUnit.net 00:00:00.40]     CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(codePoint: 0) [FAIL]
+[xUnit.net 00:00:00.41]     CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Reverse_ReasonWithControlCharacter_IsRejected [FAIL]
+  Failed CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(codePoint: 31) [8 ms]
+  Error Message:
+   Assert.False() Failure
+Expected: False
+Actual:   True
+  Stack Trace:
+     at CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(Int32 codePoint) in C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\Domain\DomainTests.cs:line 138
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+  Failed CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(codePoint: 7) [< 1 ms]
+  Error Message:
+   Assert.False() Failure
+Expected: False
+Actual:   True
+  Stack Trace:
+     at CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(Int32 codePoint) in C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\Domain\DomainTests.cs:line 138
+   at InvokeStub_TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Failed CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(codePoint: 128) [< 1 ms]
+  Error Message:
+   Assert.False() Failure
+Expected: False
+Actual:   True
+  Stack Trace:
+     at CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(Int32 codePoint) in C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\Domain\DomainTests.cs:line 138
+   at InvokeStub_TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Failed CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(codePoint: 159) [< 1 ms]
+  Error Message:
+   Assert.False() Failure
+Expected: False
+Actual:   True
+  Stack Trace:
+     at CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(Int32 codePoint) in C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\Domain\DomainTests.cs:line 138
+   at InvokeStub_TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Failed CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(codePoint: 127) [< 1 ms]
+  Error Message:
+   Assert.False() Failure
+Expected: False
+Actual:   True
+  Stack Trace:
+     at CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(Int32 codePoint) in C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\Domain\DomainTests.cs:line 138
+   at InvokeStub_TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Failed CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(codePoint: 0) [< 1 ms]
+  Error Message:
+   Assert.False() Failure
+Expected: False
+Actual:   True
+  Stack Trace:
+     at CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(Int32 codePoint) in C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\Domain\DomainTests.cs:line 138
+   at InvokeStub_TransactionTests.Register_DescriptionWithControlCharacter_IsRejected(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Failed CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Reverse_ReasonWithControlCharacter_IsRejected [1 ms]
+  Error Message:
+   Assert.False() Failure
+Expected: False
+Actual:   True
+  Stack Trace:
+     at CashFlow.Transactions.Api.Tests.Domain.TransactionTests.Reverse_ReasonWithControlCharacter_IsRejected() in C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\Domain\DomainTests.cs:line 149
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:09.97]     CashFlow.Transactions.Api.Tests.Api.RegistrationTests.Description_WithControlCharacter_Returns422AndWritesNothing(escapedDescription: "\\u0000") [FAIL]
+[xUnit.net 00:00:10.12]     CashFlow.Transactions.Api.Tests.Api.RegistrationTests.Description_WithControlCharacter_Returns422AndWritesNothing(escapedDescription: "\\u0007") [FAIL]
+[xUnit.net 00:00:10.18]     CashFlow.Transactions.Api.Tests.Api.RegistrationTests.Description_WithControlCharacter_Returns422AndWritesNothing(escapedDescription: "\\u001f") [FAIL]
+[xUnit.net 00:00:10.20]     CashFlow.Transactions.Api.Tests.Api.RegistrationTests.Description_WithControlCharacter_Returns422AndWritesNothing(escapedDescription: "ok\\u0000fim") [FAIL]
+[xUnit.net 00:00:10.30]     CashFlow.Transactions.Api.Tests.Api.RegistrationTests.Reversal_ReasonWithControlCharacter_Returns422AndCreatesNoReversal [FAIL]
+  Failed CashFlow.Transactions.Api.Tests.Api.RegistrationTests.Description_WithControlCharacter_Returns422AndWritesNothing(escapedDescription: "\\u0000") [1 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: UnprocessableEntity
+Actual:   InternalServerError
+  Stack Trace:
+     at CashFlow.Transactions.Api.Tests.Api.RegistrationTests.Description_WithControlCharacter_Returns422AndWritesNothing(String escapedDescription) in C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\Api\RegistrationTests.cs:line 181
+--- End of stack trace from previous location ---
+  Failed CashFlow.Transactions.Api.Tests.Api.RegistrationTests.Description_WithControlCharacter_Returns422AndWritesNothing(escapedDescription: "\\u0007") [153 ms]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: UnprocessableEntity
+Actual:   Created
+  Stack Trace:
+     at CashFlow.Transactions.Api.Tests.Api.RegistrationTests.Description_WithControlCharacter_Returns422AndWritesNothing(String escapedDescription) in C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\Api\RegistrationTests.cs:line 181
+--- End of stack trace from previous location ---
+  Failed CashFlow.Transactions.Api.Tests.Api.RegistrationTests.Description_WithControlCharacter_Returns422AndWritesNothing(escapedDescription: "\\u001f") [55 ms]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: UnprocessableEntity
+Actual:   Created
+  Stack Trace:
+     at CashFlow.Transactions.Api.Tests.Api.RegistrationTests.Description_WithControlCharacter_Returns422AndWritesNothing(String escapedDescription) in C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\Api\RegistrationTests.cs:line 181
+--- End of stack trace from previous location ---
+  Failed CashFlow.Transactions.Api.Tests.Api.RegistrationTests.Description_WithControlCharacter_Returns422AndWritesNothing(escapedDescription: "ok\\u0000fim") [22 ms]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: UnprocessableEntity
+Actual:   InternalServerError
+  Stack Trace:
+     at CashFlow.Transactions.Api.Tests.Api.RegistrationTests.Description_WithControlCharacter_Returns422AndWritesNothing(String escapedDescription) in C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\Api\RegistrationTests.cs:line 181
+--- End of stack trace from previous location ---
+  Failed CashFlow.Transactions.Api.Tests.Api.RegistrationTests.Reversal_ReasonWithControlCharacter_Returns422AndCreatesNoReversal [90 ms]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: UnprocessableEntity
+Actual:   InternalServerError
+  Stack Trace:
+     at CashFlow.Transactions.Api.Tests.Api.RegistrationTests.Reversal_ReasonWithControlCharacter_Returns422AndCreatesNoReversal() in C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\Api\RegistrationTests.cs:line 197
+--- End of stack trace from previous location ---
+
+Failed!  - Failed:    12, Passed:     0, Skipped:     0, Total:    12, Duration: 9 s - CashFlow.Transactions.Api.Tests.dll (net10.0)
+exit=1

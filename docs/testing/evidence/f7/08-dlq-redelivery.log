@@ -1,0 +1,97 @@
+# F7 08 - redelivery / DLQ / redrive / purge - 2026-10-29T13:09:09Z
+estado inicial: DLQ(rabbitmqctl)=0 fila principal=0 consumidores: consolidation.transaction-registered 1
+
+=================== [13:09:14.733] D1. mensagem nao-JSON -> DLQ
+{"routed":true}
+  OK: DLQ aumentou em 1 (rabbitmqctl imediato) = 1
+  DLQ: message_id=f7-d1-malformed x-reason=malformed_json x-reason-detail=None x-original-routing-key=transaction.registered.v1 x-death=nao
+
+=================== [13:09:17.552] D2. redelivery do MESMO evento (5x) -> sem dupla contabilizacao
+POST A 12.34 em 2026-03-10 -> 201
+[13:09:18.505] converge(2026-03-10): fonte='12.34 0.00 1' consolidado='12.34 0.00 1' apos 1s -> IGUAL
+eventId=01a187c7-738c-7d08-aff0-0134e717f4aa; outbox rows para a data: 1
+  OK: projecao (credits debits count) apos 5 redeliveries = 12.34 0.00 1
+  OK: Inbox: linhas da data (esperado 1) = 1
+  OK: DLQ nao cresceu (duplicata e ACK, nao DLQ) = 1
+  OK: fila principal vazia = 0
+
+=================== [13:09:27.526] D3. redrive ponta a ponta: evento valido nunca aplicado -> DLQ -> recon dlq redrive -> aplicado 1x
+worker parado; POST A 100.00 em 2026-03-10
+ Container cashflow-consolidation-worker-1 Stopped 
+POST -> 201
+fila principal=1 (esperado 1: publicada pela outbox, sem consumidor)
+rejeito a mensagem SEM requeue (vai para a DLX/DLQ, como se o worker a tivesse recusado)
+  mensagem rejeitada: ['01a187c7-9d3f-7bf1-83df-276f9729bc7d']
+DLQ=2 (esperado 2)
+  DLQ: message_id=f7-d1-malformed x-reason=malformed_json x-reason-detail=None x-original-routing-key=transaction.registered.v1 x-death=nao
+  DLQ: message_id=01a187c7-9d3f-7bf1-83df-276f9729bc7d x-reason=None x-reason-detail=None x-original-routing-key=None x-death=sim
+ Container cashflow-consolidation-worker-1 Started 
+[13:09:44.521] cashflow-consolidation-worker-1 health=healthy apos 5s
+antes do redrive: fonte=112.34 0.00 2 projecao=12.34 0.00 1 (esperado projecao SEM os 100.00)
+ Container cashflow-recon-tool-run-87f27118bc94 Creating 
+ Container cashflow-recon-tool-run-87f27118bc94 Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+f7-d1-malformed recusada anomaly: occurredAt ilegível: retenção não verificável
+01a187c7-9d3f-7bf1-83df-276f9729bc7d republicada em cashflow.transactions (transaction.registered.v1) e removida da DLQ
+redrive: republicadas=1 recusadas=1 ignoradas=0 devolvidas_nesta_execucao=0
+
+redrive exit=2
+[13:09:51.960] converge(2026-03-10): fonte='112.34 0.00 2' consolidado='112.34 0.00 2' apos 1s -> IGUAL
+  OK: projecao apos o redrive (credits debits count) = 112.34 0.00 2
+  OK: Inbox da data (1 por lancamento) = 2
+--- DLQ apos o redrive (a mensagem malformada do D1 e republicada e deve voltar a DLQ ou ser recusada; ver D4)
+DLQ=1
+  DLQ: message_id=f7-d1-malformed x-reason=malformed_json x-reason-detail=None x-original-routing-key=transaction.registered.v1 x-death=nao
+--- reconcile da data (esperado 0 divergencias)
+ Container cashflow-recon-tool-run-1feb24caf87a Creating 
+ Container cashflow-recon-tool-run-1feb24caf87a Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+2026-03-10 clean divergencias=0  posse_lock_ms=36
+total: modo=reconcile linhas=1 divergencias=0 abortadas=0 posse_lock_max_ms=36
+reconcile exit=0
+
+=================== [13:09:58.440] D4. redrive de mensagens invalidas: comportamento observado
+DLQ antes=1
+ Container cashflow-recon-tool-run-79f4bfa38728 Creating 
+ Container cashflow-recon-tool-run-79f4bfa38728 Created 
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+f7-d1-malformed recusada anomaly: occurredAt ilegível: retenção não verificável
+redrive: republicadas=0 recusadas=1 ignoradas=0 devolvidas_nesta_execucao=0
+
+redrive exit=2
+DLQ depois=1
+  DLQ: message_id=f7-d1-malformed x-reason=malformed_json x-reason-detail=None x-original-routing-key=transaction.registered.v1 x-death=nao
+
+=================== [13:10:05.732] D5. purge da DLQ e lacuna de custodia (repete log 27:23-25 x 30 com rabbitmqctl imediato)
+{"routed":true}
+{"routed":true}
+DLQ antes do purge (rabbitmqctl)=3 | API de gestao=3 (as estatisticas da API podem atrasar)
+--- registro em disco do que sera descartado (peek sem consumir), para a analise de custodia:
+  DLQ: message_id=f7-d1-malformed x-reason=malformed_json x-reason-detail=None x-original-routing-key=transaction.registered.v1 x-death=nao
+  DLQ: message_id=f7-d5-a x-reason=malformed_json x-reason-detail=None x-original-routing-key=transaction.registered.v1 x-death=nao
+  DLQ: message_id=f7-d5-b x-reason=malformed_json x-reason-detail=None x-original-routing-key=transaction.registered.v1 x-death=nao
+[13:10:10.448] DELETE /queues/%2F/consolidation.dlq/contents
+  http=204
+[13:10:10.527] rabbitmqctl imediato: DLQ=0
+[13:10:11.611] API de gestao logo apos: DLQ=3
+[13:10:16.731] API de gestao +5 s: DLQ=3
+  OK: DLQ vazia apos o purge (rabbitmqctl) = 0
+LACUNA: o purge e irreversivel e nao deixa registro no broker/aplicacao (nenhum 'dlq discard' auditado); mensagens eram de teste.
+
+=================== [13:10:17.852] estado final
+  rabbitmqctl: name messages_ready messages_unacknowledged consumers
+  rabbitmqctl: consolidation.dlq 0 0 0
+  rabbitmqctl: consolidation.transaction-registered 0 0 1
+NAME                              STATUS
+cashflow-consolidation-api-1      Up 6 minutes (healthy)
+cashflow-consolidation-worker-1   Up 40 seconds (healthy)
+cashflow-gateway-1                Up 7 minutes (healthy)
+cashflow-keycloak-1               Up 2 hours (healthy)
+cashflow-postgres-1               Up 2 hours (healthy)
+cashflow-rabbitmq-1               Up 9 minutes (healthy)
+cashflow-transactions-api-1       Up 7 minutes (healthy)
+FALHAS=0
+exit=0

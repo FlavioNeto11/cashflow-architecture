@@ -1,0 +1,75 @@
+# F7 03 - idempotencia e concorrencia - 2026-10-29T12:02:21Z - run=12022115728
+tokens: A 933 chars, B 933 chars
+
+=================== [12:02:21.522] 1. Replay sequencial pelo gateway (T-03, RF-06): mesma chave + mesmo corpo => 201 identico + Idempotency-Replayed
+  [OK]    1o POST (esperado '201', obtido '201')
+  Idempotency-Replayed no 1o: '' (vazio esperado)
+  [OK]    2o POST (replay) (esperado '201', obtido '201')
+  cabecalho: idempotency-replayed: true
+  [OK]    Idempotency-Replayed: true (esperado 'true', obtido 'true')
+  [OK]    mesmo id no replay (esperado '01a1878a-2cad-7ede-b008-c9e9391042ec', obtido '01a1878a-2cad-7ede-b008-c9e9391042ec')
+  igualdade de bytes 1o x replay: DIFERENTES (item P2 jsonb conhecido: igualdade semantica)
+  igualdade semantica (JSON parseado): IGUAIS | campos 1o: ['amount', 'createdAt', 'currency', 'effectiveDate', 'id', 'merchantId', 'occurredAt', 'reversalOf', 'type'] | replay: idem
+  mesma chave, corpo DIFERENTE (amount 99.00) => 422 (ADR-0005 item 37; 409 e so para concorrencia sem desfecho):
+  status=422 corpo={"type":"https://tools.ietf.org/html/rfc4918#section-11.2","title":"Requisição não processável.","status":422,"detail":"A Idempotency-Key já foi usada com um payload diferente.","traceId":"00-fc9
+  [OK]    chave reutilizada com payload diferente (esperado '422', obtido '422')
+  [OK]    uma unica linha na fonte para a chave (esperado '1', obtido '1')
+  mesma chave na rota do merchant B (outra chave de escopo): 201 (201 esperado: escopo por merchant)
+
+=================== [12:02:23.114] 2. Corrida: 30 POSTs SIMULTANEOS, mesma chave e mesmo corpo (T-21) - oraculo: 1 lancamento, 1 evento na outbox
+  modo=same_key n=30 rotulo=f7-race-same-12022115728 duracao_total=0.12s
+  status: {'201': 30}
+  Idempotency-Replayed: {'true': 29, 'None': 1}
+  ids distintos nas respostas com corpo: 1 -> [30]
+  latencia (s): min=0.052 p50=0.072 max=0.085
+  [OK]    linhas na fonte com o rotulo (esperado '1', obtido '1')
+  [OK]    linhas em idempotency_keys para a chave (esperado '1', obtido '1')
+  [OK]    eventos novos na outbox (esperado '1', obtido '1')
+[12:02:28.951] converge(2024-05-11): fonte='10.00 0.00 1' consolidado='10.00 0.00 1' apos 1s -> IGUAL
+
+=================== [12:02:28.980] 3. Corrida: 20 POSTs simultaneos, mesma chave e corpos DIFERENTES - oraculo: exatamente 1 vence; os demais 422 (payload diferente da chave ja gravada)
+  modo=same_key_diff n=20 rotulo=f7-race-diff-12022115728 duracao_total=0.13s
+  status: {'422': 19, '201': 1}
+  Idempotency-Replayed: {'None': 20}
+  ids distintos nas respostas com corpo: 1 -> [1]
+  latencia (s): min=0.086 p50=0.098 max=0.113
+  [OK]    linhas na fonte com o rotulo (esperado '1', obtido '1')
+
+=================== [12:02:32.966] 4. Lost update (T-06): 40 POSTs simultaneos de chaves distintas, mesmo merchant e mesma data - oraculo: fonte = 40,00 = projecao
+  modo=distinct n=40 rotulo=f7-race-dist-12022115728 duracao_total=0.27s
+  status: {'201': 40}
+  Idempotency-Replayed: {'None': 40}
+  ids distintos nas respostas com corpo: 40 -> [1, 1, 1, 1, 1]
+  latencia (s): min=0.118 p50=0.201 max=0.226
+  fonte: 40.00 0.00 40  (creditos debitos contagem)
+  lancamentos criados: 40 (201 contados acima; 429 reduzem o numero criado e NAO sao perda: o cliente foi informado)
+[12:02:38.168] converge(2024-12-05): fonte='40.00 0.00 40' consolidado='40.00 0.00 40' apos 1s -> IGUAL
+  projecao (daily_consolidations): 40.00 0.00 40
+
+=================== [12:02:38.566] 5. Estorno concorrente (RF-08, T-21): original criado; 20 estornos mesma chave; depois 20 estornos chaves diferentes
+  [OK]    original (esperado '201', obtido '201')
+  mesma chave: modo=reversal_same n=20 rotulo=f7-rev-12022115728 duracao_total=0.09s
+  mesma chave: status: {'201': 20}
+  mesma chave: Idempotency-Replayed: {'true': 19, 'None': 1}
+  mesma chave: ids distintos nas respostas com corpo: 1 -> [20]
+  mesma chave: latencia (s): min=0.046 p50=0.062 max=0.064
+  [OK]    estornos do original apos 20 mesma chave (esperado '1', obtido '1')
+  chaves diferentes: modo=reversal_diff n=20 rotulo=f7-rev-12022115728 duracao_total=0.07s
+  chaves diferentes: status: {'409': 20}
+  chaves diferentes: Idempotency-Replayed: {'None': 20}
+  chaves diferentes: ids distintos nas respostas com corpo: 0 -> []
+  chaves diferentes: latencia (s): min=0.032 p50=0.042 max=0.047
+  [OK]    estornos do original apos mais 20 chaves diferentes (esperado '1', obtido '1')
+  fonte B/2024-08-08: 100.00 100.00 2
+[12:02:47.547] converge(2024-08-08): fonte='100.00 100.00 2' consolidado='100.00 100.00 2' apos 1s -> IGUAL
+  consolidado B/2024-08-08: {"merchantId":"44444444-4444-4444-8444-444444444444","date":"2024-08-08","currency":"BRL","credits":"100.00","debits":"100.00","dailyNet":"0.00","entriesCount":2,"asOf":"2026-10-29T12:02:42.386942Z"}
+
+=================== [12:02:47.643] 6. Integridade global apos o roteiro: toda linha da fonte tem evento; nenhuma mensagem pendente; DLQ vazia
+  outbox pendentes: 0
+  transactions sem evento correspondente na outbox: 0
+  rabbitmqctl: name messages_ready messages_unacknowledged consumers
+  rabbitmqctl: consolidation.dlq 0 0 0
+  rabbitmqctl: consolidation.transaction-registered 0 0 1
+
+RESULTADO: 0 verificacao(oes) com FALHA
+exit=0

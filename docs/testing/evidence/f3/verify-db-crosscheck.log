@@ -1,0 +1,63 @@
+# Cross-check no banco apos cenario HTTP (psql como migrator no container postgres)
+--- contagens por merchant
+             merchant_id              | transactions 
+--------------------------------------+--------------
+ 11111111-1111-4111-8111-111111111111 |            4
+ 22222222-2222-4222-8222-222222222222 |            1
+ 33333333-3333-4333-8333-333333333333 |            5
+ 44444444-4444-4444-8444-444444444444 |            1
+(4 rows)
+
+             merchant_id              | idempotency_keys 
+--------------------------------------+------------------
+ 11111111-1111-4111-8111-111111111111 |                4
+ 22222222-2222-4222-8222-222222222222 |                1
+ 33333333-3333-4333-8333-333333333333 |                5
+ 44444444-4444-4444-8444-444444444444 |                1
+(4 rows)
+
+ outbox_total | pendentes | min_attempts | max_attempts 
+--------------+-----------+--------------+--------------
+           11 |        11 |            0 |            0
+(1 row)
+
+--- 1 outbox por transacao, mesmo merchant
+ transacoes_sem_outbox 
+-----------------------
+                     0
+(1 row)
+
+--- lancamentos do merchant 3333 (autor, estorno, competencia)
+ entry_type | amount | currency | effective_date | is_reversal | created_by_sub | created_by_client_id 
+------------+--------+----------+----------------+-------------+----------------+----------------------
+          1 | 100.00 | BRL      | 2026-10-29     | f           | user-a         | cashflow-web
+          2 |  35.20 | BRL      | 2026-10-29     | f           | user-a         | cashflow-web
+          1 |   5.00 | BRL      | 2026-10-01     | f           | user-a         | cashflow-web
+          1 |  35.20 | BRL      | 2026-10-29     | t           | user-a         | cashflow-web
+          1 |   7.00 | BRL      | 2026-10-29     | f           | user-a         | cashflow-web
+(5 rows)
+
+--- chave k-par: uma linha, apontando para um unico lancamento
+ idempotency_key | count 
+-----------------+-------
+ k-par           |     1
+(1 row)
+
+--- um payload de outbox (estorno) e cabecalhos
+         type          | version |                           payload                           |                                                                                                           headers                                                                                                           | next_eq_occurred 
+-----------------------+---------+-------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------
+ TransactionRegistered |       1 | {                                                          +| {"message-id": "01a185e6-d3e5-7ed8-803a-cff2bfa02205", "merchant_id": "33333333-3333-4333-8333-333333333333", "traceparent": "00-8f7f0634bc8c473be031b280c2667523-44e5d900a286f611-01", "content-type": "application/json"} | t
+                       |         |     "type": "TransactionRegistered",                       +|                                                                                                                                                                                                                             | 
+                       |         |     "amount": "35.20",                                     +|                                                                                                                                                                                                                             | 
+                       |         |     "eventId": "01a185e6-d3e5-7ed8-803a-cff2bfa02205",     +|                                                                                                                                                                                                                             | 
+                       |         |     "version": 1,                                          +|                                                                                                                                                                                                                             | 
+                       |         |     "currency": "BRL",                                     +|                                                                                                                                                                                                                             | 
+                       |         |     "entryType": "CREDIT",                                 +|                                                                                                                                                                                                                             | 
+                       |         |     "merchantId": "33333333-3333-4333-8333-333333333333",  +|                                                                                                                                                                                                                             | 
+                       |         |     "occurredAt": "2026-10-29T04:24:19.684752Z",           +|                                                                                                                                                                                                                             | 
+                       |         |     "reversalOf": "01a185e6-ca40-70ae-808f-971904671b67",  +|                                                                                                                                                                                                                             | 
+                       |         |     "effectiveDate": "2026-10-29",                         +|                                                                                                                                                                                                                             | 
+                       |         |     "transactionId": "01a185e6-d3e5-7b0f-89be-f30544020e44"+|                                                                                                                                                                                                                             | 
+                       |         | }                                                           |                                                                                                                                                                                                                             | 
+(1 row)
+

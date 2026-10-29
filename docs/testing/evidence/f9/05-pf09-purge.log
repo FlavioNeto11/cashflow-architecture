@@ -1,0 +1,98 @@
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\bin\Release\net10.0\CashFlow.Consolidation.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.14)
+[xUnit.net 00:00:00.92]   Discovering: CashFlow.Consolidation.Tests
+[xUnit.net 00:00:00.97]   Discovered:  CashFlow.Consolidation.Tests
+[xUnit.net 00:00:01.00]   Starting:    CashFlow.Consolidation.Tests
+[testcontainers.org 00:00:00.29] Connected to Docker:
+  Host: npipe://./pipe/docker_engine
+  Server Version: 29.7.2
+  Kernel Version: 6.18.33.2-microsoft-standard-WSL2
+  API Version: 1.55
+  Operating System: Docker Desktop
+  Total Memory: 7.76 GB
+  Labels: 
+    com.docker.desktop.address=npipe://\\.\pipe\docker_cli
+[testcontainers.org 00:00:00.58] Docker container cdd5384648a0 created
+[testcontainers.org 00:00:00.63] Start Docker container cdd5384648a0
+[testcontainers.org 00:00:00.93] Wait for Docker container cdd5384648a0 to complete readiness checks
+[testcontainers.org 00:00:01.98] Docker container cdd5384648a0 ready
+[testcontainers.org 00:00:02.28] Docker container eb59c0cd6a15 created
+[testcontainers.org 00:00:02.31] Docker container ff4858b1ba98 created
+[testcontainers.org 00:00:02.42] Add file to tar archive: Content length: 3659 byte(s), Target file: "/opt/cashflow/entrypoint.sh", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.42] Add file to tar archive: Source file: "C:\git\cashflow-architecture\infra\postgres\init\01-roles.sql", Target file: "/docker-entrypoint-initdb.d/01-roles.sql", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.42] Add file to tar archive: Source file: "C:\git\cashflow-architecture\infra\postgres\init\02-databases.sql", Target file: "/docker-entrypoint-initdb.d/02-databases.sql", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.42] Add file to tar archive: Source file: "C:\git\cashflow-architecture\infra\postgres\init\03-role-timeouts.sql", Target file: "/docker-entrypoint-initdb.d/03-role-timeouts.sql", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.43] Copy tar archive to container: Content length: 3659 byte(s), Docker container: eb59c0cd6a15
+[testcontainers.org 00:00:02.43] Copy tar archive to container: Content length: 3905 byte(s), Docker container: ff4858b1ba98
+[testcontainers.org 00:00:02.43] Add file to tar archive: Content length: 766 byte(s), Target file: "/etc/rabbitmq/conf.d/20-cashflow.conf", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.43] Copy tar archive to container: Content length: 766 byte(s), Docker container: eb59c0cd6a15
+[testcontainers.org 00:00:02.43] Add file to tar archive: Content length: 1563 byte(s), Target file: "/etc/rabbitmq/definitions.d/10-topology.json", UID: 0, GID: 0, Mode: 0644
+[testcontainers.org 00:00:02.43] Copy tar archive to container: Content length: 1563 byte(s), Docker container: eb59c0cd6a15
+[testcontainers.org 00:00:02.48] Start Docker container ff4858b1ba98
+[testcontainers.org 00:00:02.56] Start Docker container eb59c0cd6a15
+[testcontainers.org 00:00:02.86] Wait for Docker container ff4858b1ba98 to complete readiness checks
+[testcontainers.org 00:00:02.88] Execute "pg_isready -h 127.0.0.1 -U postgres" at Docker container ff4858b1ba98
+[testcontainers.org 00:00:03.02] Wait for Docker container eb59c0cd6a15 to complete readiness checks
+[testcontainers.org 00:00:04.14] Execute "pg_isready -h 127.0.0.1 -U postgres" at Docker container ff4858b1ba98
+[testcontainers.org 00:00:05.31] Execute "pg_isready -h 127.0.0.1 -U postgres" at Docker container ff4858b1ba98
+[testcontainers.org 00:00:05.43] Docker container ff4858b1ba98 ready
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de TransactionsDbContext aplicadas.","State":{"Context":"TransactionsDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Hosting.MigrationCommand","Message":"Migra\u00E7\u00F5es de ConsolidationDbContext aplicadas.","State":{"Context":"ConsolidationDbContext","{OriginalFormat}":"Migra\u00E7\u00F5es de {Context} aplicadas."}}
+[testcontainers.org 00:00:10.13] Docker container eb59c0cd6a15 ready
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"consolidation-worker iniciado (broker amqp://127.0.0.1:59117/, fila consolidation.transaction-registered).","State":{"Broker":"amqp://127.0.0.1:59117/","Queue":"consolidation.transaction-registered","{OriginalFormat}":"consolidation-worker iniciado (broker {Broker}, fila {Queue})."},"Scopes":[]}
+{"EventId":14,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Now listening on: http://127.0.0.1:59329","State":{"address":"http://127.0.0.1:59329","{OriginalFormat}":"Now listening on: {address}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Development","State":{"EnvName":"Development","{OriginalFormat}":"Hosting environment: {EnvName}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: C:\\git\\cashflow-architecture\\src\\CashFlow.Consolidation.Worker","State":{"ContentRoot":"C:\\git\\cashflow-architecture\\src\\CashFlow.Consolidation.Worker","{OriginalFormat}":"Content root path: {ContentRoot}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"Worker consumindo consolidation.transaction-registered em amqp://127.0.0.1:59117/ (antes: unknown).","State":{"Queue":"consolidation.transaction-registered","Broker":"amqp://127.0.0.1:59117/","Previous":"unknown","{OriginalFormat}":"Worker consumindo {Queue} em {Broker} (antes: {Previous})."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"Reentrega do lan\u00E7amento 01a188bf-b89e-7436-94cd-4191582bf91d reconhecida pelo Inbox; sem efeito.","State":{"TransactionId":"01a188bf-b89e-7436-94cd-4191582bf91d","{OriginalFormat}":"Reentrega do lan\u00E7amento {TransactionId} reconhecida pelo Inbox; sem efeito."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"consolidation-worker encerrando.","State":{"{OriginalFormat}":"consolidation-worker encerrando."},"Scopes":[]}
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.DeliveryLimitDeadLetter_RedrivenViaXDeath_IsAppliedOnce_AndRepeatedRedriveIsDuplicate [1 s]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.Reconcile_OutOfRetention_IsAborted_ButRebuildRestoresTheRow [308 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.InvalidArguments_ExitWithUsageError(args: []) [< 1 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.InvalidArguments_ExitWithUsageError(args: ["dlq", "purge", "--id", "x", "--reason", ···]) [< 1 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.InvalidArguments_ExitWithUsageError(args: ["dlq", "redrive", "--id"]) [< 1 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.InvalidArguments_ExitWithUsageError(args: ["dlq", "purge", "--all", "--reason", " "]) [< 1 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.InvalidArguments_ExitWithUsageError(args: ["dlq", "purge", "--all"]) [< 1 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.InvalidArguments_ExitWithUsageError(args: ["reconcile"]) [< 1 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.InvalidArguments_ExitWithUsageError(args: ["rebuild", "--merchant", "0199a000-0000-7000-8000-000000000001", "--from", "2026-10-01"]) [< 1 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.InvalidArguments_ExitWithUsageError(args: ["reconcile", "--merchant", "0199a000-0000-7000-8000-000000000001", "--from", "2025-01-01", ···]) [< 1 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.InvalidArguments_ExitWithUsageError(args: ["reconcile", "--merchant", "x", "--from", "2026-10-01", ···]) [< 1 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.InvalidArguments_ExitWithUsageError(args: ["dlq", "redrive"]) [< 1 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.InvalidArguments_ExitWithUsageError(args: ["reconcile", "--merchant", "0199a000-0000-7000-8000-000000000001", "--from", "2026-10-31", ···]) [< 1 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.Redrive_RefusesStaleAndOutOfRetention_LeavingThemInDlq [115 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.Reconcile_RowLockedByAnotherTransaction_AbortsWithLockTimeout_ThenSucceeds [2 s]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.PurgeById_RemovesOnlyThatMessage_AndUnknownIdIsReported [171 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.MissingConnectionString_ExitsWithFailure_NamingTheKeyOnly [< 1 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.Rebuild_ReplacesInboxWithExactlyTheSource_AndWritesAbsoluteTotals [234 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.RedriveById_RepublishesOnlyThatMessage_AndUnknownIdIsReported [176 ms]
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"consolidation-worker iniciado (broker amqp://127.0.0.1:59117/, fila consolidation.transaction-registered).","State":{"Broker":"amqp://127.0.0.1:59117/","Queue":"consolidation.transaction-registered","{OriginalFormat}":"consolidation-worker iniciado (broker {Broker}, fila {Queue})."},"Scopes":[]}
+{"EventId":14,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Now listening on: http://127.0.0.1:58735","State":{"address":"http://127.0.0.1:58735","{OriginalFormat}":"Now listening on: {address}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application started. Press Ctrl\u002BC to shut down.","State":{"{OriginalFormat}":"Application started. Press Ctrl\u002BC to shut down."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Hosting environment: Development","State":{"EnvName":"Development","{OriginalFormat}":"Hosting environment: {EnvName}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Content root path: C:\\git\\cashflow-architecture\\src\\CashFlow.Consolidation.Worker","State":{"ContentRoot":"C:\\git\\cashflow-architecture\\src\\CashFlow.Consolidation.Worker","{OriginalFormat}":"Content root path: {ContentRoot}"},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"Worker consumindo consolidation.transaction-registered em amqp://127.0.0.1:59117/ (antes: unknown).","State":{"Queue":"consolidation.transaction-registered","Broker":"amqp://127.0.0.1:59117/","Previous":"unknown","{OriginalFormat}":"Worker consumindo {Queue} em {Broker} (antes: {Previous})."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"Reentrega do lan\u00E7amento 01a188bf-cb46-76d9-9047-6454d957ecad reconhecida pelo Inbox; sem efeito.","State":{"TransactionId":"01a188bf-cb46-76d9-9047-6454d957ecad","{OriginalFormat}":"Reentrega do lan\u00E7amento {TransactionId} reconhecida pelo Inbox; sem efeito."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"Reentrega do lan\u00E7amento 01a188bf-cb53-79bc-a7a4-555a8c942491 reconhecida pelo Inbox; sem efeito.","State":{"TransactionId":"01a188bf-cb53-79bc-a7a4-555a8c942491","{OriginalFormat}":"Reentrega do lan\u00E7amento {TransactionId} reconhecida pelo Inbox; sem efeito."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"Microsoft.Hosting.Lifetime","Message":"Application is shutting down...","State":{"{OriginalFormat}":"Application is shutting down..."},"Scopes":[]}
+{"EventId":0,"LogLevel":"Information","Category":"CashFlow.Consolidation.Worker.ConsolidationConsumer","Message":"consolidation-worker encerrando.","State":{"{OriginalFormat}":"consolidation-worker encerrando."},"Scopes":[]}
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.Reconcile_CatchUp_ThenLateDeliveryIsDuplicate_AndSecondRunHasZeroDivergences [564 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.Redrive_RefusesProjectionOverflow_LeavingItInDlq [111 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.Cancelled_ExitsWithFailure [2 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.Reconcile_InboxEntryWithoutSource_IsAnomaly_RolledBack_AndRecordedSeparately [82 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.InvalidBrokerPort_ExitsWithUsageError [1 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.Redrive_Unroutable_IsNotAcked_StaysInDlq_AndFailureIsRecorded [224 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.Reconcile_ProjectionOverflow_AbortsWithAttention_ThenRebuildRestoresTheRow [266 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.Redrive_RepublishesWithOriginalIdentity_WithoutXHeaders_ThenAcksTheDlq [183 ms]
+[testcontainers.org 00:00:16.95] Delete Docker container eb59c0cd6a15
+[testcontainers.org 00:00:16.96] Delete Docker container ff4858b1ba98
+[xUnit.net 00:00:18.95]   Finished:    CashFlow.Consolidation.Tests
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.Reconcile_CorruptedTotals_WithCompleteInbox_AreRewrittenAbsolutely [302 ms]
+  Passed CashFlow.Consolidation.Tests.Recon.ReconToolTests.Purge_RecordsTrailPerMessage_ThenAcks_WithoutRepublishing [199 ms]
+
+Test Run Successful.
+Total tests: 29
+     Passed: 29
+ Total time: 19,6014 Seconds

@@ -1,0 +1,28 @@
+# C-09: recriar transactions-api SOMENTE com os arquivos versionados (base + dev.yml), sem override externo.
+# Imagem já construída (sem --build, para não capturar src/ em edição pela implementação). --force-recreate para não reaproveitar o container anterior.
+$ docker compose -f infra/compose/docker-compose.yml -f infra/compose/docker-compose.dev.yml --env-file infra/compose/.env up -d --force-recreate --no-deps transactions-api
+ Container cashflow-transactions-api-1 Recreate 
+ Container cashflow-transactions-api-1 Recreated 
+ Container cashflow-transactions-api-1 Starting 
+ Container cashflow-transactions-api-1 Started 
+exit=0
+
+$ docker compose ps transactions-api
+NAME                          IMAGE                           COMMAND             SERVICE            CREATED          STATUS                    PORTS
+cashflow-transactions-api-1   cashflow/transactions-api:dev   "/app/entrypoint"   transactions-api   28 seconds ago   Up 26 seconds (healthy)   127.0.0.1:18080->8080/tcp, 127.0.0.1:18081->8081/tcp
+
+$ docker inspect cashflow-transactions-api-1 (variaveis Authentication/ASPNETCORE)
+ASPNETCORE_ENVIRONMENT=Development
+Authentication__Mode=DevelopmentHeaders
+
+$ docker compose config (trecho transactions-api.environment resolvido)
+  transactions-api:
+      ASPNETCORE_ENVIRONMENT: Development
+      Authentication__Mode: DevelopmentHeaders
+
+$ curl /health/ready
+Healthy http=200
+$ POST credito 1.00 merchant 5555 (k-c09b) com X-Dev-* -> 201 esperado
+http=201
+$ sem cabecalhos -> 401 esperado
+http=401

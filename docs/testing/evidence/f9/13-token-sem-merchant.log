@@ -1,0 +1,24 @@
+# F9 13 - token sem merchant_id - 2026-10-29T17:50:07Z
+gateway: imagem sha256:4cd36dafafe8 iniciado em 2026-10-29T17:46:02.653523125Z
+criacao do client temporario f9-sem-merchant-175007 (copia de merchant-a-system SEM o mapper merchant_id): http=201
+token: 869 chars; claims selecionadas:
+  "iss":"http://keycloak:8080/realms/cashflow"
+  "aud":"cashflow-api"
+  "typ":"Bearer"
+  "azp":"f9-sem-merchant-175007"
+  "scope":"consolidation.read transactions.write transactions.read"
+  merchant_id presente no token? NAO
+  OK   POST lancamento (merchant A na rota): 403
+  OK   GET consolidado diario (merchant A): 403
+  OK   GET lancamento inexistente (merchant A): 403
+--- [17:50:10.186] corpo e cabecalhos de uma recusa
+status: HTTP/1.1 403 Forbidden
+  hdr: Content-Type: application/problem+json
+  hdr: Cache-Control: no-store
+  hdr: X-Content-Type-Options: nosniff
+  hdr: Referrer-Policy: no-referrer
+  body: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.4","title":"Acesso negado.","status":403,"traceId":"00-363945afae384dc9697f6ca6905d6be3-f44d2c19e8e25e14-01"}
+  OK   lancamentos gravados na data 2026-08-21: 0
+FALHAS=0
+remocao do client temporario f9-sem-merchant-175007: http=204
+exit=0

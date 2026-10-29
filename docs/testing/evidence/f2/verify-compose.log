@@ -1,0 +1,50 @@
+== 2026-10-29T03:07:32Z compose config
+exit=0
+== transactions-api depends_on (resolved)
+consolidation-api -> {'migrations-cons': {'condition': 'service_completed_successfully', 'required': True}}
+consolidation-worker -> {'migrations-cons': {'condition': 'service_completed_successfully', 'required': True}, 'rabbitmq': {'condition': 'service_started', 'required': True}}
+keycloak -> None
+migrations-cons -> {'postgres': {'condition': 'service_healthy', 'required': True}}
+migrations-tx -> {'postgres': {'condition': 'service_healthy', 'required': True}}
+postgres -> None
+rabbitmq -> None
+transactions-api -> {'migrations-tx': {'condition': 'service_completed_successfully', 'required': True}}
+== compose build
+
+#37 [consolidation-api] resolving provenance for metadata file
+#37 DONE 0.2s
+
+#38 [migrations-cons] resolving provenance for metadata file
+#38 DONE 0.1s
+
+#39 [consolidation-worker] resolving provenance for metadata file
+#39 DONE 0.0s
+ Image cashflow/consolidation-worker:dev Built 
+ Image cashflow/consolidation-api:dev Built 
+ Image cashflow/recon-tool:dev Built 
+ Image cashflow/transactions-api:dev Built 
+ Image cashflow/consolidation-api:dev Built 
+ Image cashflow/transactions-api:dev Built 
+exit=0
+== compose up -d
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-rabbitmq-1 Started 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-migrations-tx-1 Starting 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-migrations-cons-1 Starting 
+ Container cashflow-migrations-tx-1 Started 
+ Container cashflow-migrations-tx-1 Waiting 
+ Container cashflow-migrations-cons-1 Started 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-cons-1 Waiting 
+ Container cashflow-migrations-tx-1 Exited 
+ Container cashflow-transactions-api-1 Starting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-api-1 Starting 
+ Container cashflow-migrations-cons-1 Exited 
+ Container cashflow-consolidation-worker-1 Starting 
+ Container cashflow-transactions-api-1 Started 
+ Container cashflow-consolidation-worker-1 Started 
+ Container cashflow-consolidation-api-1 Started 
+exit=0

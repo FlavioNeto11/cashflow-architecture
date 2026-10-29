@@ -1,0 +1,25 @@
+## 1. gestao: usuario da aplicacao (esperado 401) x usuario de operacao (esperado 200)
+app -> HTTP 401
+ops -> HTTP 200
+## 2. dailyNet antes
+{"merchantId":"55555555-5555-4555-8555-555555555555","date":"2026-10-29","currency":"BRL","credits":"24.68","debits":"4.00","dailyNet":"20.68","entriesCount":4,"asOf":"2026-10-29T08:09:38.991613Z"}
+## 3. POST de credito 12.34 e debito 2.00 (usuario novo no publisher e no worker)
+POST f6a -> 201
+POST f6b -> 201
+## 4. dailyNet depois (apos 2s)
+{"merchantId":"55555555-5555-4555-8555-555555555555","date":"2026-10-29","currency":"BRL","credits":"37.02","debits":"6.00","dailyNet":"31.02","entriesCount":6,"asOf":"2026-10-29T08:10:40.336897Z"}
+## 5. fila principal e DLQ
+principal: messages=0 consumers=1
+## 6. recon-tool reconcile com o usuario novo (conecta ao broker so no redrive; aqui exercita banco)
+2026-10-29 clean divergencias=0  posse_lock_ms=57
+total: modo=reconcile linhas=1 divergencias=0 abortadas=0 posse_lock_max_ms=57
+## 7. mensagem invalida publicada pelo operador -> worker copia para cashflow.dlx (write em dlx) -> DLQ
+{"routed":true}
+dlq (rabbitmqctl, oraculo): consolidation.dlq	3
+## 8. redrive com o usuario novo (read em dlq, write em cashflow.transactions)
+f6-invalid-1 recusada anomaly: occurredAt ilegível: retenção não verificável
+redrive: republicadas=0 recusadas=1 ignoradas=0 devolvidas_nesta_execucao=2
+
+## 9. logs do worker/tx-api: recusas de acesso do broker (esperado: nenhuma)
+transactions-api: 0
+consolidation-worker: 0

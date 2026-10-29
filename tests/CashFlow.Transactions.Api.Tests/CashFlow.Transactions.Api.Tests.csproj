@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Testcontainers.PostgreSql" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CashFlow.Transactions.Api\CashFlow.Transactions.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Mesmo postgres:17 com os scripts reais de infra/postgres/init usado em Persistence.Tests; vinculado em vez de
+         copiado para não divergir. Uma assembly de suporte compartilhada só se justifica com um terceiro consumidor. -->
+    <Compile Include="..\CashFlow.Persistence.Tests\PostgresFixture.cs" Link="Support\PostgresFixture.cs" />
+    <Compile Include="..\CashFlow.Persistence.Tests\RepositoryPaths.cs" Link="Support\RepositoryPaths.cs" />
+  </ItemGroup>
+
+</Project>

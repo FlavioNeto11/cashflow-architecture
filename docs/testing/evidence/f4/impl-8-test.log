@@ -1,0 +1,13 @@
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Transactions.Api.Tests\bin\Release\net10.0\CashFlow.Transactions.Api.Tests.dll (.NETCoreApp,Version=v10.0)
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Consolidation.Tests\bin\Release\net10.0\CashFlow.Consolidation.Tests.dll (.NETCoreApp,Version=v10.0)
+Test run for C:\git\cashflow-architecture\tests\CashFlow.Persistence.Tests\bin\Release\net10.0\CashFlow.Persistence.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:    48, Skipped:     0, Total:    48, Duration: 14 s - CashFlow.Persistence.Tests.dll (net10.0)
+
+Passed!  - Failed:     0, Passed:   156, Skipped:     0, Total:   156, Duration: 18 s - CashFlow.Transactions.Api.Tests.dll (net10.0)
+
+Passed!  - Failed:     0, Passed:    65, Skipped:     0, Total:    65, Duration: 1 m 21 s - CashFlow.Consolidation.Tests.dll (net10.0)
+test=0

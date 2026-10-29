@@ -1,0 +1,26 @@
+# F7 21-03b - PF-03 todos os Cc + controles positivos - 2026-10-29T14:36:13Z
+
+=================== [14:36:15.108] Rejeitados (esperado 422): caracteres de controle
+  OK    TAB \t -> HTTP 422
+  OK    LF \n -> HTTP 422
+  OK    CR \r -> HTTP 422
+  OK    CRLF -> HTTP 422
+  OK    NUL \u0000 -> HTTP 422
+  OK    BEL \u0007 -> HTTP 422
+  OK    US \u001f -> HTTP 422
+  OK    DEL \u007f -> HTTP 422
+  OK    C1 \u0085 (NEL) -> HTTP 422
+  OK    C1 \u009f -> HTTP 422
+
+=================== [14:36:16.101] Aceitos (esperado 201): controles positivos
+  OK    texto simples -> HTTP 201
+  OK    acentos -> HTTP 201
+  OK    emoji (par substituto) -> HTTP 201
+  OK    espaco e pontuacao -> HTTP 201
+
+=================== [14:36:16.509] UTF-8 invalido no corpo (ACHADO PF-17: esperado 400 ou 422, observado 500 -> NAO e falha do PF-03; contado a parte)
+  byte E7 isolado (Latin-1) em description -> HTTP 500 (ACHADO: 500)
+
+linhas criadas: 4 (esperado 4 = so os controles positivos) | outbox: 4 (esperado 4)
+FALHAS=0
+exit=0

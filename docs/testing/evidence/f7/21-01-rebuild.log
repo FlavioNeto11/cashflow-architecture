@@ -1,0 +1,68 @@
+# F7 21-01 rebuild gateway+transactions-api - 2026-10-29T14:33:02Z
+ANTES:
+  cashflow/gateway:dev sha256:4679d171cf4974457bf340183d748618dd69631d2d9ab95ab365fb57a2b88f1c created=2026-10-29T11:21:11.601260063Z
+  cashflow/transactions-api:dev sha256:0e9a2a26e1039e61883831ef2378e06854d5c3146499f987207cec7cd35b06e4 created=2026-10-29T11:21:21.97832097Z
+  /cashflow-gateway-1 image=sha256:4679d171cf4974457bf340183d748618dd69631d2d9ab95ab365fb57a2b88f1c RestartCount=3 started=2026-10-29T13:02:56.20843241Z
+  /cashflow-transactions-api-1 image=sha256:0e9a2a26e1039e61883831ef2378e06854d5c3146499f987207cec7cd35b06e4 RestartCount=3 started=2026-10-29T13:02:22.164547911Z
+--- build
+#19 [transactions-api aspnet 4/4] RUN ln -s "/app/CashFlow.Transactions.Api" /app/entrypoint
+#19 ...
+
+#20 [gateway] resolving provenance for metadata file
+#20 DONE 0.0s
+
+#19 [transactions-api aspnet 4/4] RUN ln -s "/app/CashFlow.Transactions.Api" /app/entrypoint
+#19 DONE 0.7s
+
+#21 [transactions-api] exporting to image
+#21 exporting layers 1.1s done
+#21 exporting manifest sha256:4f45734577a518945235b2d9aea926b996ab1324f45ab2047974a6ecd22cfb00 0.0s done
+#21 exporting config sha256:1141423cce5dd29ee1934d9d7ff70ceaecde830e5f8b44ed67689d83d2b66869 0.0s done
+#21 exporting attestation manifest sha256:8ffd49a6ee4542e6dee399c13a460f6a231d79b02a151a1735387af48afabfba
+#21 exporting attestation manifest sha256:8ffd49a6ee4542e6dee399c13a460f6a231d79b02a151a1735387af48afabfba 0.0s done
+#21 exporting manifest list sha256:7ee170af2fba37f45c25a6b4c79fbb8b985e6e79f7e3e85dccc67923ba710243 0.0s done
+#21 naming to docker.io/cashflow/transactions-api:dev done
+#21 unpacking to docker.io/cashflow/transactions-api:dev
+#21 unpacking to docker.io/cashflow/transactions-api:dev 0.4s done
+#21 DONE 1.8s
+
+#22 [transactions-api] resolving provenance for metadata file
+#22 DONE 0.0s
+ Image cashflow/transactions-api:dev Built 
+ Image cashflow/gateway:dev Built 
+build rc=0
+# F7 21-01b up -d - 2026-10-29T14:33:39Z
+ Container cashflow-migrations-tx-1 Recreate 
+ Container cashflow-migrations-tx-1 Recreated 
+ Container cashflow-transactions-api-1 Recreate 
+ Container cashflow-gateway-1 Recreated 
+ Container cashflow-transactions-api-1 Recreated 
+ Container cashflow-gateway-1 Starting 
+ Container cashflow-postgres-1 Waiting 
+ Container cashflow-gateway-1 Started 
+ Container cashflow-postgres-1 Healthy 
+ Container cashflow-migrations-tx-1 Starting 
+ Container cashflow-migrations-tx-1 Started 
+ Container cashflow-migrations-tx-1 Waiting 
+ Container cashflow-migrations-tx-1 Exited 
+ Container cashflow-transactions-api-1 Starting 
+ Container cashflow-transactions-api-1 Started 
+[14:33:48.775] cashflow-gateway-1 health=healthy apos 3s
+[14:33:52.061] cashflow-transactions-api-1 health=healthy apos 3s
+[14:33:52.701] cashflow-consolidation-api-1 health=healthy apos 1s
+[14:33:53.335] cashflow-consolidation-worker-1 health=healthy apos 1s
+[14:33:53.975] cashflow-postgres-1 health=healthy apos 1s
+[14:33:54.605] cashflow-rabbitmq-1 health=healthy apos 1s
+[14:33:55.288] cashflow-keycloak-1 health=healthy apos 1s
+DEPOIS:
+  cashflow/gateway:dev sha256:aea4b28e0c3c8c58d06a3793f69b160644338a60fb3ffa11d545fbddc7ac6678 created=2026-10-29T14:33:27.139431893Z
+  cashflow/transactions-api:dev sha256:7ee170af2fba37f45c25a6b4c79fbb8b985e6e79f7e3e85dccc67923ba710243 created=2026-10-29T14:33:31.50914072Z
+  /cashflow-gateway-1 image=sha256:aea4b28e0c3c8c58d06a3793f69b160644338a60fb3ffa11d545fbddc7ac6678 RestartCount=0 started=2026-10-29T14:33:41.840691757Z
+  /cashflow-transactions-api-1 image=sha256:7ee170af2fba37f45c25a6b4c79fbb8b985e6e79f7e3e85dccc67923ba710243 RestartCount=0 started=2026-10-29T14:33:45.256377225Z
+cashflow-consolidation-api-1 Up 2 hours (healthy)
+cashflow-consolidation-worker-1 Up About an hour (healthy)
+cashflow-gateway-1 Up 14 seconds (healthy)
+cashflow-keycloak-1 Up 10 minutes (healthy)
+cashflow-postgres-1 Up 3 hours (healthy)
+cashflow-rabbitmq-1 Up 2 hours (healthy)
+cashflow-transactions-api-1 Up 11 seconds (healthy)
